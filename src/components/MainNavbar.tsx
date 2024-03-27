@@ -13,7 +13,7 @@ export function MainNavbar() {
         <span className="sr-only">QuadFund</span>
       </Link>
       <div className="ml-auto flex items-center">
-        <Button size="sm">Connect Wallet</Button>
+        <Button size="sm" variant="outline">Connect Wallet</Button>
       </div>
     </header>
   )
