@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -8,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import Link  from 'next/link';
 
 
 export default function Home() {
@@ -41,7 +41,7 @@ export default function Home() {
 
         <div className="flex justify-between">
           <text className="font-extrabold text-3xl">
-            Events 
+            Events
           </text>
           <div className="">
             <Button size="lg" >Create Event</Button>
@@ -51,16 +51,20 @@ export default function Home() {
         <div className="pt-7">
           {events.map((event) => (
             <div className="flex-col justify-center items-center my-3">
-              <Card className="flex justify-between">
-                <CardHeader>
-                  <CardTitle>{event.title}</CardTitle>
-                  <CardDescription>{event.description}</CardDescription>
-                  <span className="text-sm bg-gray-200 p-1 rounded-lg">12th June 2023</span>
-                </CardHeader>
-                <CardContent className="flex justify-center items-center mt-5">
-                  <p className="font-bold text-lg">{event.content}</p>
-                </CardContent>
-              </Card>
+              <Link 
+                href={`/e/${event.title}`}
+              >
+                <Card className="flex justify-between">
+                  <CardHeader>
+                    <CardTitle>{event.title}</CardTitle>
+                    <CardDescription>{event.description}</CardDescription>
+                    <span className="text-sm bg-gray-200 p-1 rounded-lg">12th June 2023</span>
+                  </CardHeader>
+                  <CardContent className="flex justify-center items-center mt-5">
+                    <p className="font-bold text-lg">{event.content}</p>
+                  </CardContent>
+                </Card>
+              </Link>
             </div>
           ))}
         </div>
