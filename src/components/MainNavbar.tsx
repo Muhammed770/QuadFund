@@ -6,7 +6,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 export function MainNavbar() {
   return (
     <header className="flex items-center h-16 px-4 border-b w-full md:px-6">
-      <Link className="mr-4" href="#">
+      <Link className="mr-4" href="/">
         <HexagonIcon className="h-8 w-8" />
         <span className="sr-only">QuadFund</span>
       </Link>
