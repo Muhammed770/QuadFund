@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import Link  from 'next/link';
+import Link from 'next/link';
 
 
 export default function Home() {
@@ -15,7 +15,7 @@ export default function Home() {
   const events = [
     {
       title: "EthIndia",
-      description: "Description 1",
+      description: "Indias largest Ethereum hackathon rkrmvrvmem krmlkrmv rklvlrmlqvmrlvrm",
       content: "$10000"
     },
     {
@@ -48,19 +48,22 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="pt-7">
+        <div className="pt-7 grid grid-cols-3 gap-4">
           {events.map((event) => (
             <div className="flex-col justify-center items-center my-3">
-              <Link 
+              <Link
                 href={`/e/${event.title}`}
               >
-                <Card className="flex justify-between">
+                <Card className="flex justify-between h-[200px]">
                   <CardHeader>
                     <CardTitle>{event.title}</CardTitle>
                     <CardDescription>{event.description}</CardDescription>
-                    <span className="text-sm bg-gray-200 p-1 rounded-lg">12th June 2023</span>
+                    <div className="py-6">
+                      <span className="text-sm bg-gray-100 p-2 rounded-lg w-fit mr-2">open</span>
+                      <span className="text-sm bg-gray-100 p-2 rounded-lg w-fit">12th June 2023</span>
+                    </div>
                   </CardHeader>
-                  <CardContent className="flex justify-center items-center mt-5">
+                  <CardContent className="flex justify-center items-center">
                     <p className="font-bold text-lg">{event.content}</p>
                   </CardContent>
                 </Card>
