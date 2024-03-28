@@ -56,8 +56,8 @@ export default function Home() {
                   <CardTitle>{event.title}</CardTitle>
                   <CardDescription>{event.description}</CardDescription>
                   <div className="py-6">
-                    <span className="text-sm bg-gray-200 p-2 rounded-lg w-fit mr-2">open</span>
-                    <span className="text-sm bg-gray-200 p-2 rounded-lg w-fit">12th June 2023</span>
+                    <span className="text-sm bg-gray-100 p-2 rounded-lg w-fit mr-2">open</span>
+                    <span className="text-sm bg-gray-100 p-2 rounded-lg w-fit">12th June 2023</span>
                   </div>
                 </CardHeader>
                 <CardContent className="flex justify-center items-center">

@@ -1,4 +1,4 @@
-
+"use client"
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -23,7 +23,7 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 
-export const metadata: Metadata = {
+ const metadata: Metadata = {
   title: "QuadFund",
   description: "Empowering Social Good Through Proper Funding",
 };
