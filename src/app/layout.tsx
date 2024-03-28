@@ -10,14 +10,14 @@ import {
   RainbowKitProvider,
 } from '@rainbow-me/rainbowkit';
 import { WagmiProvider } from 'wagmi';
-// import { createConfig } from 'wagmi'
-// import {
-//   mainnet,
-//   polygon,
-//   optimism,
-//   arbitrum,
-//   base,
-// } from 'wagmi/chains';
+import { createConfig } from 'wagmi'
+import {
+  mainnet,
+  polygon,
+  optimism,
+  arbitrum,
+  base,
+} from 'wagmi/chains';
 import {
   QueryClientProvider,
   QueryClient,
@@ -28,31 +28,15 @@ export const metadata: Metadata = {
   description: "Empowering Social Good Through Proper Funding",
 };
 
-// const config = getDefaultConfig({
-//   appName: 'My RainbowKit App',
-//   projectId: '6ac8e2179e976b262d34f3b452091a7a',
-//   chains: [mainnet, polygon, optimism, arbitrum, base],
-//   ssr: true, // If your dApp uses server side rendering (SSR)
-// });
-import { http, createConfig } from 'wagmi'
-import { base, mainnet, optimism } from 'wagmi/chains'
-import { injected, metaMask, safe, walletConnect } from 'wagmi/connectors'
+const config = getDefaultConfig({
+  appName: 'My RainbowKit App',
+  projectId: '6ac8e2179e976b262d34f3b452091a7a',
+  chains: [mainnet, polygon, optimism, arbitrum, base],
+});
+// import { http, createConfig } from 'wagmi'
+// import { base, mainnet, optimism } from 'wagmi/chains'
+// import { injected, metaMask, safe, walletConnect } from 'wagmi/connectors'
 
-const projectId = '<WALLETCONNECT_PROJECT_ID>'
-
-export const config = createConfig({
-  chains: [mainnet, base],
-  connectors: [
-    injected(),
-    walletConnect({ projectId }),
-    metaMask(),
-    safe(),
-  ],
-  transports: {
-    [mainnet.id]: http(),
-    [base.id]: http(),
-  },
-})
 const queryClient = new QueryClient();
 
 export default function RootLayout({
