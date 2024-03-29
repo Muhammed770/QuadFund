@@ -48,7 +48,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="pt-7 grid grid-cols-3 gap-4">
+        <div className="pt-7 md:grid grid-cols-3 gap-4">
           {events.map((event) => (
             <div className="flex-col justify-center items-center my-3">
               <Link
@@ -58,9 +58,9 @@ export default function Home() {
                   <CardHeader>
                     <CardTitle>{event.title}</CardTitle>
                     <CardDescription>{event.description}</CardDescription>
-                    <div className="py-6">
-                      <span className="text-sm bg-gray-100 p-2 rounded-lg w-fit mr-2">open</span>
-                      <span className="text-sm bg-gray-100 p-2 rounded-lg w-fit">12th June 2023</span>
+                    <div className="md:py-6 md:flex ">
+                      <div className="text-sm bg-gray-100 p-2 rounded-lg w-fit mr-2">open</div>
+                      <div className="text-sm bg-gray-100 p-2 rounded-lg w-fit">12th June 2023</div>
                     </div>
                   </CardHeader>
                   <CardContent className="flex justify-center items-center">
