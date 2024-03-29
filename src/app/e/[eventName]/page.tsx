@@ -47,12 +47,19 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
     ];
 
     return (
-        <div className="flex flex-col lg:flex-row gap-8 p-8">
+        <div className="flex flex-col lg:flex-row gap-8 md:p-8 p-4">
             <div className="flex-1 space-y-6">
                 <div className="flex justify-between items-center">
 
                     <h1 className="text-3xl font-bold inline-flex">{params.eventName}</h1>
-                    <Badge className="flex-none bg-green-200" variant="secondary">Voting ends in:05:04:00</Badge>
+                    <div className="w-44">
+
+                        <Badge className="flex-none bg-green-200" variant="secondary">Voting ends in:05:04:00</Badge>
+                        <div className="lg:hidden">
+
+                            <DialogSubmitProject />
+                        </div>
+                    </div>
 
                 </div>
 
@@ -91,8 +98,8 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                     <p className="text-3xl font-bold">$68,143</p>
                     <h2 className="text-xl font-semibold mt-4">Available Matching Pool</h2>
                     <p className="text-3xl font-bold">$50,000</p>
-                    <DialogSubmitProject /> 
-                    
+                    <DialogSubmitProject />
+
                 </div>
                 <div>
                     <h2 className="text-xl font-semibold">Top Contributors</h2>
