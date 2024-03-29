@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { AvatarImage, Avatar } from "@/components/ui/avatar"
 import { CardContent, Card } from "@/components/ui/card"
 import Image from "next/image"
+import { DialogSubmitProject } from "@/components/DialogSubmitProject"
 
 const EventPage = ({ params }: { params: { eventName: string } }) => {
     const cardData = [
@@ -70,7 +71,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                 {cardData.map((data, index) => (
                     <Card key={index} className="w-full overflow-hidden">
                         <CardContent className="flex  p-0 gap-4">
-                            
+
                             <Image width={200} height={100} style={{ objectFit: 'contain' }} src={data.src} alt={data.title} />
                             <div className="flex  p-2">
 
@@ -90,7 +91,8 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                     <p className="text-3xl font-bold">$68,143</p>
                     <h2 className="text-xl font-semibold mt-4">Available Matching Pool</h2>
                     <p className="text-3xl font-bold">$50,000</p>
-                    <Button className="w-full mt-4">Submit your project</Button>
+                    <DialogSubmitProject /> 
+                    
                 </div>
                 <div>
                     <h2 className="text-xl font-semibold">Top Contributors</h2>
