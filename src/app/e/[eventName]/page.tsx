@@ -48,8 +48,15 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
     return (
         <div className="flex flex-col lg:flex-row gap-8 p-8">
             <div className="flex-1 space-y-6">
-                <h1 className="text-3xl font-bold">{params.eventName}</h1>
-                <div className="flex gap-2 overflow-x-auto no-scrollbar">
+                <div className="flex justify-between items-center">
+
+                    <h1 className="text-3xl font-bold inline-flex">{params.eventName}</h1>
+                    <Badge className="flex-none bg-green-200" variant="secondary">Voting ends in:05:04:00</Badge>
+
+                </div>
+
+
+                <div className="flex gap-2 overflow-x-auto no-scrollbar ">
 
 
                     <Badge className="flex-none" variant="secondary">Ongoing round</Badge>
@@ -63,8 +70,9 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                 {cardData.map((data, index) => (
                     <Card key={index} className="w-full overflow-hidden">
                         <CardContent className="flex  p-0 gap-4">
-                            <Image width="140" height="100" src={data.src} alt={data.title} />
-                            <div className="flex gap-4">
+                            
+                            <Image width={200} height={100} style={{ objectFit: 'contain' }} src={data.src} alt={data.title} />
+                            <div className="flex  p-2">
 
                                 <div>
                                     <h2 className="text-xl font-semibold">{data.title}</h2>
@@ -82,6 +90,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                     <p className="text-3xl font-bold">$68,143</p>
                     <h2 className="text-xl font-semibold mt-4">Available Matching Pool</h2>
                     <p className="text-3xl font-bold">$50,000</p>
+                    <Button className="w-full mt-4">Submit your project</Button>
                 </div>
                 <div>
                     <h2 className="text-xl font-semibold">Top Contributors</h2>
