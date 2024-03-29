@@ -72,7 +72,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                     <Card key={index} className="w-full overflow-hidden">
                         <CardContent className="flex  p-0 gap-4">
 
-                            <Image width={200} height={100} style={{ objectFit: 'contain' }} src={data.src} alt={data.title} />
+                            <Image width={200} height={100} style={{ objectFit: 'contain' }} className="max-md:hidden" src={data.src} alt={data.title} />
                             <div className="flex  p-2">
 
                                 <div>

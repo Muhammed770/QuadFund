@@ -21,7 +21,7 @@ export function DialogSubmitProject() {
                 <DialogHeader>
                     <DialogTitle>Submit your project</DialogTitle>
                     <DialogDescription>
-                        Select the project or create new one. Click submit when you're done.
+                        Select a project or create new one. Click submit when you're done.
                     </DialogDescription>
                 </DialogHeader>
                 <Button variant={"secondary"}>Create new project +</Button>
