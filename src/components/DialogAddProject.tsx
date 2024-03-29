@@ -8,31 +8,29 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { ListOfProjects } from "./list-of-projects"
 import { ScrollArea } from "./ui/scroll-area"
-import { DialogAddProject } from "./DialogAddProject"
-
-export function DialogSubmitProject() {
+import { AddProjectForm } from "./add-project-form"
+export function DialogAddProject() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button className="w-full mt-4">Submit your project</Button>
+                <Button variant={"secondary"} className="mt-4">Create new project +</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Submit your project</DialogTitle>
+                    <DialogTitle>Project Information</DialogTitle>
                     <DialogDescription>
-                        Select a project or create new one. Click submit when you're done.
+                        Add details about your project.
                     </DialogDescription>
                 </DialogHeader>
-                <DialogAddProject />
+                {/* <Button variant={"secondary"}>Create new project +</Button> */}
                 <ScrollArea className="h-80">
 
-                    <ListOfProjects />
+                    <AddProjectForm />
                 </ScrollArea>
-                <DialogFooter>
+                {/* <DialogFooter>
                     <Button type="submit">Submit</Button>
-                </DialogFooter>
+                </DialogFooter> */}
             </DialogContent>
         </Dialog>
     )

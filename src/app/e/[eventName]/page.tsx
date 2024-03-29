@@ -77,10 +77,16 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                 </div>
                 {cardData.map((data, index) => (
                     <Card key={index} className="w-full overflow-hidden">
-                        <CardContent className="flex  p-0 gap-4">
+                        <CardContent className="flex  p-0 gap-4 items-center">
 
-                            <Image width={200} height={100} style={{ objectFit: 'contain' }} className="max-md:hidden" src={data.src} alt={data.title} />
-                            <div className="flex  p-2">
+                            {/* <Image width={200} height={100} style={{ objectFit: 'contain' }} className="max-md:hidden" src={data.src} alt={data.title} /> */}
+                            <div className="min-h-24 m-1">
+
+                                <div className="absolute m-1 aspect-square bg-gray-100 rounded-lg overflow-hidden dark:bg-gray-800">
+                                    <Image alt="Avatar" className="aspect-[1/1] object-cover" height="80" src={data.src} width="80" />
+                                </div>
+                            </div>
+                            <div className="flex ml-20 p-2">
 
                                 <div>
                                     <h2 className="text-xl font-semibold">{data.title}</h2>
