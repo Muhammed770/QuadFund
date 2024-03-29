@@ -41,7 +41,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
 
     const contributorsData = [
         { username: "@zain", amount: "$5k", src: "https://ui.shadcn.com/avatars/04.png/?height=24&width=24" },
-        { username: "@neda", amount: "$$3.77k", src: "https://ui.shadcn.com/avatars/01.png/?height=24&width=24" },
+        { username: "@neda", amount: "$3.77k", src: "https://ui.shadcn.com/avatars/01.png/?height=24&width=24" },
         { username: "@shiyas", amount: "$2.87k", src: "https://ui.shadcn.com/avatars/02.png/?height=24&width=24" },
         { username: "@muhammed770", amount: "$1.57k", src: "https://ui.shadcn.com/avatars/04.png/?height=24&width=24" }
     ];
