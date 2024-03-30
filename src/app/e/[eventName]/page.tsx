@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { AvatarImage, Avatar } from "@/components/ui/avatar"
 import { CardContent, Card } from "@/components/ui/card"
 import Image from "next/image"
+import Link from "next/link"
 import { DialogSubmitProject } from "@/components/DialogSubmitProject"
 import {
     Drawer,
@@ -16,6 +17,7 @@ import {
   } from "@/components/ui/drawer"
   import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
   import { HeartHandshake } from 'lucide-react';
+  import { ExternalLinkIcon } from "@/components/externalLinkIcon"
   
 
 const EventPage = ({ params }: { params: { eventName: string } }) => {
@@ -24,14 +26,15 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
             title: "Project A",
             description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
             about: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            contributors: "10 Contributors • $100K Matched",
-            owner: "@zain",
             src: "https://images.unsplash.com/photo-1711139299064-f60e2753163f?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             images : [ "https://images.unsplash.com/photo-1711139299064-f60e2753163f?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                         "https://images.unsplash.com/photo-1707344088547-3cf7cea5ca49?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                         "https://images.unsplash.com/photo-1710975090677-5955bce9d325?q=80&w=2651&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                         "https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                         "https://images.unsplash.com/photo-1708649290066-5f617003b93f?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"],
+            link: "#",
+            contributors: "10 Contributors • $100K Matched",
+            owner: "@zain",
             projectContributorsData : [
                             { username: "@zain", amount: "$5k", src: "https://ui.shadcn.com/avatars/04.png/?height=24&width=24" },
                             { username: "@neda", amount: "$$3.77k", src: "https://ui.shadcn.com/avatars/01.png/?height=24&width=24" },
@@ -47,6 +50,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
             owner: "@zain",
             src: "https://images.unsplash.com/photo-1707344088547-3cf7cea5ca49?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             images : [],
+            link: "#",
             projectContributorsData : [] 
         },
         {
@@ -57,6 +61,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
             owner: "@zain",
             src: "https://images.unsplash.com/photo-1710975090677-5955bce9d325?q=80&w=2651&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             images : [],
+            link: "#",
             projectContributorsData : []
         },
         {
@@ -67,6 +72,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
             owner: "@zain",
             src: "https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             images : [],
+            link: "#",
             projectContributorsData : []
         },
         {
@@ -77,6 +83,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
             owner: "@zain",
             src: "https://images.unsplash.com/photo-1708649290066-5f617003b93f?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             images : [],
+            link: "#",
             projectContributorsData : []
         }
     ];
@@ -155,6 +162,10 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                             <div className="p-5">
                                 <DrawerTitle className="text-3xl font-extrabold">{data.title}</DrawerTitle>
                                 <DrawerDescription className="text-xl">{data.description}</DrawerDescription>
+                                <Link className="font-medium inline-flex items-center space-x-1.5 text-sm" href={data.link}>
+                                   <ExternalLinkIcon className="h-4 w-4" />
+                                   <span>View</span>
+                                </Link>
                             </div>
                             <div className="flex justify-center items-center">
                                 <Button size="lg" className="text-xl"> <HeartHandshake className="mx-2" />Contribute</Button>

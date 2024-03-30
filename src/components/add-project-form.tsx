@@ -24,6 +24,10 @@ export function AddProjectForm() {
               <Textarea className="min-h-[100px]" id="description" placeholder="Description" />
             </div>
             <div className="space-y-2">
+              <Label htmlFor="about">About</Label>
+              <Textarea className="min-h-[100px]" id="about" placeholder="About you project" />
+            </div>
+            <div className="space-y-2">
               <Label>Logo</Label>
               <Input accept="image/*" id="logo" type="file" />
             </div>
@@ -31,10 +35,14 @@ export function AddProjectForm() {
               <Label>Pictures</Label>
               <Input accept="image/*" id="pictures" multiple type="file" />
             </div>
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <Label htmlFor="tags">Tags</Label>
               <Input id="tags" placeholder="Enter tags" />
               <p className="text-sm leading-5 text-gray-500 dark:text-gray-400">Comma-separated list of tags.</p>
+            </div> */}
+            <div className="space-y-2">
+              <Label htmlFor="link">Link</Label>
+              <Input id="link" placeholder="Link of your project" />
             </div>
           </div>
         </div>
