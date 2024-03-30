@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { AvatarImage, Avatar } from "@/components/ui/avatar"
 import { CardContent, Card } from "@/components/ui/card"
 import Image from "next/image"
+import { DialogSubmitProject } from "@/components/DialogSubmitProject"
 import {
     Drawer,
     DrawerClose,
@@ -82,18 +83,25 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
 
     const contributorsData = [
         { username: "@zain", amount: "$5k", src: "https://ui.shadcn.com/avatars/04.png/?height=24&width=24" },
-        { username: "@neda", amount: "$$3.77k", src: "https://ui.shadcn.com/avatars/01.png/?height=24&width=24" },
+        { username: "@neda", amount: "$3.77k", src: "https://ui.shadcn.com/avatars/01.png/?height=24&width=24" },
         { username: "@shiyas", amount: "$2.87k", src: "https://ui.shadcn.com/avatars/02.png/?height=24&width=24" },
         { username: "@muhammed770", amount: "$1.57k", src: "https://ui.shadcn.com/avatars/04.png/?height=24&width=24" }
     ];
 
     return (
-        <div className="flex flex-col lg:flex-row gap-8 p-8">
+        <div className="flex flex-col lg:flex-row gap-8 md:p-8 p-4">
             <div className="flex-1 space-y-6">
                 <div className="flex justify-between items-center">
 
                     <h1 className="text-3xl font-bold inline-flex">{params.eventName}</h1>
-                    <Badge className="flex-none bg-green-200" variant="secondary">Voting ends in:05:04:00</Badge>
+                    <div className="w-44">
+
+                        <Badge className="flex-none bg-green-200" variant="secondary">Voting ends in:05:04:00</Badge>
+                        <div className="lg:hidden">
+
+                            <DialogSubmitProject />
+                        </div>
+                    </div>
 
                 </div>
 
@@ -113,6 +121,19 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                     <Drawer>
                     <DrawerTrigger>
                     <Card key={index} className="w-full overflow-hidden">
+                        {/* <CardContent className="flex  p-0 gap-4 items-center">
+
+                            <Image width={200} height={100} style={{ objectFit: 'contain' }} className="max-md:hidden" src={data.src} alt={data.title} />
+                            <div className="min-h-24 m-1">
+
+                                <div className="absolute m-1 aspect-square bg-gray-100 rounded-lg overflow-hidden dark:bg-gray-800">
+                                    <Image alt="Avatar" className="aspect-[1/1] object-cover" height="80" src={data.src} width="80" />
+                                </div>
+                            </div>
+                            <div className="flex ml-20 p-2">
+
+                                <div>
+                                    <h2 className="text-xl font-semibold">{data.title}</h2> */}
                         <CardContent className="md:flex p-0 gap-4">
                             
                             <Image width={200} height={100} className="md:object-contain" src={data.src} alt={data.title} />
@@ -209,7 +230,8 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                     <p className="text-3xl font-bold">$68,143</p>
                     <h2 className="text-xl font-semibold mt-4">Available Matching Pool</h2>
                     <p className="text-3xl font-bold">$50,000</p>
-                    <Button className="w-full mt-4">Submit your project</Button>
+                    <DialogSubmitProject />
+
                 </div>
                 <div>
                     <h2 className="text-xl font-semibold">Top Contributors</h2>
