@@ -8,8 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import Link from 'next/link';
-
-
+import {DialogAddEvent} from "@/components/DialogAddEvent"
 export default function Home() {
 
   const events = [
@@ -44,7 +43,8 @@ export default function Home() {
             Events
           </text>
           <div className="">
-            <Button size="lg" >Create Event</Button>
+            {/* <Button size="lg" >Create Event</Button> */}
+            <DialogAddEvent />
           </div>
         </div>
 

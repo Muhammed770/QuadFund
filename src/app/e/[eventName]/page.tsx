@@ -14,11 +14,11 @@ import {
     DrawerHeader,
     DrawerTitle,
     DrawerTrigger,
-  } from "@/components/ui/drawer"
-  import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-  import { HeartHandshake } from 'lucide-react';
-  import { ExternalLinkIcon } from "@/components/externalLinkIcon"
-  
+} from "@/components/ui/drawer"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { HeartHandshake } from 'lucide-react';
+import { ExternalLinkIcon } from "@/components/externalLinkIcon"
+
 
 const EventPage = ({ params }: { params: { eventName: string } }) => {
     const cardData = [
@@ -27,19 +27,19 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
             description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
             about: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
             src: "https://images.unsplash.com/photo-1711139299064-f60e2753163f?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            images : [ "https://images.unsplash.com/photo-1711139299064-f60e2753163f?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                        "https://images.unsplash.com/photo-1707344088547-3cf7cea5ca49?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                        "https://images.unsplash.com/photo-1710975090677-5955bce9d325?q=80&w=2651&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                        "https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                        "https://images.unsplash.com/photo-1708649290066-5f617003b93f?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"],
+            images: ["https://images.unsplash.com/photo-1711139299064-f60e2753163f?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                "https://images.unsplash.com/photo-1707344088547-3cf7cea5ca49?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                "https://images.unsplash.com/photo-1710975090677-5955bce9d325?q=80&w=2651&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                "https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                "https://images.unsplash.com/photo-1708649290066-5f617003b93f?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"],
             link: "#",
             contributors: "10 Contributors • $100K Matched",
             owner: "@zain",
-            projectContributorsData : [
-                            { username: "@zain", amount: "$5k", src: "https://ui.shadcn.com/avatars/04.png/?height=24&width=24" },
-                            { username: "@neda", amount: "$$3.77k", src: "https://ui.shadcn.com/avatars/01.png/?height=24&width=24" },
-                            { username: "@shiyas", amount: "$2.87k", src: "https://ui.shadcn.com/avatars/02.png/?height=24&width=24" },
-                            { username: "@muhammed770", amount: "$1.57k", src: "https://ui.shadcn.com/avatars/04.png/?height=24&width=24" }
+            projectContributorsData: [
+                { username: "@zain", amount: "$5k", src: "https://ui.shadcn.com/avatars/04.png/?height=24&width=24" },
+                { username: "@neda", amount: "$$3.77k", src: "https://ui.shadcn.com/avatars/01.png/?height=24&width=24" },
+                { username: "@shiyas", amount: "$2.87k", src: "https://ui.shadcn.com/avatars/02.png/?height=24&width=24" },
+                { username: "@muhammed770", amount: "$1.57k", src: "https://ui.shadcn.com/avatars/04.png/?height=24&width=24" }
             ]
         },
         {
@@ -49,9 +49,9 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
             contributors: "20 Contributors • $200K Matched",
             owner: "@zain",
             src: "https://images.unsplash.com/photo-1707344088547-3cf7cea5ca49?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            images : [],
+            images: [],
             link: "#",
-            projectContributorsData : [] 
+            projectContributorsData: []
         },
         {
             title: "Project C",
@@ -60,9 +60,9 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
             contributors: "30 Contributors • $300K Matched",
             owner: "@zain",
             src: "https://images.unsplash.com/photo-1710975090677-5955bce9d325?q=80&w=2651&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            images : [],
+            images: [],
             link: "#",
-            projectContributorsData : []
+            projectContributorsData: []
         },
         {
             title: "Project D",
@@ -71,9 +71,9 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
             contributors: "40 Contributors • $400K Matched",
             owner: "@zain",
             src: "https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            images : [],
+            images: [],
             link: "#",
-            projectContributorsData : []
+            projectContributorsData: []
         },
         {
             title: "Project E",
@@ -82,9 +82,9 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
             contributors: "50 Contributors • $500K Matched",
             owner: "@zain",
             src: "https://images.unsplash.com/photo-1708649290066-5f617003b93f?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            images : [],
+            images: [],
             link: "#",
-            projectContributorsData : []
+            projectContributorsData: []
         }
     ];
 
@@ -125,114 +125,125 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                     <Button variant="ghost">DeFi</Button>
                 </div>
                 {cardData.map((data, index) => (
-                    <Drawer>
-                    <DrawerTrigger>
-                    <Card key={index} className="w-full overflow-hidden">
-                        {/* <CardContent className="flex  p-0 gap-4 items-center">
+                    <div>
+                        {/* <Card key={index} className="w-full overflow-hidden">
 
-                            <Image width={200} height={100} style={{ objectFit: 'contain' }} className="max-md:hidden" src={data.src} alt={data.title} />
-                            <div className="min-h-24 m-1">
+                            <CardContent className="md:flex p-0 gap-4">
 
-                                <div className="absolute m-1 aspect-square bg-gray-100 rounded-lg overflow-hidden dark:bg-gray-800">
-                                    <Image alt="Avatar" className="aspect-[1/1] object-cover" height="80" src={data.src} width="80" />
-                                </div>
-                            </div>
-                            <div className="flex ml-20 p-2">
-
-                                <div>
-                                    <h2 className="text-xl font-semibold">{data.title}</h2> */}
-                        <CardContent className="md:flex p-0 gap-4">
-                            
-                            <Image width={200} height={100} className="md:object-contain" src={data.src} alt={data.title} />
-                            <div className="p-2">
-                                <div className="text-left">
-                                    <h2 className="text-xl font-semibold ">{data.title}</h2>
-                                    <p className="text-sm text-gray-600">{data.description}</p>
-                                    <p className="text-sm ">{data.contributors}</p>
-                                </div>
-                            </div>
-                
-                        </CardContent>
-                    </Card>
-                    </DrawerTrigger>
-
-                    <DrawerContent className="">
-                        <DrawerHeader className="md:flex md:px-12 p-4">
-                            <Image width={200} height={100} className="object-contain" src={data.src} alt={data.title} />
-                            <div className="p-5">
-                                <DrawerTitle className="text-3xl font-extrabold">{data.title}</DrawerTitle>
-                                <DrawerDescription className="text-xl">{data.description}</DrawerDescription>
-                                <Link className="font-medium inline-flex items-center space-x-1.5 text-sm" href={data.link}>
-                                   <ExternalLinkIcon className="h-4 w-4" />
-                                   <span>View</span>
-                                </Link>
-                            </div>
-                            <div className="flex justify-center items-center">
-                                <Button size="lg" className="text-xl"> <HeartHandshake className="mx-2" />Contribute</Button>
-                            </div>
-                        </DrawerHeader>
-                        <Tabs defaultValue="about" className="md:px-12 px-4 pb-4">
-                          <TabsList>
-                            <TabsTrigger value="about">About</TabsTrigger>
-                            <TabsTrigger value="contributers">Contributers</TabsTrigger>
-                            <TabsTrigger value="owner">Owner</TabsTrigger>
-                          </TabsList>
-                          <TabsContent value="about" className="h-[330px] overflow-scroll no-scrollbar">
-                            <div className="flex items-center overflow-x-auto no-scrollbar ">
-                                {data.images.map((image, index) => (
-                                    <div key={index} className="mx-1">
-                                        <img className="max-w-[400px] h-[200px] rounded-lg" src={image} alt={data.title} />
+                                <Image width={200} height={100} className="md:object-contain" src={data.src} alt={data.title} />
+                                <div className="p-2">
+                                    <div className="text-left">
+                                        <h2 className="text-xl font-semibold ">{data.title}</h2>
+                                        <p className="text-sm text-gray-600">{data.description}</p>
+                                        <p className="text-sm ">{data.contributors}</p>
                                     </div>
-                                ))}
-                            </div>
-                            <div className="mt-4 p-3">
-                                <h2 className="text-xl font-semibold">About</h2>
-                                <p className="text-lg pt-2">{data.about}</p>
-                            </div>
-                          </TabsContent>
-                          <TabsContent value="contributers" className="h-[330px] overflow-scroll no-scrollbar">
-                            <div>
-                              <h2 className="text-xl font-semibold">Top Contributors</h2>
-                              <div className="space-y-2 mt-2">
-                                  {data.projectContributorsData.map((data, index) => (
-                                      <div key={index} className="flex items-center space-x-2">
-                                          <Avatar>
-                                              <AvatarImage alt={data.username} src={data.src} />
-                                          </Avatar>
-                                          <span className="font-medium">{data.username}</span>
-                                          <span className="ml-auto">{data.amount}</span>
-                                      </div>
-                                  ))}
-                                  <Button className="w-full mt-2" variant="outline">
-                                      View Leaderboard
-                                  </Button>
-                              </div>
-                            </div>
-                          </TabsContent>
-                          <TabsContent value="owner" className="h-[330px] overflow-scroll no-scrollbar">
-                            <div>
-                              <h2 className="text-xl font-semibold">Owner</h2>
-                              <div className="space-y-2 mt-2">
-                                  <div className="flex items-center space-x-2">
-                                      <Avatar>
-                                          <AvatarImage alt={data.owner} src="https://ui.shadcn.com/avatars/04.png/?height=24&width=24" />
-                                      </Avatar>
-                                      <span className="font-medium">{data.owner}</span>
-                                  </div>
-                              </div>
-                            </div>
-                          </TabsContent>
-                        </Tabs>
+                                </div>
 
-                        {/* <DrawerFooter>
+                            </CardContent>
+                        </Card> */}
+                        <Drawer>
+                            <DrawerTrigger className="w-full">
+                                <Card key={index} className="w-full overflow-hidden">
+
+                                    <CardContent className="flex p-0 gap-4">
+
+                                        {/* <Image width={200} height={100} className="md:object-contain" src={data.src} alt={data.title} /> */}
+                                        <div className="min-h-24 m-1">
+
+                                            <div className="absolute m-1 aspect-square bg-gray-100 rounded-lg overflow-hidden dark:bg-gray-800">
+                                                <Image alt="Avatar" className="aspect-[1/1] object-cover" height="80" src={data.src} width="80" />
+                                            </div>
+                                        </div>
+                                        <div className="p-2 ml-20">
+                                            <div className="text-left">
+                                                <h2 className="text-xl font-semibold ">{data.title}</h2>
+                                                <p className="text-sm text-gray-600">{data.description}</p>
+                                                <p className="text-sm ">{data.contributors}</p>
+                                            </div>
+                                        </div>
+
+                                    </CardContent>
+                                </Card>
+                            </DrawerTrigger>
+
+                            <DrawerContent className="">
+                                <DrawerHeader className="md:flex md:px-12 p-4">
+                                    <Image width={200} height={100} className="object-contain" src={data.src} alt={data.title} />
+                                    <div className="p-5">
+                                        <DrawerTitle className="text-3xl font-extrabold">{data.title}</DrawerTitle>
+                                        <DrawerDescription className="text-xl">{data.description}</DrawerDescription>
+                                        <Link className="font-medium inline-flex items-center space-x-1.5 text-sm" href={data.link}>
+                                            <ExternalLinkIcon className="h-4 w-4" />
+                                            <span>View</span>
+                                        </Link>
+                                    </div>
+                                    <div className="flex justify-center items-center">
+                                        <Button size="lg" className="text-xl"> <HeartHandshake className="mx-2" />Contribute</Button>
+                                    </div>
+                                </DrawerHeader>
+                                <Tabs defaultValue="about" className="md:px-12 px-4 pb-4">
+                                    <TabsList>
+                                        <TabsTrigger value="about">About</TabsTrigger>
+                                        <TabsTrigger value="contributers">Contributers</TabsTrigger>
+                                        <TabsTrigger value="owner">Owner</TabsTrigger>
+                                    </TabsList>
+                                    <TabsContent value="about" className="h-[330px] overflow-scroll no-scrollbar">
+                                        <div className="flex items-center overflow-x-auto no-scrollbar ">
+                                            {data.images.map((image, index) => (
+                                                <div key={index} className="mx-1">
+                                                    <img className="max-w-[400px] h-[200px] rounded-lg" src={image} alt={data.title} />
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <div className="mt-4 p-3">
+                                            <h2 className="text-xl font-semibold">About</h2>
+                                            <p className="text-lg pt-2">{data.about}</p>
+                                        </div>
+                                    </TabsContent>
+                                    <TabsContent value="contributers" className="h-[330px] overflow-scroll no-scrollbar">
+                                        <div>
+                                            <h2 className="text-xl font-semibold">Top Contributors</h2>
+                                            <div className="space-y-2 mt-2">
+                                                {data.projectContributorsData.map((data, index) => (
+                                                    <div key={index} className="flex items-center space-x-2">
+                                                        <Avatar>
+                                                            <AvatarImage alt={data.username} src={data.src} />
+                                                        </Avatar>
+                                                        <span className="font-medium">{data.username}</span>
+                                                        <span className="ml-auto">{data.amount}</span>
+                                                    </div>
+                                                ))}
+                                                <Button className="w-full mt-2" variant="outline">
+                                                    View Leaderboard
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </TabsContent>
+                                    <TabsContent value="owner" className="h-[330px] overflow-scroll no-scrollbar">
+                                        <div>
+                                            <h2 className="text-xl font-semibold">Owner</h2>
+                                            <div className="space-y-2 mt-2">
+                                                <div className="flex items-center space-x-2">
+                                                    <Avatar>
+                                                        <AvatarImage alt={data.owner} src="https://ui.shadcn.com/avatars/04.png/?height=24&width=24" />
+                                                    </Avatar>
+                                                    <span className="font-medium">{data.owner}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </TabsContent>
+                                </Tabs>
+
+                                {/* <DrawerFooter>
                           <Button>Submit</Button>
                           <DrawerClose>
                             <Button variant="outline">Cancel</Button>
                           </DrawerClose>
                         </DrawerFooter> */}
-                    </DrawerContent>
+                            </DrawerContent>
 
-                    </Drawer>
+                        </Drawer>
+                    </div>
                 ))}
             </div>
             <div className="w-full lg:w-96 space-y-6 ">
@@ -261,7 +272,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                         </Button>
                     </div>
                 </div>
-            
+
             </div>
         </div>
     );

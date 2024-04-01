@@ -12,16 +12,16 @@ import { ScrollArea } from "./ui/scroll-area"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { CardContent, CardFooter, Card } from "@/components/ui/card"
-export function DialogAddProject() {
+import { CardContent, Card } from "@/components/ui/card"
+export function DialogAddEvent() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant={"secondary"} className="mt-4">Create new project +</Button>
+                <Button variant={"secondary"} className="mt-4">Add new event +</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Project Information</DialogTitle>
+                    <DialogTitle>Event Information</DialogTitle>
                     <DialogDescription>
                         Add details about your project.
                     </DialogDescription>
