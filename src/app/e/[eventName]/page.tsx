@@ -101,7 +101,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                     <h1 className="text-3xl font-bold inline-flex">{params.eventName}</h1>
                     <div className="w-44">
 
-                        <Badge className="flex-none bg-green-200" variant="secondary">Voting ends in:05:04:00</Badge>
+                        <Badge className="flex-none bg-red-200 p-2" variant="secondary">Voting ends in:05:04:00</Badge>
                         <div className="lg:hidden">
 
                             <DialogSubmitProject />
@@ -114,7 +114,9 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                 <div className="flex gap-2 overflow-x-auto no-scrollbar ">
 
 
-                    <Badge className="flex-none bg-green-300 text-stone-800"  variant="default">Ongoing round</Badge>
+                    <Badge className="flex-none bg-green-100 text-stone-800 p-2"  variant="secondary">
+                        <div className="mx-1.5 relative flex h-3 w-3"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span className="inline-flex rounded-full h-3 w-3 bg-green-500"></span></div>Ongoing round
+                    </Badge>
 
                     {/* <Button variant="ghost">All projects</Button>
                     <Button variant="ghost">Infrastructure</Button>
@@ -186,16 +188,22 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                                         <TabsTrigger value="owner">Owner</TabsTrigger>
                                     </TabsList>
                                     <TabsContent value="about" className="h-[330px] overflow-scroll no-scrollbar">
-                                        <div className="flex items-center overflow-x-auto no-scrollbar ">
+                                        {/* <div className="flex items-center overflow-x-auto no-scrollbar ">
                                             {data.images.map((image, index) => (
                                                 <div key={index} className="mx-1">
                                                     <img className="max-w-[400px] h-[200px] rounded-lg" src={image} alt={data.title} />
                                                 </div>
                                             ))}
-                                        </div>
+                                        </div> */}
                                         <div className="mt-4 p-3">
                                             <h2 className="text-xl font-semibold">About</h2>
                                             <p className="text-lg pt-2">{data.about}</p>
+                                        </div>
+                                        <div className="mt-4 p-3">
+                                            <h2 className="text-xl font-semibold">Contact</h2>
+                                            <Link href={""}>
+                                                <div className="pt-3"><Image src={"/twitter.svg"} alt="Twitter" width={30} height={30}/></div>
+                                            </Link>
                                         </div>
                                     </TabsContent>
                                     <TabsContent value="contributers" className="h-[330px] overflow-scroll no-scrollbar">
