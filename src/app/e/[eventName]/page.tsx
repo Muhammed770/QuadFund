@@ -7,10 +7,8 @@ import Link from "next/link"
 import { DialogSubmitProject } from "@/components/DialogSubmitProject"
 import {
     Drawer,
-    DrawerClose,
     DrawerContent,
     DrawerDescription,
-    DrawerFooter,
     DrawerHeader,
     DrawerTitle,
     DrawerTrigger,
@@ -116,13 +114,13 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                 <div className="flex gap-2 overflow-x-auto no-scrollbar ">
 
 
-                    <Badge className="flex-none" variant="secondary">Ongoing round</Badge>
+                    <Badge className="flex-none bg-green-300 text-stone-800"  variant="default">Ongoing round</Badge>
 
-                    <Button variant="ghost">All projects</Button>
+                    {/* <Button variant="ghost">All projects</Button>
                     <Button variant="ghost">Infrastructure</Button>
                     <Button variant="ghost">DAO</Button>
                     <Button variant="ghost">Dev Tool</Button>
-                    <Button variant="ghost">DeFi</Button>
+                    <Button variant="ghost">DeFi</Button> */}
                 </div>
                 {cardData.map((data, index) => (
                     <div>
