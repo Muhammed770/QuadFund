@@ -88,3 +88,102 @@ export const getEventById = async (eventId: string) => {
         console.log("Error fetching data: ", err);
     }
 };
+
+export const getProjectsByEventId = async (eventId: string) => {
+
+    const query = `
+    query {
+        projects(where: {quadFundEvent_: {id: "${eventId}"}}) {
+          about
+          contributionsReceived
+          description
+          isWithdrawnFund
+          logo
+          matchingPrizePool
+          name
+          prizeWon
+          twitter
+          website
+          id
+          owner {
+            id
+          }
+        }
+      }
+  `;
+    try {
+
+        const data = await mainnetClient.query({
+            query: gql(query),
+        });
+        return data.data.projects;
+    } catch (err) {
+        console.log("Error fetching data: ", err);
+    }
+};
+
+export const getProjectById = async (projectId: string) => {
+
+    const query = `
+    query {
+        projects(where: {id: "${projectId}"}) {
+          about
+          contributionsReceived
+          description
+          isWithdrawnFund
+          logo
+          matchingPrizePool
+          name
+          prizeWon
+          twitter
+          website
+          id
+          owner {
+            id
+          }
+        }
+      }
+  `;
+    try {
+
+        const data = await mainnetClient.query({
+            query: gql(query),
+        });
+        return data.data.projects;
+    } catch (err) {
+        console.log("Error fetching data: ", err);
+    }
+};
+
+export const getProjectsByOwner = async (ownerAddress: string) => {
+
+    const query = `
+    query {
+        projects(where: {owner_: {id: "${ownerAddress}"}}) {
+          about
+          contributionsReceived
+          description
+          isWithdrawnFund
+          logo
+          matchingPrizePool
+          name
+          prizeWon
+          twitter
+          website
+          id
+          owner {
+            id
+          }
+        }
+      }
+  `;
+    try {
+
+        const data = await mainnetClient.query({
+            query: gql(query),
+        });
+        return data.data.projects;
+    } catch (err) {
+        console.log("Error fetching data: ", err);
+    }
+};
