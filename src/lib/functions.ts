@@ -62,11 +62,11 @@ export const getAllEvents = async () => {
     }
 };
 
-export const getEventById = async (id: string) => {
+export const getEventById = async (eventId: string) => {
 
     const query = `
     query {
-        quadFundEvents(where: {id: "${id}"}) {
+        quadFundEvents(where: {id: "${eventId}"}) {
           id
           owner
           name

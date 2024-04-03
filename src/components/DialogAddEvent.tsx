@@ -15,7 +15,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { CardContent, Card } from "@/components/ui/card"
 import { DatePickerDemo } from "./DatePicker"
 import { toast } from "sonner"
-import { ethers } from "ethers"
+import { BigNumber, ethers } from "ethers"
 import contractABI from "@/lib/abis/Factory.json"
 import { FACTORY_CONTRACT_ADDRESS } from "@/lib/const"
 import { useState } from "react"
@@ -23,11 +23,11 @@ import { useState } from "react"
 export function DialogAddEvent() {
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string | number | readonly string[] | undefined>("");
-    const [prizePool, setPrizePool] = useState<number>(0)
+    const [prizePool, setPrizePool] = useState<string>("0")
     const [endDate, setEndDate] = useState<number | undefined>();
     const [isFormSubmitting, setIsFormSubmitting] = useState<boolean>(false);
 
-   
+
     // const handleTitleChange =(e :React.ChangeEvent<HTMLInputElement>)=> {
     //     setTitle(e.target.value);
     // }
@@ -37,8 +37,8 @@ export function DialogAddEvent() {
             event.preventDefault();
             setIsFormSubmitting(true);
             // Connect to the Ethereum network using MetaMask or other injected providers
-            console.log("endDate",endDate);
-            
+            console.log("endDate", endDate);
+
             await window.ethereum.request({ method: 'eth_requestAccounts' });
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = provider.getSigner();
@@ -48,19 +48,21 @@ export function DialogAddEvent() {
             //Instantiate the contract
             const contract = new ethers.Contract(FACTORY_CONTRACT_ADDRESS, contractABI, signer);
             // Call the contract function to add a new event
-            const tx = await contract.createFundingContract(title, description, prizePool, endDate);
+            console.log("prizePool", prizePool)
+            console.log("prizePool in ETH", ethers.utils.parseEther(prizePool.toString()))
+            const tx = await contract.createFundingContract(title, description, 1, endDate, { value: 5 });
             //waiting for transaction to completew
             await tx.wait();
             console.log('Transaction successfull', tx.hash);
             setTitle("")
             setDescription("")
-            setPrizePool(0)
+            setPrizePool("0")
 
             console.log(tx.hash);
             toast.success("Event created successfully")
 
         } catch (error) {
-            console.log("Error occured while creating event",error);
+            console.log("Error occured while creating event", error);
             setIsFormSubmitting(false);
         }
     }
@@ -92,19 +94,19 @@ export function DialogAddEvent() {
                                     <div className="grid gap-6">
                                         <div className="space-y-2">
                                             <Label htmlFor="title">Title</Label>
-                                            <Input id="title" placeholder="Title" value={title} onChange={(e)=>{setTitle(e.target.value)}}/>
+                                            <Input id="title" placeholder="Title" value={title} onChange={(e) => { setTitle(e.target.value) }} />
                                         </div>
                                         <div className="space-y-2">
                                             <Label htmlFor="description">Description</Label>
                                             <Textarea className="min-h-[100px]" id="description" placeholder="Description" value={description} onChange={(e) => { setDescription(e.target.value) }} />
                                         </div>
                                         <div className="space-y-2">
-                                            <Label htmlFor="prize">Prize Pool ($)</Label>
-                                            <Input id="prize" type="number" placeholder="Prize pool" value={prizePool} onChange={(e) => { setPrizePool(parseInt(e.target.value)) }} />
+                                            <Label htmlFor="prize">Prize Pool (ETH)</Label>
+                                            <Input id="prize" type="text" placeholder="Prize pool" value={prizePool} onChange={(e) => { setPrizePool(e.target.value) }} />
                                         </div>
                                         <div className="space-y-2">
                                             <Label htmlFor="date">End Date </Label>
-                                            <DatePickerDemo onDateSelect={handleDateSelect}/>
+                                            <DatePickerDemo onDateSelect={handleDateSelect} />
                                         </div>
                                     </div>
                                 </div>
