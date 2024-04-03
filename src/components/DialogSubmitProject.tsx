@@ -1,3 +1,4 @@
+"use client"
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
@@ -11,8 +12,16 @@ import {
 import { ListOfProjects } from "./list-of-projects"
 import { ScrollArea } from "./ui/scroll-area"
 import { DialogAddProject } from "./DialogAddProject"
+import { toast } from "sonner"
 
 export function DialogSubmitProject() {
+
+    function handleSubmit() {
+        //Add to contract
+
+        toast.success("Project added successfully")
+    }
+
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -31,7 +40,7 @@ export function DialogSubmitProject() {
                     <ListOfProjects />
                 </ScrollArea>
                 <DialogFooter>
-                    <Button type="submit">Submit</Button>
+                    <Button onClick={handleSubmit}>Submit</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

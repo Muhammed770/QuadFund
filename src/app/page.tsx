@@ -10,6 +10,9 @@ import {
 import Link from 'next/link';
 import {DialogAddEvent} from "@/components/DialogAddEvent"
 import { useAccount } from 'wagmi'
+import { Button } from "@/components/ui/button"
+import { Award } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 
 export default function Home() {
 
@@ -56,7 +59,9 @@ export default function Home() {
             Events
           </text>
           <div className="">
-            {/* <Button size="lg" >Create Event</Button> */}
+            <Link href="/grants">
+              <Button className="bg-white text-black border-2 border-black hover:bg-gray-50 mr-3">Explore Grants<Award /></Button>
+            </Link>
             {account.address && <DialogAddEvent />}
           </div>
         </div>
@@ -73,8 +78,8 @@ export default function Home() {
                     <CardDescription>{event.description}</CardDescription>
                     <div className="md:py-6 md:flex ">
                       <div className="text-sm bg-green-100 p-2 rounded-lg w-fit mr-2 flex items-center">
-                      <div className="mx-1.5 relative flex h-3 w-3"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span className="inline-flex rounded-full h-3 w-3 bg-green-500"></span></div>open</div>
-                      <div className="text-sm bg-gray-100 p-2 rounded-lg w-fit">12th June 2023</div>
+                      <div className="mx-1.5 relative flex h-3 w-3"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span className="inline-flex rounded-full h-3 w-3 bg-green-500"></span></div>Open</div>
+                      <div className="text-sm bg-gray-100 p-2 rounded-lg w-fit flex items-center"><span className="mr-1"><Calendar size={18}/></span>12th June 2023</div>
                     </div>
                   </CardHeader>
                   <CardContent className="flex justify-center items-center">

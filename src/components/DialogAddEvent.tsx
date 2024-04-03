@@ -14,11 +14,12 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { CardContent, Card } from "@/components/ui/card"
 import { DatePickerDemo } from "./DatePicker"
-
+import { toast } from "sonner"
 import { ethers } from "ethers"
 import contractABI from "@/lib/abis/Factory.json"
 import { FACTORY_CONTRACT_ADDRESS } from "@/lib/const"
 import { useState } from "react"
+
 export function DialogAddEvent() {
     const [title, setTitle] = useState<string>("");
     const [description,setDiscription] = useState<string>("");
@@ -36,7 +37,7 @@ export function DialogAddEvent() {
             //Instantiate the contract
             const contract = new ethers.Contract(FACTORY_CONTRACT_ADDRESS, contractABI, signer);
 
-
+            toast.success("Event created successfully")
 
         } catch (error) {
 
@@ -87,7 +88,7 @@ export function DialogAddEvent() {
                 </DialogFooter> */}
                 <DialogFooter>
                     <Button variant="outline">Cancel</Button>
-                    <Button>Submit</Button>
+                    <Button onClick={handleSubmit}>Submit</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

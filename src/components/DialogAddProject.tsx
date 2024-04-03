@@ -1,3 +1,4 @@
+"use client"
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
@@ -13,7 +14,20 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { CardContent, CardFooter, Card } from "@/components/ui/card"
+import { Checkbox } from "@/components/ui/checkbox"
+import { useState } from "react"
+import { toast } from "sonner"
+
 export function DialogAddProject() {
+
+    const [isInterestedInVC, setIsInterestedInVC] = useState(false);
+
+    function handleSubmit() {
+        //Add to contract
+
+        toast.success("Project created successfully")
+    }
+
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -61,6 +75,20 @@ export function DialogAddProject() {
                                         <Label htmlFor="link">Contact Link</Label>
                                         <Input id="ContactLink" placeholder="Twitter Link" />
                                     </div>
+                                    <div className="space-y-2">
+                                        <input type="checkbox" id="needsVc" onChange={(e)=>{setIsInterestedInVC(e.target.checked)}}/>
+                                        <label
+                                          htmlFor="needsVc"
+                                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ml-1"
+                                        >
+                                          I'm interested in connecting with potential investors (VCs).
+                                          <span className="tooltiptext text-xs text-gray-500 font-light pl-2">We will send your projects to potential investors for secure funding and mentorship.Costs $10.</span>
+                                        </label>
+                                    </div>
+                                    {isInterestedInVC && <div className="space-y-2">
+                                        <Label htmlFor="email">Email</Label>
+                                        <Input id="email" placeholder="Email address" />
+                                    </div>}
                                 </div>
                             </div>
                         </CardContent>
@@ -71,7 +99,7 @@ export function DialogAddProject() {
                 </DialogFooter> */}
                 <DialogFooter>
                     <Button variant="outline">Cancel</Button>
-                    <Button>Submit</Button>
+                    <Button onClick={handleSubmit}>Submit</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
