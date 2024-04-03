@@ -13,7 +13,33 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { CardContent, Card } from "@/components/ui/card"
+import { ethers } from "ethers"
+import contractABI from "@/lib/abis/Factory.json"
+import { FACTORY_CONTRACT_ADDRESS } from "@/lib/const"
+import { useState } from "react"
 export function DialogAddEvent() {
+    const [title, setTitle] = useState<string>("");
+    const [description,setDiscription] = useState<string>("");
+    
+
+    const handleSubmit = async () => {
+        try {
+            // Connect to the Ethereum network using MetaMask or other injected providers
+            await window.ethereum.request({ method: 'eth_requestAccounts' });
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
+
+            
+
+            //Instantiate the contract
+            const contract = new ethers.Contract(FACTORY_CONTRACT_ADDRESS, contractABI, signer);
+
+
+
+        } catch (error) {
+
+        }
+    }
     return (
         <Dialog>
             <DialogTrigger asChild>
