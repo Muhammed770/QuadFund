@@ -38,7 +38,7 @@ export const CustomConnectButton = () => {
             {(() => {
               if (!connected) {
                 return (
-                  <button onClick={openConnectModal} type="button" className='bg-black text-sm text-white p-2 rounded-lg bg-card text-card-foreground hover:shadow-lg transition-shadow duration-200 ease-in-out cursor-pointer'>
+                  <button onClick={openConnectModal} type="button" className=' text-sm text-white p-2 rounded-lg bg-black text-card-foreground hover:shadow-lg transition-shadow duration-200 ease-in-out cursor-pointer'>
                     Connect Wallet
                   </button>
                 );
