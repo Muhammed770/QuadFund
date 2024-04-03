@@ -49,13 +49,17 @@ export function DialogAddProject() {
                                         <Label>Logo</Label>
                                         <Input accept="image/*" id="logo" type="file" />
                                     </div>
-                                    <div className="space-y-2">
+                                    {/* <div className="space-y-2">
                                         <Label>Pictures</Label>
                                         <Input accept="image/*" id="pictures" multiple type="file" />
+                                    </div> */}
+                                    <div className="space-y-2">
+                                        <Label htmlFor="link">Project Link</Label>
+                                        <Input id="link" placeholder="Link of your project" />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label htmlFor="link">Link</Label>
-                                        <Input id="link" placeholder="Link of your project" />
+                                        <Label htmlFor="link">Contact Link</Label>
+                                        <Input id="ContactLink" placeholder="Twitter Link" />
                                     </div>
                                 </div>
                             </div>

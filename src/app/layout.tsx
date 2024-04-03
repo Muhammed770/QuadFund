@@ -46,6 +46,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head><title>QuadFund</title></head>
       <body className={inter.className}>
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>

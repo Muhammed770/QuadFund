@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button"
+"use client"
 import {
   Card,
   CardContent,
@@ -9,30 +9,43 @@ import {
 } from "@/components/ui/card"
 import Link from 'next/link';
 import {DialogAddEvent} from "@/components/DialogAddEvent"
+import { useAccount } from 'wagmi'
+
 export default function Home() {
 
   const events = [
     {
       title: "EthIndia",
       description: "Indias largest Ethereum hackathon rkrmvrvmem krmlkrmv rklvlrmlqvmrlvrm",
-      content: "$10000"
+      content: "10000"
     },
     {
       title: "HackFS",
       description: "Description 2",
-      content: "$20000"
+      content: "20000"
     },
     {
       title: "Hack@Arch",
       description: "Description 3",
-      content: "$3000"
+      content: "3000"
     },
     {
       title: "Proxy'23",
       description: "Description 4",
-      content: "$1000"
+      content: "1000"
     }
   ]
+
+  function formatNumberToK(number:string) {
+    const num = parseInt(number)
+    if (num < 1000) {
+      return number
+    }
+    const formattedNumber = (num / 1000);
+    return formattedNumber + 'k';
+  }
+
+  const account = useAccount()
 
   return (
     <main className="flex-col">
@@ -44,7 +57,7 @@ export default function Home() {
           </text>
           <div className="">
             {/* <Button size="lg" >Create Event</Button> */}
-            <DialogAddEvent />
+            {account.address && <DialogAddEvent />}
           </div>
         </div>
 
@@ -59,12 +72,13 @@ export default function Home() {
                     <CardTitle>{event.title}</CardTitle>
                     <CardDescription>{event.description}</CardDescription>
                     <div className="md:py-6 md:flex ">
-                      <div className="text-sm bg-gray-100 p-2 rounded-lg w-fit mr-2">open</div>
+                      <div className="text-sm bg-green-100 p-2 rounded-lg w-fit mr-2 flex items-center">
+                      <div className="mx-1.5 relative flex h-3 w-3"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span className="inline-flex rounded-full h-3 w-3 bg-green-500"></span></div>open</div>
                       <div className="text-sm bg-gray-100 p-2 rounded-lg w-fit">12th June 2023</div>
                     </div>
                   </CardHeader>
                   <CardContent className="flex justify-center items-center">
-                    <p className="font-bold text-lg">{event.content}</p>
+                    <p className="font-bold text-lg">${formatNumberToK(event.content)}</p>
                   </CardContent>
                 </Card>
               </Link>

@@ -13,6 +13,8 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { CardContent, Card } from "@/components/ui/card"
+import { DatePickerDemo } from "./DatePicker"
+
 import { ethers } from "ethers"
 import contractABI from "@/lib/abis/Factory.json"
 import { FACTORY_CONTRACT_ADDRESS } from "@/lib/const"
@@ -43,7 +45,7 @@ export function DialogAddEvent() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant={"secondary"} className="mt-4">Add new event +</Button>
+                <Button className="mt-4">Add new event +</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
@@ -68,20 +70,12 @@ export function DialogAddEvent() {
                                         <Textarea className="min-h-[100px]" id="description" placeholder="Description" />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label htmlFor="about">About</Label>
-                                        <Textarea className="min-h-[100px]" id="about" placeholder="About you project" />
+                                        <Label htmlFor="prize">Prize Pool ($)</Label>
+                                        <Input id="prize" placeholder="Prize pool" />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label>Logo</Label>
-                                        <Input accept="image/*" id="logo" type="file" />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label>Pictures</Label>
-                                        <Input accept="image/*" id="pictures" multiple type="file" />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="link">Link</Label>
-                                        <Input id="link" placeholder="Link of your project" />
+                                        <Label htmlFor="date">End Date </Label>
+                                        <DatePickerDemo />
                                     </div>
                                 </div>
                             </div>

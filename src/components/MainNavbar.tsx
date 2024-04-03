@@ -2,6 +2,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { CustomConnectButton } from "./CustomConnectBtn";
 
 export function MainNavbar() {
   return (
@@ -12,8 +13,11 @@ export function MainNavbar() {
       </Link>
       <div className="ml-auto flex items-center">
         {/* <Button size="sm" variant="outline">Connect Wallet</Button> */}
-        <ConnectButton />
+        {/* <ConnectButton chainStatus="none" showBalance={false}/> */}
+        <CustomConnectButton />
       </div>
+              
+      
     </header>
   )
 }
