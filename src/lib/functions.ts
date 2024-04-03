@@ -154,3 +154,36 @@ export const getProjectById = async (projectId: string) => {
         console.log("Error fetching data: ", err);
     }
 };
+
+export const getProjectsByOwner = async (ownerAddress: string) => {
+
+    const query = `
+    query {
+        projects(where: {owner_: {id: "${ownerAddress}"}}) {
+          about
+          contributionsReceived
+          description
+          isWithdrawnFund
+          logo
+          matchingPrizePool
+          name
+          prizeWon
+          twitter
+          website
+          id
+          owner {
+            id
+          }
+        }
+      }
+  `;
+    try {
+
+        const data = await mainnetClient.query({
+            query: gql(query),
+        });
+        return data.data.projects;
+    } catch (err) {
+        console.log("Error fetching data: ", err);
+    }
+};
