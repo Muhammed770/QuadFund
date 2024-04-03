@@ -1,0 +1,875 @@
+[
+    {
+        "inputs": [],
+        "name": "InvalidInitialization",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "NotInitializing",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "version",
+                "type": "uint64"
+            }
+        ],
+        "name": "Initialized",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "projectId",
+                "type": "uint256"
+            }
+        ],
+        "name": "contributed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "projectId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "date",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "name": "fundsWithdrawn",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "projectName",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "projectDesc",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "projectLogo",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "projectId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "about",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "website",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "twitter",
+                "type": "string"
+            }
+        ],
+        "name": "projectListed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "projectId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "prizeWon",
+                "type": "uint256"
+            }
+        ],
+        "name": "resultPublished",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "projectId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "matchingPrizePool",
+                "type": "uint256"
+            }
+        ],
+        "name": "updateMatchingPool",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "contribute",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "_projectName",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_projectDesc",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_projectLogo",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_projectAbout",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_projectWebsite",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_projectTwitter",
+                "type": "string"
+            }
+        ],
+        "name": "creatNewProject",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "etherBalance",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "eventDesc",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "eventEndTime",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "eventName",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "eventOwner",
+        "outputs": [
+            {
+                "internalType": "address payable",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getProjectById",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "projectId",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "projectOwner",
+                        "type": "address"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "string",
+                                "name": "projectName",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "about",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "projectDesc",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "projectLogo",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "website",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "twitter",
+                                "type": "string"
+                            }
+                        ],
+                        "internalType": "struct FundingContract.ProjectDetails",
+                        "name": "details",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isWithdrawnFund",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "amountWon",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "matchedPrizePool",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "contributionsReceived",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "votingPower",
+                        "type": "uint256"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "userAddress",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "amount",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "projectId",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct FundingContract.Contribution[]",
+                        "name": "contributions",
+                        "type": "tuple[]"
+                    }
+                ],
+                "internalType": "struct FundingContract.Project",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_userAddress",
+                "type": "address"
+            }
+        ],
+        "name": "getUserByAddress",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "userAddress",
+                        "type": "address"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "projectId",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "projectOwner",
+                                "type": "address"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "string",
+                                        "name": "projectName",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "internalType": "string",
+                                        "name": "about",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "internalType": "string",
+                                        "name": "projectDesc",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "internalType": "string",
+                                        "name": "projectLogo",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "internalType": "string",
+                                        "name": "website",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "internalType": "string",
+                                        "name": "twitter",
+                                        "type": "string"
+                                    }
+                                ],
+                                "internalType": "struct FundingContract.ProjectDetails",
+                                "name": "details",
+                                "type": "tuple"
+                            },
+                            {
+                                "internalType": "bool",
+                                "name": "isWithdrawnFund",
+                                "type": "bool"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "amountWon",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "matchedPrizePool",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "contributionsReceived",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "votingPower",
+                                "type": "uint256"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "address",
+                                        "name": "userAddress",
+                                        "type": "address"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "amount",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "projectId",
+                                        "type": "uint256"
+                                    }
+                                ],
+                                "internalType": "struct FundingContract.Contribution[]",
+                                "name": "contributions",
+                                "type": "tuple[]"
+                            }
+                        ],
+                        "internalType": "struct FundingContract.Project",
+                        "name": "project",
+                        "type": "tuple"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "userAddress",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "amount",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "projectId",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct FundingContract.Contribution[]",
+                        "name": "contributionsGave",
+                        "type": "tuple[]"
+                    }
+                ],
+                "internalType": "struct FundingContract.User",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "_eventName",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_eventDesc",
+                "type": "string"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_prizePool",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_duration",
+                "type": "uint256"
+            }
+        ],
+        "name": "initialize",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "prizePool",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "projects",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "projectId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "projectOwner",
+                "type": "address"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "string",
+                        "name": "projectName",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "about",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "projectDesc",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "projectLogo",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "website",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "twitter",
+                        "type": "string"
+                    }
+                ],
+                "internalType": "struct FundingContract.ProjectDetails",
+                "name": "details",
+                "type": "tuple"
+            },
+            {
+                "internalType": "bool",
+                "name": "isWithdrawnFund",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountWon",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "matchedPrizePool",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "contributionsReceived",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "votingPower",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "publishResult",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "startTime",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "totalAmountContributed",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "userExists",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "users",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "userAddress",
+                "type": "address"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "projectId",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "projectOwner",
+                        "type": "address"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "string",
+                                "name": "projectName",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "about",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "projectDesc",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "projectLogo",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "website",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "twitter",
+                                "type": "string"
+                            }
+                        ],
+                        "internalType": "struct FundingContract.ProjectDetails",
+                        "name": "details",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isWithdrawnFund",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "amountWon",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "matchedPrizePool",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "contributionsReceived",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "votingPower",
+                        "type": "uint256"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "userAddress",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "amount",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "projectId",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct FundingContract.Contribution[]",
+                        "name": "contributions",
+                        "type": "tuple[]"
+                    }
+                ],
+                "internalType": "struct FundingContract.Project",
+                "name": "project",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "name": "withdrawFunds",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "stateMutability": "payable",
+        "type": "receive"
+    }
+]
