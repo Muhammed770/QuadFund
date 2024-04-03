@@ -1,3 +1,4 @@
+"use client"
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -17,6 +18,9 @@ import { useState } from "react";
 import { ethers } from "ethers";
 import contractABI from "@/lib/abis/Factory.json";
 import { FACTORY_CONTRACT_ADDRESS } from "@/lib/const";
+
+import { Checkbox } from "@/components/ui/checkbox"
+import { toast } from "sonner"
 
 export function DialogAddProject() {
     const [title, setTitle] = useState<string>("");
@@ -56,7 +60,11 @@ export function DialogAddProject() {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         await createNewProject();
+        toast.success("Project created successfully")
     }
+
+
+    const [isInterestedInVC, setIsInterestedInVC] = useState(false);
 
     return (
         <Dialog>
@@ -89,6 +97,14 @@ export function DialogAddProject() {
                                             <Textarea className="min-h-[100px]" id="about" placeholder="About your project" value={about} onChange={(e) => setAbout(e.target.value)} />
                                         </div>
                                         <div className="space-y-2">
+                                            <Label>Logo</Label>
+                                            <Input accept="image/*" id="logo" type="file" />
+                                        </div>
+                                        {/* <div className="space-y-2">
+                                            <Label>Pictures</Label>
+                                            <Input accept="image/*" id="pictures" multiple type="file" />
+                                        </div> */}
+                                        <div className="space-y-2">
                                             <Label htmlFor="link">Project Link</Label>
                                             <Input id="projectLink" placeholder="Link of your project" value={projectLink} onChange={(e) => setProjectLink(e.target.value)} />
                                         </div>
@@ -96,6 +112,20 @@ export function DialogAddProject() {
                                             <Label htmlFor="link">Contact Link</Label>
                                             <Input id="contactLink" placeholder="Twitter Link" value={contactLink} onChange={(e) => setContactLink(e.target.value)} />
                                         </div>
+                                        <div className="space-y-2">
+                                            <input type="checkbox" id="needsVc" onChange={(e)=>{setIsInterestedInVC(e.target.checked)}}/>
+                                            <label
+                                              htmlFor="needsVc"
+                                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ml-1"
+                                            >
+                                              I'm interested in connecting with potential investors (VCs).
+                                              <span className="tooltiptext text-xs text-gray-500 font-light pl-2">We will send your projects to potential investors for secure funding and mentorship.Costs $10.</span>
+                                            </label>
+                                        </div>
+                                        {isInterestedInVC && <div className="space-y-2">
+                                            <Label htmlFor="email">Email</Label>
+                                            <Input id="email" placeholder="Email address" />
+                                        </div>}
                                     </div>
                                 </div>
                             </CardContent>

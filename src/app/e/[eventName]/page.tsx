@@ -16,7 +16,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { HeartHandshake } from 'lucide-react';
 import { ExternalLinkIcon } from "@/components/externalLinkIcon"
-
+import DialogAmount from "@/components/DialogAmount"
 
 const EventPage = ({ params }: { params: { eventName: string } }) => {
     const cardData = [
@@ -177,9 +177,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                                             <span>View</span>
                                         </Link>
                                     </div>
-                                    <div className="flex justify-center items-center">
-                                        <Button size="lg" className="text-xl"> <HeartHandshake className="mx-2" />Contribute</Button>
-                                    </div>
+                                    <DialogAmount/>
                                 </DrawerHeader>
                                 <Tabs defaultValue="about" className="md:px-12 px-4 pb-4">
                                     <TabsList>

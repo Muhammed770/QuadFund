@@ -3,7 +3,7 @@ import { DialogAddProject } from "@/components/DialogAddProject";
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar"
 import { Card, CardContent } from "@/components/ui/card"
 import Image from "next/image";
-import { useAccount } from 'wagmi'
+// import { useAccount } from 'wagmi'
 import WalletAddress from '@/components/WalletAddress';
 
 export default function ProfilePage() {

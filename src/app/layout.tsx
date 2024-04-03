@@ -23,6 +23,7 @@ import {
   QueryClientProvider,
   QueryClient,
 } from "@tanstack/react-query";
+import { Toaster } from "@/components/ui/sonner"
 
 //  const metadata: Metadata = {
 //   title: "QuadFund",
@@ -54,6 +55,7 @@ export default function RootLayout({
           <RainbowKitProvider>
             <MainNavbar/>
               {children}
+            <Toaster />
           </RainbowKitProvider>
         </QueryClientProvider>
       </WagmiProvider>

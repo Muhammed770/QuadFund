@@ -14,11 +14,12 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { CardContent, Card } from "@/components/ui/card"
 import { DatePickerDemo } from "./DatePicker"
-
+import { toast } from "sonner"
 import { ethers } from "ethers"
 import contractABI from "@/lib/abis/Factory.json"
 import { FACTORY_CONTRACT_ADDRESS } from "@/lib/const"
 import { useState } from "react"
+
 export function DialogAddEvent() {
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string | number | readonly string[] | undefined>("");
@@ -26,10 +27,18 @@ export function DialogAddEvent() {
     const [endDate, setEndDate] = useState<number | undefined>();
     const [isFormSubmitting, setIsFormSubmitting] = useState<boolean>(false);
 
-    const createEvent = async () => {
+   
+    // const handleTitleChange =(e :React.ChangeEvent<HTMLInputElement>)=> {
+    //     setTitle(e.target.value);
+    // }
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         try {
-
-
+            event.preventDefault();
+            setIsFormSubmitting(true);
+            // Connect to the Ethereum network using MetaMask or other injected providers
+            console.log("endDate",endDate);
+            
             await window.ethereum.request({ method: 'eth_requestAccounts' });
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = provider.getSigner();
@@ -46,30 +55,12 @@ export function DialogAddEvent() {
             setTitle("")
             setDescription("")
             setPrizePool(0)
-            
-            return tx.hash;
+
+            console.log(tx.hash);
+            toast.success("Event created successfully")
+
         } catch (error) {
             console.log("Error occured while creating event",error);
-            
-        }
-
-    }
-    // const handleTitleChange =(e :React.ChangeEvent<HTMLInputElement>)=> {
-    //     setTitle(e.target.value);
-    // }
-
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        try {
-            event.preventDefault();
-            setIsFormSubmitting(true);
-            // Connect to the Ethereum network using MetaMask or other injected providers
-            console.log("endDate",endDate);
-            
-            const txHash =  await createEvent();
-            console.log(txHash);
-            
-
-        } catch (error) {
             setIsFormSubmitting(false);
         }
     }
