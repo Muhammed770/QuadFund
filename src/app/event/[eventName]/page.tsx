@@ -1,3 +1,4 @@
+"use client"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { AvatarImage, Avatar } from "@/components/ui/avatar"
@@ -17,8 +18,35 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { HeartHandshake } from 'lucide-react';
 import { ExternalLinkIcon } from "@/components/externalLinkIcon"
 import DialogAmount from "@/components/DialogAmount"
+import { getEventById } from "@/lib/functions"
+import { useEffect,useState } from "react"
+import { useSearchParams } from "next/navigation"
 
 const EventPage = ({ params }: { params: { eventName: string } }) => {
+
+    const queries = useSearchParams();
+    const [isLoading, setIsLoading] = useState(true); // Loading state
+    const [eventId, setEventId] = useState(""); // Store fetched id
+   
+    const id = queries.get('id');
+    useEffect(() => {
+        const fetchEvent = async () => {
+            try {
+                
+                setIsLoading(false); // Set loading to false after fetching
+                if (typeof id === 'string') {
+                    setEventId(id);
+                    const event = await getEventById(id);
+                    console.log('Event:', event);
+                }
+                console.log('Event ID:', id);
+            } catch (error) {
+                console.error('Error fetching event:', error);
+            }
+        };
+        fetchEvent();
+    }, []);
+
     const cardData = [
         {
             title: "Project A",
@@ -92,7 +120,9 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
         { username: "@shiyas", amount: "$2.87k", src: "https://ui.shadcn.com/avatars/02.png/?height=24&width=24" },
         { username: "@muhammed770", amount: "$1.57k", src: "https://ui.shadcn.com/avatars/04.png/?height=24&width=24" }
     ];
-
+    // if (!id || !name) {
+    //     return <div>Loading...</div>;
+    // }
     return (
         <div className="flex flex-col lg:flex-row gap-8 md:p-8 p-4">
             <div className="flex-1 space-y-6">
@@ -114,7 +144,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                 <div className="flex gap-2 overflow-x-auto no-scrollbar ">
 
 
-                    <Badge className="flex-none bg-green-100 text-stone-800 p-2"  variant="secondary">
+                    <Badge className="flex-none bg-green-100 text-stone-800 p-2" variant="secondary">
                         <div className="mx-1.5 relative flex h-3 w-3"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span className="inline-flex rounded-full h-3 w-3 bg-green-500"></span></div>Ongoing round
                     </Badge>
 
@@ -177,7 +207,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                                             <span>View</span>
                                         </Link>
                                     </div>
-                                    <DialogAmount/>
+                                    <DialogAmount />
                                 </DrawerHeader>
                                 <Tabs defaultValue="about" className="md:px-12 px-4 pb-4">
                                     <TabsList>
@@ -200,7 +230,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                                         <div className="mt-4 p-3">
                                             <h2 className="text-xl font-semibold">Contact</h2>
                                             <Link href={""}>
-                                                <div className="pt-3"><Image src={"/twitter.svg"} alt="Twitter" width={30} height={30}/></div>
+                                                <div className="pt-3"><Image src={"/twitter.svg"} alt="Twitter" width={30} height={30} /></div>
                                             </Link>
                                         </div>
                                     </TabsContent>

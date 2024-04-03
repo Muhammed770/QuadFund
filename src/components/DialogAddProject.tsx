@@ -16,8 +16,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { CardContent, CardFooter, Card } from "@/components/ui/card";
 import { useState } from "react";
 import { ethers } from "ethers";
-import contractABI from "@/lib/abis/Factory.json";
-import { FACTORY_CONTRACT_ADDRESS } from "@/lib/const";
+import contractABI from "@/lib/abis/Contract.json";
+// import { FACTORY_CONTRACT_ADDRESS } from "@/lib/const";
 
 import { Checkbox } from "@/components/ui/checkbox"
 import { toast } from "sonner"
@@ -28,19 +28,23 @@ export function DialogAddProject() {
     const [about, setAbout] = useState<string>("");
     const [projectLink, setProjectLink] = useState<string>("");
     const [contactLink, setContactLink] = useState<string>("");
+    const [isInterestedInVC, setIsInterestedInVC] = useState(false);
 
-    const createNewProject = async () => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         try {
+            
+            event.preventDefault();
             // Connect to Ethereum provider
+
             await window.ethereum.request({ method: 'eth_requestAccounts' });
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = provider.getSigner();
 
             // Instantiate the contract
-            const contract = new ethers.Contract(FACTORY_CONTRACT_ADDRESS, contractABI, signer);
+            const contract = new ethers.Contract("0x2dc56b6b7a483298971a22463d042f9ae95fb969", contractABI, signer);
 
             // Call the contract function to create a new project
-            const tx = await contract.createNewProject(title, description, about, projectLink, contactLink);
+            const tx = await contract.creatNewProject(title, description, "logoioe link", about, projectLink, contactLink);
 
             // Wait for transaction to complete
             await tx.wait();
@@ -52,19 +56,15 @@ export function DialogAddProject() {
             setAbout("");
             setProjectLink("");
             setContactLink("");
+            toast.success("Project created successfully")
         } catch (error) {
-            console.error('Error occurred while creating project:', error);
+            console.log("Error occured while creating project", error);
+            toast.error("Error occured while creating project")
         }
     }
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        await createNewProject();
-        toast.success("Project created successfully")
-    }
 
-
-    const [isInterestedInVC, setIsInterestedInVC] = useState(false);
+    
 
     return (
         <Dialog>

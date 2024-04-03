@@ -15,7 +15,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { CardContent, Card } from "@/components/ui/card"
 import { DatePickerDemo } from "./DatePicker"
 import { toast } from "sonner"
-import { BigNumber, ethers } from "ethers"
+import {  ethers } from "ethers"
 import contractABI from "@/lib/abis/Factory.json"
 import { FACTORY_CONTRACT_ADDRESS } from "@/lib/const"
 import { useState } from "react"
@@ -49,8 +49,9 @@ export function DialogAddEvent() {
             const contract = new ethers.Contract(FACTORY_CONTRACT_ADDRESS, contractABI, signer);
             // Call the contract function to add a new event
             console.log("prizePool", prizePool)
-            console.log("prizePool in ETH", ethers.utils.parseEther(prizePool.toString()))
-            const tx = await contract.createFundingContract(title, description, 1, endDate, { value: 5 });
+            // console.log("prizePool in ETH", ethers.utils.parseEther(prizePool.toString()))
+            const amountinwei = parseFloat(prizePool) * 10 ** 18;
+            const tx = await contract.createFundingContract(title, description, amountinwei, endDate, { value: amountinwei+100000 });
             //waiting for transaction to completew
             await tx.wait();
             console.log('Transaction successfull', tx.hash);
