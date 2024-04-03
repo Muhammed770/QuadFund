@@ -26,10 +26,18 @@ export function DialogAddEvent() {
     const [endDate, setEndDate] = useState<number | undefined>();
     const [isFormSubmitting, setIsFormSubmitting] = useState<boolean>(false);
 
-    const createEvent = async () => {
+   
+    // const handleTitleChange =(e :React.ChangeEvent<HTMLInputElement>)=> {
+    //     setTitle(e.target.value);
+    // }
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         try {
-
-
+            event.preventDefault();
+            setIsFormSubmitting(true);
+            // Connect to the Ethereum network using MetaMask or other injected providers
+            console.log("endDate",endDate);
+            
             await window.ethereum.request({ method: 'eth_requestAccounts' });
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = provider.getSigner();
@@ -46,30 +54,12 @@ export function DialogAddEvent() {
             setTitle("")
             setDescription("")
             setPrizePool(0)
+
+            console.log(tx.hash);
             
-            return tx.hash;
+
         } catch (error) {
             console.log("Error occured while creating event",error);
-            
-        }
-
-    }
-    // const handleTitleChange =(e :React.ChangeEvent<HTMLInputElement>)=> {
-    //     setTitle(e.target.value);
-    // }
-
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        try {
-            event.preventDefault();
-            setIsFormSubmitting(true);
-            // Connect to the Ethereum network using MetaMask or other injected providers
-            console.log("endDate",endDate);
-            
-            const txHash =  await createEvent();
-            console.log(txHash);
-            
-
-        } catch (error) {
             setIsFormSubmitting(false);
         }
     }
