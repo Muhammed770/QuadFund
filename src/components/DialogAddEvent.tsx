@@ -21,74 +21,114 @@ import { FACTORY_CONTRACT_ADDRESS } from "@/lib/const"
 import { useState } from "react"
 export function DialogAddEvent() {
     const [title, setTitle] = useState<string>("");
-    const [description,setDiscription] = useState<string>("");
-    
+    const [description, setDescription] = useState<string | number | readonly string[] | undefined>("");
+    const [prizePool, setPrizePool] = useState<number>(0)
+    const [endDate, setEndDate] = useState<number | undefined>();
+    const [isFormSubmitting, setIsFormSubmitting] = useState<boolean>(false);
 
-    const handleSubmit = async () => {
+    const createEvent = async () => {
         try {
-            // Connect to the Ethereum network using MetaMask or other injected providers
+
+
             await window.ethereum.request({ method: 'eth_requestAccounts' });
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = provider.getSigner();
 
-            
+
 
             //Instantiate the contract
             const contract = new ethers.Contract(FACTORY_CONTRACT_ADDRESS, contractABI, signer);
+            // Call the contract function to add a new event
+            const tx = await contract.createFundingContract(title, description, prizePool, endDate);
+            //waiting for transaction to completew
+            await tx.wait();
+            console.log('Transaction successfull', tx.hash);
+            setTitle("")
+            setDescription("")
+            setPrizePool(0)
+            
+            return tx.hash;
+        } catch (error) {
+            console.log("Error occured while creating event",error);
+            
+        }
 
+    }
+    // const handleTitleChange =(e :React.ChangeEvent<HTMLInputElement>)=> {
+    //     setTitle(e.target.value);
+    // }
 
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        try {
+            event.preventDefault();
+            setIsFormSubmitting(true);
+            // Connect to the Ethereum network using MetaMask or other injected providers
+            console.log("endDate",endDate);
+            
+            const txHash =  await createEvent();
+            console.log(txHash);
+            
 
         } catch (error) {
-
+            setIsFormSubmitting(false);
         }
     }
+
+    const handleDateSelect = (date: number) => {
+        setEndDate(date); // Update the endDate state
+    };
+
     return (
         <Dialog>
             <DialogTrigger asChild>
                 <Button className="mt-4">Add new event +</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                    <DialogTitle>Event Information</DialogTitle>
-                    <DialogDescription>
-                        Add details about your project.
-                    </DialogDescription>
-                </DialogHeader>
-                {/* <Button variant={"secondary"}>Create new project +</Button> */}
-                <ScrollArea className="h-80">
+                <form onSubmit={handleSubmit}>
 
-                    <Card className="w-full max-w-3xl">
-                        <CardContent className="p-6">
-                            <div className="grid gap-6">
+                    <DialogHeader>
+                        <DialogTitle>Event Information</DialogTitle>
+                        <DialogDescription>
+                            Add details about your project.
+                        </DialogDescription>
+                    </DialogHeader>
+                    {/* <Button variant={"secondary"}>Create new project +</Button> */}
+                    <ScrollArea className="h-80">
+
+                        <Card className="w-full max-w-3xl">
+                            <CardContent className="p-6">
                                 <div className="grid gap-6">
-                                    <div className="space-y-2">
-                                        <Label htmlFor="title">Title</Label>
-                                        <Input id="title" placeholder="Title" />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="description">Description</Label>
-                                        <Textarea className="min-h-[100px]" id="description" placeholder="Description" />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="prize">Prize Pool ($)</Label>
-                                        <Input id="prize" placeholder="Prize pool" />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="date">End Date </Label>
-                                        <DatePickerDemo />
+                                    <div className="grid gap-6">
+                                        <div className="space-y-2">
+                                            <Label htmlFor="title">Title</Label>
+                                            <Input id="title" placeholder="Title" value={title} onChange={(e)=>{setTitle(e.target.value)}}/>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="description">Description</Label>
+                                            <Textarea className="min-h-[100px]" id="description" placeholder="Description" value={description} onChange={(e) => { setDescription(e.target.value) }} />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="prize">Prize Pool ($)</Label>
+                                            <Input id="prize" type="number" placeholder="Prize pool" value={prizePool} onChange={(e) => { setPrizePool(parseInt(e.target.value)) }} />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="date">End Date </Label>
+                                            <DatePickerDemo onDateSelect={handleDateSelect}/>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-                </ScrollArea>
-                {/* <DialogFooter>
+                            </CardContent>
+                        </Card>
+                    </ScrollArea>
+                    {/* <DialogFooter>
                     <Button type="submit">Submit</Button>
                 </DialogFooter> */}
-                <DialogFooter>
-                    <Button variant="outline">Cancel</Button>
-                    <Button>Submit</Button>
-                </DialogFooter>
+                    <DialogFooter>
+                        <Button variant="outline">Cancel</Button>
+                        <Button disabled={isFormSubmitting} type="submit">Submit</Button>
+                    </DialogFooter>
+                </form>
+
             </DialogContent>
         </Dialog>
     )

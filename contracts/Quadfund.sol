@@ -9,7 +9,6 @@ enum EventStatus {
 }
 
 contract FundingContract is Initializable {
-
     address payable private _eventOwner;
     string public eventName;
     string public eventDesc;
@@ -53,19 +52,33 @@ contract FundingContract is Initializable {
     mapping(address => bool) public userExists;
 
     // Events
-    event projectListed(address indexed owner, string projectName,string projectDesc,string projectLogo, uint256 projectId);
+    event projectListed(
+        address indexed owner,
+        string projectName,
+        string projectDesc,
+        string projectLogo,
+        uint256 projectId
+    );
     event contributed(address indexed user, uint256 amount, uint256 projectId);
-    event resultPublished(uint256 indexed projectId,uint256 prizeWon);
-    event fundsWithdrawn(uint256 indexed projectId, uint256 amount, uint256 date, address owner);
+    event resultPublished(uint256 indexed projectId, uint256 prizeWon);
+    event fundsWithdrawn(
+        uint256 indexed projectId,
+        uint256 amount,
+        uint256 date,
+        address owner
+    );
 
     function initialize(
         string calldata _eventName,
         string calldata _eventDesc,
         uint256 _prizePool,
         uint256 _duration
-    ) external initializer payable {
+    ) external payable initializer {
+        require(
+            msg.value >= _prizePool * 1 ether,
+            "Prize pool amount not sent or insufficient"
+        );
 
-        require(msg.value >= _prizePool,"Prize pool amount not send");
         _eventOwner = payable(tx.origin);
         eventName = _eventName;
         eventDesc = _eventDesc;
@@ -80,8 +93,7 @@ contract FundingContract is Initializable {
         string memory _projectDesc,
         string memory _projectLogo
     ) public {
-
-        require(eventStatus != EventStatus.Ended,"Voting time period ended");
+        require(eventStatus != EventStatus.Ended, "Voting time period ended");
         require(!userExists[msg.sender], "User already submitted a project");
 
         _numberOfProjectsListed++;
@@ -100,23 +112,33 @@ contract FundingContract is Initializable {
         User storage newUser = users[msg.sender];
         newUser.userAddress = msg.sender;
         newUser.project = (newProject);
-        
+
         userExists[msg.sender] = true;
-        
-        emit projectListed(msg.sender, _projectName,_projectDesc,_projectLogo,_numberOfProjectsListed);
+
+        emit projectListed(
+            msg.sender,
+            _projectName,
+            _projectDesc,
+            _projectLogo,
+            _numberOfProjectsListed
+        );
     }
 
-
     function contribute(uint256 _projectId, uint256 _amount) public payable {
-
-        require(eventStatus != EventStatus.Ended,"Voting time period ended");
-        require(users[msg.sender].userAddress != address(0),"User doesn't exist");
-        require(userExists[msg.sender],"User has not listed any project");
-        require(projects[_projectId].projectId > 0,"Project doesn't exist");
-        require(msg.value >= _amount,"Not enough amount send");
+        require(eventStatus != EventStatus.Ended, "Voting time period ended");
+        require(
+            users[msg.sender].userAddress != address(0),
+            "User doesn't exist"
+        );
+        require(userExists[msg.sender], "User has not listed any project");
+        require(projects[_projectId].projectId > 0, "Project doesn't exist");
+        require(msg.value >= _amount, "Not enough amount send");
 
         Project storage contributingProject = projects[_projectId];
-        require(contributingProject.projectOwner != msg.sender,"Can'vote to your own project");
+        require(
+            contributingProject.projectOwner != msg.sender,
+            "Can'vote to your own project"
+        );
 
         User storage contributor = users[msg.sender];
         Contribution memory contribution;
@@ -124,72 +146,79 @@ contract FundingContract is Initializable {
         contribution.projectId = _projectId;
         contribution.amount = _amount;
         contributor.contributionsGave.push(contribution);
-        
-        users[msg.sender].contributionsGave.push(contribution);
 
+        users[msg.sender].contributionsGave.push(contribution);
 
         emit contributed(msg.sender, msg.value, _projectId);
     }
-
-    
-    
 
     function etherBalance() public view returns (uint256) {
         return address(this).balance;
     }
 
     function publishResult() public {
-
         require(msg.sender == _eventOwner, "you not the owner");
         require(eventStatus != EventStatus.Ended);
         require(block.timestamp > eventEndTime, "End date not reached");
 
         uint256 counter;
-        uint256  _totalVotingPower;
+        uint256 _totalVotingPower;
 
-
-        for(counter = 1 ; counter <= _numberOfProjectsListed ; counter++){
+        for (counter = 1; counter <= _numberOfProjectsListed; counter++) {
             Project storage project = projects[counter];
             uint256 sumOfRoots;
-            for(uint256 i = 0;i<project.contributions.length;i++){
+            for (uint256 i = 0; i < project.contributions.length; i++) {
                 sumOfRoots += sqrt(project.contributions[i].amount);
             }
             project.votingPower = sumOfRoots * sumOfRoots;
             _totalVotingPower += sumOfRoots * sumOfRoots;
         }
 
-        for(counter = 1 ; counter <= _numberOfProjectsListed ; counter++){
+        for (counter = 1; counter <= _numberOfProjectsListed; counter++) {
             Project storage project = projects[counter];
-            project.amountWon = ((project.votingPower * prizePool)/_totalVotingPower) + project.contributionsReceived;
-            emit resultPublished(project.projectId,((project.votingPower * prizePool)/_totalVotingPower));
+            project.amountWon =
+                ((project.votingPower * prizePool) / _totalVotingPower) +
+                project.contributionsReceived;
+            emit resultPublished(
+                project.projectId,
+                ((project.votingPower * prizePool) / _totalVotingPower)
+            );
         }
 
         eventStatus = EventStatus.Ended;
-
     }
 
     function withdrawFunds(uint256 _projectId) public {
-
         require(eventStatus == EventStatus.Ended);
 
         uint256 balance = address(this).balance;
         require(balance > 0, "nothing to withdraw");
 
-        require(projects[_projectId].projectOwner == msg.sender,"You are not onwer of this project");
+        require(
+            projects[_projectId].projectOwner == msg.sender,
+            "You are not onwer of this project"
+        );
 
         uint256 availableBalance = projects[_projectId].amountWon;
-        (bool success, ) = payable(msg.sender).call{value: availableBalance}("");
+        (bool success, ) = payable(msg.sender).call{value: availableBalance}(
+            ""
+        );
 
         require(success, "withdrawal failed");
 
         projects[_projectId].isWithdrawnFund = true;
-        
-        emit fundsWithdrawn(_projectId,availableBalance,block.timestamp,msg.sender);
+
+        emit fundsWithdrawn(
+            _projectId,
+            availableBalance,
+            block.timestamp,
+            msg.sender
+        );
     }
 
-    
-
-    function getProjectById(uint256 _projectId) public view returns (Project memory) {
+    function getProjectById(
+        uint256 _projectId
+    ) public view returns (Project memory) {
         return projects[_projectId];
     }
 
@@ -197,7 +226,9 @@ contract FundingContract is Initializable {
         return _eventOwner;
     }
 
-    function getUserByAddress(address _userAddress) public view returns (User memory) {
+    function getUserByAddress(
+        address _userAddress
+    ) public view returns (User memory) {
         return users[_userAddress];
     }
 
@@ -209,8 +240,6 @@ contract FundingContract is Initializable {
             z = (x / z + z) / 2;
         }
     }
-
-    
 
     receive() external payable {}
 }

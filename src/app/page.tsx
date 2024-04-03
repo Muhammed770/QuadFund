@@ -13,6 +13,7 @@ import { useAccount } from 'wagmi'
 
 export default function Home() {
 
+  
   const events = [
     {
       title: "EthIndia",
