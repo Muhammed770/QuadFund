@@ -88,3 +88,36 @@ export const getEventById = async (eventId: string) => {
         console.log("Error fetching data: ", err);
     }
 };
+
+export const getProjectsByEventId = async (eventId: string) => {
+
+    const query = `
+    query {
+        projects(where: {quadFundEvent_: {id: "${eventId}"}}) {
+          about
+          contributionsReceived
+          description
+          isWithdrawnFund
+          logo
+          matchingPrizePool
+          name
+          prizeWon
+          twitter
+          website
+          id
+          owner {
+            id
+          }
+        }
+      }
+  `;
+    try {
+
+        const data = await mainnetClient.query({
+            query: gql(query),
+        });
+        return data.data.projects;
+    } catch (err) {
+        console.log("Error fetching data: ", err);
+    }
+};
