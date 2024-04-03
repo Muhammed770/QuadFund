@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import Link from 'next/link';
-import {DialogAddEvent} from "@/components/DialogAddEvent"
+import { DialogAddEvent } from "@/components/DialogAddEvent"
 import { useAccount } from 'wagmi'
 import { Button } from "@/components/ui/button"
 import { Award } from 'lucide-react';
@@ -16,30 +16,32 @@ import { Calendar } from 'lucide-react';
 
 export default function Home() {
 
+
+
   const events = [
     {
       title: "EthIndia",
       description: "Indias largest Ethereum hackathon rkrmvrvmem krmlkrmv rklvlrmlqvmrlvrm",
-      content: "10000"
+      prizepool: "10000"
     },
     {
       title: "HackFS",
       description: "Description 2",
-      content: "20000"
+      prizepool: "20000"
     },
     {
       title: "Hack@Arch",
       description: "Description 3",
-      content: "3000"
+      prizepool: "3000"
     },
     {
       title: "Proxy'23",
       description: "Description 4",
-      content: "1000"
+      prizepool: "1000"
     }
   ]
 
-  function formatNumberToK(number:string) {
+  function formatNumberToK(number: string) {
     const num = parseInt(number)
     if (num < 1000) {
       return number
@@ -83,7 +85,7 @@ export default function Home() {
                     </div>
                   </CardHeader>
                   <CardContent className="flex justify-center items-center">
-                    <p className="font-bold text-lg">${formatNumberToK(event.content)}</p>
+                    <p className="font-bold text-lg">${formatNumberToK(event.prizepool)}</p>
                   </CardContent>
                 </Card>
               </Link>

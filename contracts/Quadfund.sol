@@ -29,14 +29,22 @@ contract FundingContract is Initializable {
         uint256 projectId;
     }
 
+    struct ProjectDetails {
+        string projectName;
+        string about;
+        string projectDesc;
+        string projectLogo;
+        string website;
+        string twitter;
+    }
+
     struct Project {
         uint256 projectId;
         address projectOwner;
-        string projectName;
-        string projectDesc;
-        string projectLogo;
+        ProjectDetails details;
         bool isWithdrawnFund;
         uint256 amountWon;
+        uint256 matchedPrizePool;
         uint256 contributionsReceived;
         uint256 votingPower;
         Contribution[] contributions;
@@ -53,9 +61,10 @@ contract FundingContract is Initializable {
     mapping(address => bool) public userExists;
 
     // Events
-    event projectListed(address indexed owner, string projectName,string projectDesc,string projectLogo, uint256 projectId);
+    event projectListed(address indexed owner, string projectName,string projectDesc,string projectLogo, uint256 projectId,string about,string website,string twitter);
     event contributed(address indexed user, uint256 amount, uint256 projectId);
     event resultPublished(uint256 indexed projectId,uint256 prizeWon);
+    event updateMatchingPool(uint256 indexed projectId,uint256 matchingPrizePool);
     event fundsWithdrawn(uint256 indexed projectId, uint256 amount, uint256 date, address owner);
 
     function initialize(
@@ -78,7 +87,11 @@ contract FundingContract is Initializable {
     function creatNewProject(
         string memory _projectName,
         string memory _projectDesc,
-        string memory _projectLogo
+        string memory _projectLogo,
+        string memory _projectAbout,
+        string memory _projectWebsite,
+        string memory _projectTwitter
+
     ) public {
 
         require(eventStatus != EventStatus.Ended,"Voting time period ended");
@@ -88,9 +101,12 @@ contract FundingContract is Initializable {
         Project storage newProject = projects[_numberOfProjectsListed];
         newProject.projectId = _numberOfProjectsListed;
         newProject.isWithdrawnFund = false;
-        newProject.projectName = _projectName;
-        newProject.projectDesc = _projectDesc;
-        newProject.projectLogo = _projectLogo;
+        newProject.details.projectName = _projectName;
+        newProject.details.projectDesc = _projectDesc;
+        newProject.details.projectLogo = _projectLogo;
+        newProject.details.about = _projectAbout;
+        newProject.details.website = _projectWebsite;
+        newProject.details.twitter = _projectTwitter;
         newProject.amountWon = 0;
         newProject.projectOwner = msg.sender;
         newProject.contributionsReceived = 0;
@@ -103,7 +119,7 @@ contract FundingContract is Initializable {
         
         userExists[msg.sender] = true;
         
-        emit projectListed(msg.sender, _projectName,_projectDesc,_projectLogo,_numberOfProjectsListed);
+        emit projectListed(msg.sender, _projectName,_projectDesc,_projectLogo,_numberOfProjectsListed,_projectAbout,_projectWebsite,_projectTwitter);
     }
 
 
@@ -126,6 +142,25 @@ contract FundingContract is Initializable {
         contributor.contributionsGave.push(contribution);
         
         users[msg.sender].contributionsGave.push(contribution);
+        
+        uint256 counter;
+        uint256  _totalVotingPower;
+
+        for(counter = 1 ; counter <= _numberOfProjectsListed ; counter++){
+            Project storage project = projects[counter];
+            uint256 sumOfRoots;
+            for(uint256 i = 0;i<project.contributions.length;i++){
+                sumOfRoots += sqrt(project.contributions[i].amount);
+            }
+            project.votingPower = sumOfRoots * sumOfRoots;
+            _totalVotingPower += sumOfRoots * sumOfRoots;
+        }
+
+        for(counter = 1 ; counter <= _numberOfProjectsListed ; counter++){
+            Project storage project = projects[counter];
+            project.amountWon = ((project.votingPower * prizePool)/_totalVotingPower) + project.contributionsReceived;
+            emit updateMatchingPool(project.projectId,((project.votingPower * prizePool)/_totalVotingPower));
+        }
 
 
         emit contributed(msg.sender, msg.value, _projectId);
@@ -145,23 +180,12 @@ contract FundingContract is Initializable {
         require(block.timestamp > eventEndTime, "End date not reached");
 
         uint256 counter;
-        uint256  _totalVotingPower;
-
-
-        for(counter = 1 ; counter <= _numberOfProjectsListed ; counter++){
-            Project storage project = projects[counter];
-            uint256 sumOfRoots;
-            for(uint256 i = 0;i<project.contributions.length;i++){
-                sumOfRoots += sqrt(project.contributions[i].amount);
-            }
-            project.votingPower = sumOfRoots * sumOfRoots;
-            _totalVotingPower += sumOfRoots * sumOfRoots;
-        }
+       
 
         for(counter = 1 ; counter <= _numberOfProjectsListed ; counter++){
             Project storage project = projects[counter];
-            project.amountWon = ((project.votingPower * prizePool)/_totalVotingPower) + project.contributionsReceived;
-            emit resultPublished(project.projectId,((project.votingPower * prizePool)/_totalVotingPower));
+            project.amountWon = project.matchedPrizePool + project.contributionsReceived;
+            emit resultPublished(project.projectId,project.amountWon);
         }
 
         eventStatus = EventStatus.Ended;
@@ -209,8 +233,6 @@ contract FundingContract is Initializable {
             z = (x / z + z) / 2;
         }
     }
-
-    
 
     receive() external payable {}
 }

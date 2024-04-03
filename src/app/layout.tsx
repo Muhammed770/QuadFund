@@ -12,6 +12,7 @@ import {
 import { WagmiProvider } from 'wagmi';
 // import { createConfig } from 'wagmi'
 import {
+  sepolia,
   mainnet,
   polygon,
   optimism,
@@ -32,7 +33,7 @@ import { Toaster } from "@/components/ui/sonner"
 const config = getDefaultConfig({
   appName: 'My RainbowKit App',
   projectId: '6ac8e2179e976b262d34f3b452091a7a',
-  chains: [mainnet, polygon, optimism, arbitrum, base],
+  chains: [mainnet, sepolia, polygon, optimism, arbitrum, base],
 });
 // import { http, createConfig } from 'wagmi'
 // import { base, mainnet, optimism } from 'wagmi/chains'
