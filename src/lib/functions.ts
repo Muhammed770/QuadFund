@@ -41,7 +41,9 @@ export const getAllEvents = async () => {
     query {
         quadFundEvents {
           id
-          owner
+          owner{
+            id
+          }
           name
           description
           prizePool
@@ -68,7 +70,38 @@ export const getEventById = async (eventId: string) => {
     query {
         quadFundEvents(where: {id: "${eventId}"}) {
           id
-          owner
+          owner{
+            id
+          }
+          name
+          description
+          prizePool
+          startTime
+          endTime
+          resultPublished
+        }
+      }
+  `;
+    try {
+
+        const data = await mainnetClient.query({
+            query: gql(query),
+        });
+        return data.data.quadFundEvents;
+    } catch (err) {
+        console.log("Error fetching data: ", err);
+    }
+};
+
+export const getEventByOwner = async (ownerAddress: string) => {
+
+    const query = `
+    query {
+        quadFundEvents(where: {owner_: {id: "${ownerAddress}"}}) {
+          id
+          owner {
+            id
+          }
           name
           description
           prizePool
