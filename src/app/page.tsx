@@ -13,7 +13,7 @@ import { useAccount } from 'wagmi'
 import { Button } from "@/components/ui/button"
 import { Award } from 'lucide-react';
 import { Calendar } from 'lucide-react';
-import { getAllEvents } from "@/lib/functions"
+import { getAllEvents,weiToUSD } from "@/lib/functions"
 import { useState, useEffect } from 'react';
 import { QuadFundEventListType } from "@/types/types";
 export default function Home() {
@@ -89,7 +89,7 @@ export default function Home() {
                     </div>
                   </CardHeader>
                   <CardContent className="flex justify-center items-center">
-                    <p className="font-bold text-lg">${formatNumberToK(event.prizePool)}</p>
+                    <p className="font-bold text-lg">${weiToUSD(event.prizePool)}</p>
                   </CardContent>
                 </Card>
               </Link>

@@ -270,13 +270,13 @@ export const getContributionsByEventId = async (eventId: string) => {
 
 
 
-export const weiToUSD = async (wei: string) => {
+export const weiToUSD = (wei: string) => {
   let eth = parseInt(wei) / 10 ** 18;
-  let USD = eth * 3340
+  let USD = eth * 3340 
   return USD;
 }
 
-export const USDToWei = async (USD: string) => {
+export const USDToWei = (USD: string) => {
   let eth = parseInt(USD) / 3340;
   let wei = eth * 10 ** 18
   return wei;
