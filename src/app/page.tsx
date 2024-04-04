@@ -34,16 +34,6 @@ export default function Home() {
 
 
 
-
-  function formatNumberToK(number: string) {
-    const num = parseInt(number)
-    if (num < 1000) {
-      return number
-    }
-    const formattedNumber = (num / 10**15);
-    return formattedNumber + 'Fennies';
-  }
-
   const account = useAccount()
 
   return (

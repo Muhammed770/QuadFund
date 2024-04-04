@@ -22,9 +22,9 @@ import { getEventById, weiToUSD } from "@/lib/functions"
 import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { getProjectsByEventId } from "@/lib/functions"
-import { QuadFundEventListType } from "@/types/types"
+import { QuadFundEventListType, QuadFundEventType } from "@/types/types"
 import { ProjectListType } from "@/types/types"
-import {getContributionsByProjectId , getContributionsByEventId} from "@/lib/functions"
+import { getContributionsByProjectId, getContributionsByEventId } from "@/lib/functions"
 import { set } from "date-fns"
 
 const EventPage = ({ params }: { params: { eventName: string } }) => {
@@ -35,9 +35,9 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
     const [projects, setProjects] = useState<ProjectListType>([]); // Store fetched projects
     const [projectContributors, setProjectContributors] = useState([])
     const [topContributors, setTopContributors] = useState<object>()
-
+    const [eventData, setEventData] = useState<QuadFundEventType[]>();
     const id = queries.get('id') as string;
-
+    const name = queries.get('name') as string;
     const fetchContributors = async (id: string) => {
         try {
             console.log('Project ID:', id);
@@ -57,13 +57,11 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                 if (typeof id === 'string') {
                     setEventId(id);
                     const event = await getEventById(id);
+                    setEventData(event);
                     const projects = await getProjectsByEventId(id);
                     const topContributors = await getContributionsByEventId(id);
                     setProjects(projects);
                     setTopContributors(topContributors);
-                    console.log('Projects:', projects);
-                    console.log('Event:', event);
-                    console.log('Top Contributors:', topContributors);
                 }
                 console.log('Event ID:', id);
             } catch (error) {
@@ -73,74 +71,70 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
         fetchEvent();
     }, []);
 
-    const slicedAddress = (address:string) => address.slice(0, 4) + "..." + address.slice(-4);
+    const slicedAddress = (address: string) => address.slice(0, 4) + "..." + address.slice(-4);
 
-    const cardData = [
-        {
-            title: "Project A",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            about: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            src: "https://images.unsplash.com/photo-1711139299064-f60e2753163f?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            images: ["https://images.unsplash.com/photo-1711139299064-f60e2753163f?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                "https://images.unsplash.com/photo-1707344088547-3cf7cea5ca49?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                "https://images.unsplash.com/photo-1710975090677-5955bce9d325?q=80&w=2651&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                "https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                "https://images.unsplash.com/photo-1708649290066-5f617003b93f?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"],
-            link: "#",
-            contributors: "10 Contributors • $100K Matched",
-            owner: "@zain",
-            projectContributorsData: [
-                { username: "@zain", amount: "$5k", src: "https://ui.shadcn.com/avatars/04.png/?height=24&width=24" },
-                { username: "@neda", amount: "$$3.77k", src: "https://ui.shadcn.com/avatars/01.png/?height=24&width=24" },
-                { username: "@shiyas", amount: "$2.87k", src: "https://ui.shadcn.com/avatars/02.png/?height=24&width=24" },
-                { username: "@muhammed770", amount: "$1.57k", src: "https://ui.shadcn.com/avatars/04.png/?height=24&width=24" }
-            ]
-        },
-        {
-            title: "Project B",
-            description: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-            about: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            contributors: "20 Contributors • $200K Matched",
-            owner: "@zain",
-            src: "https://images.unsplash.com/photo-1707344088547-3cf7cea5ca49?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            images: [],
-            link: "#",
-            projectContributorsData: []
-        },
-        {
-            title: "Project C",
-            description: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-            about: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            contributors: "30 Contributors • $300K Matched",
-            owner: "@zain",
-            src: "https://images.unsplash.com/photo-1710975090677-5955bce9d325?q=80&w=2651&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            images: [],
-            link: "#",
-            projectContributorsData: []
-        },
-        {
-            title: "Project D",
-            description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            about: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            contributors: "40 Contributors • $400K Matched",
-            owner: "@zain",
-            src: "https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            images: [],
-            link: "#",
-            projectContributorsData: []
-        },
-        {
-            title: "Project E",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            about: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            contributors: "50 Contributors • $500K Matched",
-            owner: "@zain",
-            src: "https://images.unsplash.com/photo-1708649290066-5f617003b93f?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            images: [],
-            link: "#",
-            projectContributorsData: []
+    const [days, setDays] = useState<number>(0);
+    const [hours, setHours] = useState<number>(0);
+    const [minutes, setMinutes] = useState<number>(0);
+    const [seconds, setSeconds] = useState<number>(0);
+
+    const [startDate, setStartDate] = useState<Date | null>(null);
+    const [endDate, setEndDate] = useState<Date | null>(null);
+
+    useEffect(() => {
+        if (eventData) {
+            setStartDate(new Date(Number(eventData[0].startTime)));
+            setEndDate(new Date(Number(eventData[0].endTime)));
+
         }
-    ];
+    }, [eventData]);
+
+    // const startDate = new Date('2024-04-20');
+    // const endDate = new Date('2024-04-21');
+
+    const timeCalc = setInterval(function () {
+
+        const now = new Date().getTime();
+        const timeleft = endDate ? endDate.getTime() - now : 0;
+        const startsInDuration = startDate ? startDate.getTime() - now : 0;
+
+        let days = 0,
+            hours = 0,
+            minutes = 0,
+            seconds = 0;
+
+        if (startsInDuration > 0 && timeleft > 0) {
+            days = Math.floor(startsInDuration / (1000 * 60 * 60 * 24));
+            hours = Math.floor(
+                (startsInDuration % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+            );
+            minutes = Math.floor(
+                (startsInDuration % (1000 * 60 * 60)) / (1000 * 60)
+            );
+            seconds = Math.floor((startsInDuration % (1000 * 60)) / 1000);
+        }
+        if (startsInDuration < 0 && timeleft > 0) {
+            days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
+            hours = Math.floor(
+                (timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+            );
+            minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
+            seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
+            setDays(days);
+            setHours(hours);
+            setMinutes(minutes);
+            setSeconds(seconds);
+        }
+        if (timeleft <= 0) {
+            (days = 0), (hours = 0), (minutes = 0), (seconds = 0);
+        }
+        if (days || hours || minutes || seconds) {
+            setDays(days);
+            setHours(hours);
+            setMinutes(minutes);
+            setSeconds(seconds);
+        }
+    }, 1000);
 
     const contributorsData = [
         { username: "@zain", amount: "$5k", src: "https://ui.shadcn.com/avatars/04.png/?height=24&width=24" },
@@ -156,10 +150,10 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
             <div className="flex-1 space-y-6">
                 <div className="flex justify-between items-center">
 
-                    <h1 className="text-3xl font-bold inline-flex">{params.eventName}</h1>
+                    <h1 className="text-3xl font-bold inline-flex">{name}</h1>
                     <div className="w-44">
 
-                        <Badge className="flex-none bg-red-200 p-2" variant="secondary">Voting ends in:05:04:00</Badge>
+                        <Badge className="flex-none bg-red-200 p-2" variant="secondary">Voting ends in D{days}:H{hours}:M{minutes}:S{seconds} </Badge>
                         <div className="lg:hidden">
 
                             <DialogSubmitProject projectId={id} />
