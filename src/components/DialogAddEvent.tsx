@@ -17,6 +17,7 @@ import { DatePickerDemo } from "./DatePicker"
 import { toast } from "sonner"
 import {  ethers } from "ethers"
 import contractABI from "@/lib/abis/Factory.json"
+import { USDToWei } from "@/lib/functions"
 import { FACTORY_CONTRACT_ADDRESS } from "@/lib/const"
 import { useState } from "react"
 
@@ -50,7 +51,7 @@ export function DialogAddEvent() {
             // Call the contract function to add a new event
             console.log("prizePool", prizePool)
             // console.log("prizePool in ETH", ethers.utils.parseEther(prizePool.toString()))
-            const amountinwei = parseFloat(prizePool) * 10 ** 18;
+            const amountinwei = USDToWei(prizePool) * 10 ** 18;
             const tx = await contract.createFundingContract(title, description, amountinwei, endDate, { value: amountinwei+1000000 });
             //waiting for transaction to completew
             await tx.wait();
@@ -102,7 +103,7 @@ export function DialogAddEvent() {
                                             <Textarea className="min-h-[100px]" id="description" placeholder="Description" value={description} onChange={(e) => { setDescription(e.target.value) }} />
                                         </div>
                                         <div className="space-y-2">
-                                            <Label htmlFor="prize">Prize Pool (ETH)</Label>
+                                            <Label htmlFor="prize">Prize Pool (USD)</Label>
                                             <Input id="prize" type="text" placeholder="Prize pool" value={prizePool} onChange={(e) => { setPrizePool(e.target.value) }} />
                                         </div>
                                         <div className="space-y-2">

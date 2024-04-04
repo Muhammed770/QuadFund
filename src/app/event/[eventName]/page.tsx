@@ -18,8 +18,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { HeartHandshake } from 'lucide-react';
 import { ExternalLinkIcon } from "@/components/externalLinkIcon"
 import DialogAmount from "@/components/DialogAmount"
-import { getEventById } from "@/lib/functions"
-import { useEffect,useState } from "react"
+import { getEventById, weiToUSD } from "@/lib/functions"
+import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { getProjectsByEventId } from "@/lib/functions"
 import { QuadFundEventListType } from "@/types/types"
@@ -38,7 +38,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
 
     const id = queries.get('id') as string;
 
-    const fetchContributors = async (id:string) => {
+    const fetchContributors = async (id: string) => {
         try {
             console.log('Project ID:', id);
             const projectContributions: any = await getContributionsByProjectId(id);
@@ -52,7 +52,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
     useEffect(() => {
         const fetchEvent = async () => {
             try {
-               
+
                 setIsLoading(false); // Set loading to false after fetching
                 if (typeof id === 'string') {
                     setEventId(id);
@@ -199,7 +199,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                             </CardContent>
                         </Card> */}
                         <Drawer>
-                            <DrawerTrigger className="w-full" onClick={()=>fetchContributors(data.id)}>
+                            <DrawerTrigger className="w-full" onClick={() => fetchContributors(data.id)}>
                                 <Card key={index} className="w-full overflow-hidden">
 
                                     <CardContent className="flex p-0 gap-4">
@@ -220,9 +220,9 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                                                 <h2 className="text-xl font-semibold ">{data.name}</h2>
                                                 <p className="text-sm text-gray-600">{data.description}</p>
                                                 <div className="flex items-center justify-center">
-                                                    <p className="text-sm ">${data.contributionsReceived} Contributions</p>
+                                                    <p className="text-sm ">${weiToUSD(data.contributionsReceived)} Contributions</p>
                                                     <span className="ml-2">•</span>
-                                                    <p className="text-sm ml-2">${data.matchingPrizePool} Matched</p>
+                                                    <p className="text-sm ml-2">${weiToUSD(data.matchingPrizePool)} Matched</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -234,17 +234,17 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                             <DrawerContent className="">
                                 <DrawerHeader className="md:flex md:px-12 p-4 justify-between">
                                     <div className="flex">
-                                    <Image width={200} height={100} className="object-contain" src={data.logo} alt="title" />
-                                    <div className="p-5">
-                                        <DrawerTitle className="text-3xl font-extrabold">{data.name}</DrawerTitle>
-                                        <DrawerDescription className="text-xl">{data.description}</DrawerDescription>
-                                        <Link className="font-medium inline-flex items-center space-x-1.5 text-sm" href={data.website}>
-                                            <ExternalLinkIcon className="h-4 w-4" />
-                                            <span>View</span>
-                                        </Link>
+                                        <Image width={200} height={100} className="object-contain" src={data.logo} alt="title" />
+                                        <div className="p-5">
+                                            <DrawerTitle className="text-3xl font-extrabold">{data.name}</DrawerTitle>
+                                            <DrawerDescription className="text-xl">{data.description}</DrawerDescription>
+                                            <Link className="font-medium inline-flex items-center space-x-1.5 text-sm" href={data.website}>
+                                                <ExternalLinkIcon className="h-4 w-4" />
+                                                <span>View</span>
+                                            </Link>
+                                        </div>
                                     </div>
-                                    </div>
-                                    <DialogAmount projectId={data.id}/>
+                                    <DialogAmount projectId={data.id} />
                                 </DrawerHeader>
                                 <Tabs defaultValue="about" className="md:px-12 px-4 pb-4">
                                     <TabsList>
@@ -325,7 +325,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                     <p className="text-3xl font-bold">$68,143</p>
                     <h2 className="text-xl font-semibold mt-4">Available Matching Pool</h2>
                     <p className="text-3xl font-bold">$50,000</p>
-                    <DialogSubmitProject projectId={""}/>
+                    <DialogSubmitProject projectId={""} />
 
                 </div>
                 <div>
