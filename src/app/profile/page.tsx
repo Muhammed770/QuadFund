@@ -3,7 +3,7 @@ import { DialogAddProject } from "@/components/DialogAddProject";
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar"
 import { Card, CardContent } from "@/components/ui/card"
 import Image from "next/image";
-import { getProjectsByOwner,getEventByOwner } from "@/lib/functions";
+import { getProjectsByOwner,getEventByOwner,getContributionsByUser } from "@/lib/functions";
 import WalletAddress from '@/components/WalletAddress';
 import { useEffect,useState } from "react";
 import { useAccount } from 'wagmi'
@@ -11,69 +11,10 @@ import { set } from "date-fns";
 import { ProjectListType,QuadFundEventListType } from "@/types/types"
 
 export default function ProfilePage() {
-  const projectData = [
-    {
-      title: "Next.js",
-      description: "The React Framework – created and maintained by @vercel.",
-      src: "/placeholder.svg"
-    },
-    {
-      title: "React",
-      description: "A JavaScript library for building user interfaces.",
-      src: "/placeholder.svg"
-    },
-    {
-      title: "Vue.js",
-      description: "The Progressive JavaScript Framework.",
-      src: "/placeholder.svg"
-    },
-    {
-      title: "Angular",
-      description: "A platform and framework for building single-page client applications using HTML and TypeScript.",
-      src: "/placeholder.svg"
-    },
-    {
-      title: "Svelte",
-      description: "A radical new approach to building user interfaces.",
-      src: "/placeholder.svg"
-    }
-  ];
-
-  const contributions = [
-    {
-      title: "Next.js",
-      amount: "$20"
-    },
-    {
-      title: "React",
-      amount: "$10"
-    },
-    {
-      title: "Vue.js",
-      amount: "$10"
-    },
-    {
-      title: "Angular",
-      amount: "$10"
-    },
-    {
-      title: "Svelte",
-      amount: "$10"
-    }
-  ]
-
-  const eventsData = [
-    {
-      title: "Next.js",
-      description: "The React Framework – created and maintained by @vercel.",
-    },
-    {
-      title: "React",
-      description: "A JavaScript library for building user interfaces.",
-    }
-  ]
+  
   const [projects, setProjects] = useState<ProjectListType>([])
   const [events, setEvents] = useState<QuadFundEventListType>([])
+  const [contributions, setContributions] = useState([])
   const account = useAccount()
   const address = account?.address ?? '';
   const lowercaseAddress = address.toLowerCase();
@@ -86,8 +27,11 @@ export default function ProfilePage() {
         setProjects(projects);
         const events = await getEventByOwner(lowercaseAddress);
         setEvents(events);
+        const contributions = await getContributionsByUser(lowercaseAddress);
+        setContributions(contributions);
         console.log('All projects:', projects);
         console.log('All events:', events);
+        console.log('All contributions:', contributions);
       } catch (error) {
         console.error('Error fetching all projects:', error);
       }
@@ -123,7 +67,7 @@ export default function ProfilePage() {
                 {/* <div className=""><DialogAddProject  /></div> */}
               </div>
               {/* <p className="text-sm text-gray-500 dark:text-gray-400">You haven’t created any projects yet.</p> */}
-              <div className="grid gap-4 pt-3 text-sm">
+              {projects.length>0 ? <div className="grid gap-4 pt-3 text-sm">
                 {projects.map((data, index) => (
                   <Card key={index} className="w-full overflow-hidden">
 
@@ -133,7 +77,7 @@ export default function ProfilePage() {
                       <div className="min-h-24 m-1">
 
                         <div className="absolute m-1 aspect-square bg-gray-100 rounded-lg overflow-hidden dark:bg-gray-800">
-                          <Image alt="Avatar" className="aspect-[1/1] object-cover" height="80" src={data.src} width="80" />
+                          <Image alt="Avatar" className="aspect-[1/1] object-cover" height="80" src={data.logo} width="80" />
                         </div>
                       </div>
                       <div className="p-2 ml-20">
@@ -147,7 +91,7 @@ export default function ProfilePage() {
                     </CardContent>
                   </Card>
                 ))}
-              </div>
+              </div> : <p className="text-sm text-gray-500 dark:text-gray-400">You haven't contributed to any projects yet.</p>}
             </div>
             </div>
             <div>
@@ -155,7 +99,7 @@ export default function ProfilePage() {
               <div className="space-y-4">
                 <div className="space-y-2">
                   <h2 className="text-xl font-bold">Your Events</h2>
-                  <div className="grid gap-4 pt-2 text-sm">
+                  {events.length>0 ? <div className="grid gap-4 pt-2 text-sm">
                     {events.map((data, index) => (
                       <Card key={index} className="w-full overflow-hidden">
                       
@@ -170,37 +114,27 @@ export default function ProfilePage() {
                         </CardContent>
                       </Card>
                     ))}
-                  </div>
-                  {/* <p className="text-sm text-gray-500 dark:text-gray-400">You haven’t contributed to any projects yet.</p> */}
+                  </div> : <p className="text-sm text-gray-500 dark:text-gray-400">You haven’t created any events yet.</p>}
+                  
                 </div>
               </div>
 
               <div className="space-y-2">
                 <h2 className="text-xl font-bold mt-8">Your Contributions</h2>
-                <div className="grid gap-4 pt-2 text-sm">
-                {contributions.map((data, index) => (
+                {contributions.length>0 ? <div className="grid gap-4 pt-2 text-sm">
+                {contributions.map((data: any, index: number) => (
                   <Card key={index} className="w-full overflow-hidden">
-
                     <CardContent className="gap-4">
-
-                      {/* <Image width={200} height={100} className="md:object-contain" src={data.src} alt={data.title} /> */}
-                      {/* <div className="min-h-24 m-1">
-
-                        <div className="absolute m-1 aspect-square bg-gray-100 rounded-lg overflow-hidden dark:bg-gray-800">
-                          <Image alt="Avatar" className="aspect-[1/1] object-cover" height="80" src={data.src} width="80" />
-                        </div>
-                      </div> */}
                       <div className="pt-3">
                         <div className="flex justify-between items-center">
-                          <h4 className="text-lg font-semibold">{data.title}</h4>
-                          <p className="text-lg text-gray-600 ml-2">{data.amount}</p>
+                          <h4 className="text-lg font-semibold">{(data as any).project.name}</h4>
+                          <p className="text-lg text-gray-600 ml-2">${data.amount}</p>
                         </div>
                       </div>
-
                     </CardContent>
                   </Card>
                 ))}
-              </div>
+              </div> : <p className="text-sm text-gray-500 dark:text-gray-400">You haven’t contributed to any projects yet.</p>}
               </div>
               
             </div>

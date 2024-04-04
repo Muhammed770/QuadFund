@@ -289,7 +289,7 @@ export const getContributionsByUser = async (userAddress: string) => {
     const data = await mainnetClient.query({
       query: gql(query),
     });
-    return data.data.contributions;
+    return data.data.user.contributions;
   } catch (err) {
     console.log("Error fetching data: ", err);
   }

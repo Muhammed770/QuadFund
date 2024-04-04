@@ -33,7 +33,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
     const [isLoading, setIsLoading] = useState(true); // Loading state
     const [eventId, setEventId] = useState<string>(""); // Store fetched id
     const [projects, setProjects] = useState<ProjectListType>([]); // Store fetched projects
-    const [projectContributors, setProjectContributors] = useState<object>()
+    const [projectContributors, setProjectContributors] = useState([])
     const [topContributors, setTopContributors] = useState<object>()
 
     const id = queries.get('id') as string;
@@ -73,6 +73,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
         fetchEvent();
     }, []);
 
+    const slicedAddress = (address:string) => address.slice(0, 4) + "..." + address.slice(-4);
 
     const cardData = [
         {
@@ -276,20 +277,21 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                                     <TabsContent value="contributers" className="h-[330px] overflow-scroll no-scrollbar">
                                         <div>
                                             <h2 className="text-xl font-semibold">Top Contributors</h2>
-                                            {/* <div className="space-y-2 mt-2">
-                                                {data.projectContributorsData.map((data, index) => (
+                                            <div className="space-y-2 mt-2">
+                                                {(projectContributors as { user: { id: string }, amount: number }[])?.map((data, index) => (
                                                     <div key={index} className="flex items-center space-x-2">
                                                         <Avatar>
-                                                            <AvatarImage alt={data.username} src={data.src} />
+                                                            <AvatarImage alt="avatar" src="https://ui.shadcn.com/avatars/04.png/?height=24&width=24" />
                                                         </Avatar>
-                                                        <span className="font-medium">{data.username}</span>
-                                                        <span className="ml-auto">{data.amount}</span>
+                                                        <span className="font-medium">{slicedAddress(data.user.id)}</span>
+                                                        <span>-</span>
+                                                        <span className="ml-auto">${data.amount}</span>
                                                     </div>
                                                 ))}
                                                 <Button className="w-full mt-2" variant="outline">
                                                     View Leaderboard
                                                 </Button>
-                                            </div> */}
+                                            </div>
                                         </div>
                                     </TabsContent>
                                     <TabsContent value="owner" className="h-[330px] overflow-scroll no-scrollbar">
