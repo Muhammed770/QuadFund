@@ -15,19 +15,22 @@ import { Textarea } from "@/components/ui/textarea"
 import { CardContent, Card } from "@/components/ui/card"
 import { DatePickerDemo } from "./DatePicker"
 import { toast } from "sonner"
-import {  ethers } from "ethers"
+import { ethers } from "ethers"
 import contractABI from "@/lib/abis/Factory.json"
 import { USDToWei } from "@/lib/functions"
 import { FACTORY_CONTRACT_ADDRESS } from "@/lib/const"
 import { useState } from "react"
+// import { useRouter } from 'next/router'
 
 export function DialogAddEvent() {
+
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string | number | readonly string[] | undefined>("");
     const [prizePool, setPrizePool] = useState<string>("0")
     const [endDate, setEndDate] = useState<number | undefined>();
     const [isFormSubmitting, setIsFormSubmitting] = useState<boolean>(false);
 
+    // const router = useRouter()
 
     // const handleTitleChange =(e :React.ChangeEvent<HTMLInputElement>)=> {
     //     setTitle(e.target.value);
@@ -49,10 +52,12 @@ export function DialogAddEvent() {
             //Instantiate the contract
             const contract = new ethers.Contract(FACTORY_CONTRACT_ADDRESS, contractABI, signer);
             // Call the contract function to add a new event
-            console.log("prizePool", prizePool)
+            console.log("prizePool USD", prizePool)
             // console.log("prizePool in ETH", ethers.utils.parseEther(prizePool.toString()))
-            const amountinwei = USDToWei(prizePool) * 10 ** 18;
-            const tx = await contract.createFundingContract(title, description, amountinwei, endDate, { value: amountinwei+1000000 });
+            const amountinwei = USDToWei(prizePool);
+            console.log("amountinwei", amountinwei);
+
+            const tx = await contract.createFundingContract(title, description, amountinwei, endDate, { value: amountinwei + 1000000 });
             //waiting for transaction to completew
             await tx.wait();
             console.log('Transaction successfull', tx.hash);
@@ -62,6 +67,7 @@ export function DialogAddEvent() {
 
             console.log(tx.hash);
             toast.success("Event created successfully")
+            // router.reload()
 
         } catch (error) {
             console.log("Error occured while creating event", error);

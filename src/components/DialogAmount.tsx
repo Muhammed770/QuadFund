@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import { ethers } from "ethers";
 import contractABI from "@/lib/abis/Contract.json";
 import { useSearchParams } from "next/navigation";
+import { USDToWei } from "@/lib/functions";
 
 const DialogAmount = (props:{projectId:string}) => {
 
@@ -34,10 +35,12 @@ const DialogAmount = (props:{projectId:string}) => {
 
             // Instantiate the contract
             const contract = new ethers.Contract(projectContractAddr, contractABI, signer);
-
+            console.log("amount in USD", amount);
+            
             // Call the contract function to contribute to the project
-            const amountinwei = amount * 10 ** 15;
-
+            const amountinwei = USDToWei(amount.toString());
+            console.log("amountinwei", amountinwei);
+            
             const parts = props.projectId.split('-');
             const id = parseInt(parts[1], 16)
             console.log(id)
