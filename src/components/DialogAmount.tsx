@@ -36,9 +36,12 @@ const DialogAmount = (props:{projectId:string}) => {
             const contract = new ethers.Contract(projectContractAddr, contractABI, signer);
 
             // Call the contract function to contribute to the project
-            const amountinwei = amount * 10 ** 18;
-            console.log(amountinwei)
-            const tx = await contract.contribute(props.projectId, amountinwei,{ value: amountinwei+100000 });
+            const amountinwei = amount * 10 ** 15;
+
+            const parts = props.projectId.split('-');
+            const id = parseInt(parts[1], 16)
+            console.log(id)
+            const tx = await contract.contribute(id, amountinwei,{ value: amountinwei+100000 });
             // Wait for transaction to complete
             await tx.wait();
             toast.success("Contributed to project successfully")

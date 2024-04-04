@@ -24,18 +24,35 @@ import { useSearchParams } from "next/navigation"
 import { getProjectsByEventId } from "@/lib/functions"
 import { QuadFundEventListType } from "@/types/types"
 import { ProjectListType } from "@/types/types"
+import {getContributionsByProjectId} from "@/lib/functions"
+import { set } from "date-fns"
+
 const EventPage = ({ params }: { params: { eventName: string } }) => {
 
     const queries = useSearchParams();
     const [isLoading, setIsLoading] = useState(true); // Loading state
     const [eventId, setEventId] = useState<string>(""); // Store fetched id
     const [projects, setProjects] = useState<ProjectListType>([]); // Store fetched projects
+    const [projectContributors, setProjectContributors] = useState<object>()
 
     const id = queries.get('id') as string;
+
+    const fetchContributors = async (id:string) => {
+        try {
+            console.log('Project ID:', id);
+            const projectContributions: any = await getContributionsByProjectId(id);
+            setProjectContributors(projectContributions);
+            console.log(projectContributions)
+            console.log('Contributors:', projectContributors);
+        } catch (error) {
+            console.error('Error fetching contributors:', error);
+        }
+    }
+
     useEffect(() => {
         const fetchEvent = async () => {
             try {
-                
+               
                 setIsLoading(false); // Set loading to false after fetching
                 if (typeof id === 'string') {
                     setEventId(id);
@@ -44,6 +61,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                     setProjects(projects);
                     console.log('Projects:', projects);
                     console.log('Event:', event);
+                    
                 }
                 console.log('Event ID:', id);
             } catch (error) {
@@ -179,7 +197,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                             </CardContent>
                         </Card> */}
                         <Drawer>
-                            <DrawerTrigger className="w-full">
+                            <DrawerTrigger className="w-full" onClick={()=>fetchContributors(data.id)}>
                                 <Card key={index} className="w-full overflow-hidden">
 
                                     <CardContent className="flex p-0 gap-4">
@@ -199,9 +217,10 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                                             <div className="text-left">
                                                 <h2 className="text-xl font-semibold ">{data.name}</h2>
                                                 <p className="text-sm text-gray-600">{data.description}</p>
-                                                <div className="flex">
-                                                    <p className="text-sm ">{data.contributionsReceived}</p>
-                                                    <p className="text-sm ">{data.matchingPrizePool}</p>
+                                                <div className="flex items-center justify-center">
+                                                    <p className="text-sm ">${data.contributionsReceived} Contributions</p>
+                                                    <span className="ml-2">•</span>
+                                                    <p className="text-sm ml-2">${data.matchingPrizePool} Matched</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -211,7 +230,8 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                             </DrawerTrigger>
 
                             <DrawerContent className="">
-                                <DrawerHeader className="md:flex md:px-12 p-4">
+                                <DrawerHeader className="md:flex md:px-12 p-4 justify-between">
+                                    <div className="flex">
                                     <Image width={200} height={100} className="object-contain" src={data.logo} alt="title" />
                                     <div className="p-5">
                                         <DrawerTitle className="text-3xl font-extrabold">{data.name}</DrawerTitle>
@@ -221,7 +241,8 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                                             <span>View</span>
                                         </Link>
                                     </div>
-                                    <DialogAmount />
+                                    </div>
+                                    <DialogAmount projectId={data.id}/>
                                 </DrawerHeader>
                                 <Tabs defaultValue="about" className="md:px-12 px-4 pb-4">
                                     <TabsList>
