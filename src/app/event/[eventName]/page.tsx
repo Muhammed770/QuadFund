@@ -36,6 +36,8 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
     const [projectContributors, setProjectContributors] = useState([])
     const [topContributors, setTopContributors] = useState<object>()
     const [eventData, setEventData] = useState<QuadFundEventType[]>();
+    // const [topContributors, setTopContributors] = useState([])
+
     const id = queries.get('id') as string;
     const name = queries.get('name') as string;
     const fetchContributors = async (id: string) => {
@@ -153,7 +155,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                     <h1 className="text-3xl font-bold inline-flex">{name}</h1>
                     <div className="w-44">
 
-                        <Badge className="flex-none bg-red-200 p-2" variant="secondary">Voting ends in D{days}:H{hours}:M{minutes}:S{seconds} </Badge>
+                        <Badge className="flex-none bg-red-200 p-2" variant="secondary">Voting ends in {days}D {hours}H {minutes}M {seconds}S </Badge>
                         <div className="lg:hidden">
 
                             <DialogSubmitProject projectId={id} />
@@ -229,13 +231,6 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                                         <TabsTrigger value="owner">Owner</TabsTrigger>
                                     </TabsList>
                                     <TabsContent value="about" className="h-[330px] overflow-scroll no-scrollbar">
-                                        {/* <div className="flex items-center overflow-x-auto no-scrollbar ">
-                                            {data.images.map((image, index) => (
-                                                <div key={index} className="mx-1">
-                                                    <img className="max-w-[400px] h-[200px] rounded-lg" src={image} alt={data.title} />
-                                                </div>
-                                            ))}
-                                        </div> */}
                                         <div className="mt-4 p-3">
                                             <h2 className="text-xl font-semibold">About</h2>
                                             <p className="text-lg pt-2">{data.about}</p>
@@ -283,13 +278,6 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                                         </div>
                                     </TabsContent>
                                 </Tabs>
-
-                                {/* <DrawerFooter>
-                          <Button>Submit</Button>
-                          <DrawerClose>
-                            <Button variant="outline">Cancel</Button>
-                          </DrawerClose>
-                        </DrawerFooter> */}
                             </DrawerContent>
 
                         </Drawer>
@@ -308,13 +296,13 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                 <div>
                     <h2 className="text-xl font-semibold">Top Contributors</h2>
                     <div className="space-y-2 mt-2">
-                        {contributorsData.map((data, index) => (
+                        {topContributors && (topContributors as { user: { id: string }, amount: number }[]).map((data, index) => (
                             <div key={index} className="flex items-center space-x-2">
                                 <Avatar>
-                                    <AvatarImage alt={data.username} src={data.src} />
+                                    <AvatarImage alt="Avatar" src="https://ui.shadcn.com/avatars/04.png/?height=24&width=24" />
                                 </Avatar>
-                                <span className="font-medium">{data.username}</span>
-                                <span className="ml-auto">{weiToUSD(data.amount)}</span>
+                                <span className="font-medium">{slicedAddress(data.user?.id)}</span>
+                                <span className="ml-auto">${weiToUSD(data.amount.toString())}</span>
                             </div>
                         ))}
                         <Button className="w-full mt-2" variant="outline">

@@ -3,12 +3,16 @@ import { DialogAddProject } from "@/components/DialogAddProject";
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar"
 import { Card, CardContent } from "@/components/ui/card"
 import Image from "next/image";
-import { getProjectsByOwner,getEventByOwner,getContributionsByUser } from "@/lib/functions";
+import { getProjectsByOwner,getEventByOwner,getContributionsByUser,weiToUSD } from "@/lib/functions";
 import WalletAddress from '@/components/WalletAddress';
 import { useEffect,useState } from "react";
 import { useAccount } from 'wagmi'
 import { set } from "date-fns";
 import { ProjectListType,QuadFundEventListType } from "@/types/types"
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { ethers } from "ethers";
+import contractABI from "@/lib/abis/Contract.json";
 
 export default function ProfilePage() {
   
@@ -51,6 +55,32 @@ export default function ProfilePage() {
     fetchProjects();
   }, [address]);
 
+
+const handleSubmit = async (projectId:string) => {
+  try {
+    // Connect to Ethereum provider
+    await (window as any).ethereum.request({ method: 'eth_requestAccounts' });
+    const provider = new ethers.providers.Web3Provider((window as any).ethereum);
+    const signer = provider.getSigner();
+    console.log(projectId)
+    const parts = projectId.split('-');
+    const contractId = parts[0]
+    const id = parseInt(parts[1])
+    console.log(contractId)
+    console.log(id)
+    const contract = new ethers.Contract(contractId, contractABI, signer);
+
+    const tx = await contract.withdrawFunds(id);
+    // Wait for transaction to complete
+    await tx.wait();
+    toast.success("Fund withdrawn successfully")
+    console.log('Transaction successful:', tx.hash);
+} catch (error) {
+    toast.error("Error occurred while withdrawing fund. Please try again.")
+    console.error('Error occurred while withdrawing fund:', error);
+}
+}
+
   // const account = useAccount()
 
   return (
@@ -83,22 +113,25 @@ export default function ProfilePage() {
                 {projects.map((data, index) => (
                   <Card key={index} className="w-full overflow-hidden">
 
-                    <CardContent className="flex p-0 gap-4">
-
-                      {/* <Image width={200} height={100} className="md:object-contain" src={data.src} alt={data.title} /> */}
+                    <CardContent className="flex p-0 gap-4 justify-between items-center">
+                    <div className="flex">
                       <div className="min-h-24 m-1">
-
                         <div className="absolute m-1 aspect-square bg-gray-100 rounded-lg overflow-hidden dark:bg-gray-800">
                           <Image alt="Avatar" className="aspect-[1/1] object-cover" height="80" src={data.logo} width="80" />
                         </div>
                       </div>
-                      <div className="p-2 ml-20">
+                      <div className="p-2 ml-24">
                         <div className="text-left">
                           <h2 className="text-xl font-semibold ">{data.name}</h2>
                           <p className="text-sm text-gray-600">{data.description}</p>
                           {/* <p className="text-sm ">{data.contributors}</p> */}
                         </div>
                       </div>
+                    </div>
+                    {!data.isWithdrawnFund && <div className="px-4">
+                      <Button onClick={(event) => { event.preventDefault(); handleSubmit(data.id); }}>Withdraw Fund</Button>
+                    </div>}
+                      
 
                     </CardContent>
                   </Card>
@@ -140,7 +173,7 @@ export default function ProfilePage() {
                       <div className="pt-3">
                         <div className="flex justify-between items-center">
                           <h4 className="text-lg font-semibold">{(data as any).project.name}</h4>
-                          <p className="text-lg text-gray-600 ml-2">${data.amount}</p>
+                          <p className="text-lg text-gray-600 ml-2">${weiToUSD(data.amount)}</p>
                         </div>
                       </div>
                     </CardContent>
