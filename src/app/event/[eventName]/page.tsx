@@ -176,29 +176,10 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                         <div className="mx-1.5 relative flex h-3 w-3"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span className="inline-flex rounded-full h-3 w-3 bg-green-500"></span></div>Ongoing round
                     </Badge>
 
-                    {/* <Button variant="ghost">All projects</Button>
-                    <Button variant="ghost">Infrastructure</Button>
-                    <Button variant="ghost">DAO</Button>
-                    <Button variant="ghost">Dev Tool</Button>
-                    <Button variant="ghost">DeFi</Button> */}
                 </div>
                 {projects && projects.map((data, index) => (
                     <div>
-                        {/* <Card key={index} className="w-full overflow-hidden">
 
-                            <CardContent className="md:flex p-0 gap-4">
-
-                                <Image width={200} height={100} className="md:object-contain" src={data.src} alt={data.title} />
-                                <div className="p-2">
-                                    <div className="text-left">
-                                        <h2 className="text-xl font-semibold ">{data.title}</h2>
-                                        <p className="text-sm text-gray-600">{data.description}</p>
-                                        <p className="text-sm ">{data.contributors}</p>
-                                    </div>
-                                </div>
-
-                            </CardContent>
-                        </Card> */}
                         <Drawer>
                             <DrawerTrigger className="w-full" onClick={() => fetchContributors(data.id)}>
                                 <Card key={index} className="w-full overflow-hidden">
@@ -235,7 +216,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                             <DrawerContent className="">
                                 <DrawerHeader className="md:flex md:px-12 p-4 justify-between">
                                     <div className="flex">
-                                        <Image width={200} height={100} className="object-contain" src={data.logo} alt="title" />
+                                        <Image width={200} height={100} className="object-contain h-[130px]" src={data.logo} alt="title" />
                                         <div className="p-5">
                                             <DrawerTitle className="text-3xl font-extrabold">{data.name}</DrawerTitle>
                                             <DrawerDescription className="text-xl">{data.description}</DrawerDescription>
@@ -285,7 +266,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                                                         </Avatar>
                                                         <span className="font-medium">{slicedAddress(data.user.id)}</span>
                                                         <span>-</span>
-                                                        <span className="ml-auto">${data.amount}</span>
+                                                        <span className="ml-auto">${weiToUSD(data.amount.toString())}</span>
                                                     </div>
                                                 ))}
                                                 <Button className="w-full mt-2" variant="outline">
@@ -339,7 +320,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                                     <AvatarImage alt={data.username} src={data.src} />
                                 </Avatar>
                                 <span className="font-medium">{data.username}</span>
-                                <span className="ml-auto">{data.amount}</span>
+                                <span className="ml-auto">{weiToUSD(data.amount)}</span>
                             </div>
                         ))}
                         <Button className="w-full mt-2" variant="outline">
