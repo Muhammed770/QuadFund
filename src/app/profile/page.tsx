@@ -68,6 +68,7 @@ export default function ProfilePage() {
       description: "A JavaScript library for building user interfaces.",
     }
   ]
+  
 
   // const account = useAccount()
 
@@ -94,7 +95,7 @@ export default function ProfilePage() {
             <div className="space-y-2">
               <div className='flex justify-between items-center'>
                 <h2 className="text-xl font-bold">Your Projects</h2>
-                <div className=""><DialogAddProject /></div>
+                {/* <div className=""><DialogAddProject  /></div> */}
               </div>
               {/* <p className="text-sm text-gray-500 dark:text-gray-400">You haven’t created any projects yet.</p> */}
               <div className="grid gap-4 pt-3 text-sm">

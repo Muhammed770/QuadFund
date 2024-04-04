@@ -22,7 +22,7 @@ import contractABI from "@/lib/abis/Contract.json";
 import { Checkbox } from "@/components/ui/checkbox"
 import { toast } from "sonner"
 
-export function DialogAddProject() {
+export function DialogAddProject(props:{projectId:string}) {
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [about, setAbout] = useState<string>("");
@@ -41,7 +41,7 @@ export function DialogAddProject() {
             const signer = provider.getSigner();
 
             // Instantiate the contract
-            const contract = new ethers.Contract("0x2dc56b6b7a483298971a22463d042f9ae95fb969", contractABI, signer);
+            const contract = new ethers.Contract(props.projectId, contractABI, signer);
 
             // Call the contract function to create a new project
             const tx = await contract.creatNewProject(title, description, "logoioe link", about, projectLink, contactLink);

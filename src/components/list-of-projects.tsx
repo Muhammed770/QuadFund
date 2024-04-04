@@ -2,8 +2,27 @@ import { ExternalLinkIcon } from "./externalLinkIcon";
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import Image from "next/image";
+import { getProjectsByOwner } from "@/lib/functions";
+import { useEffect } from "react";
+import { useAccount } from 'wagmi'
 
 export function ListOfProjects() {
+  const account = useAccount()
+  const address = account?.address ?? '';
+  const lowercaseAddress = address.toLowerCase();
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        console.log('address:', address);
+        
+        const projects = await getProjectsByOwner(lowercaseAddress);
+        console.log('All projects:', projects);
+      } catch (error) {
+        console.error('Error fetching all projects:', error);
+      }
+    };
+    fetchProjects();
+  }, [address]);
   const itemsData = [
     {
       title: "Classic Leather Jacket",
@@ -36,6 +55,7 @@ export function ListOfProjects() {
       link: "#"
     }
   ];
+  
   return (
     //md:grid-cols-2
     <section className="grid   gap-6 overflow-y-scroll"> 

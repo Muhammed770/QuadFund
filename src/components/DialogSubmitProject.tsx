@@ -14,7 +14,7 @@ import { ScrollArea } from "./ui/scroll-area"
 import { DialogAddProject } from "./DialogAddProject"
 import { toast } from "sonner"
 
-export function DialogSubmitProject() {
+export function DialogSubmitProject(props:{projectId:string}) {
 
     function handleSubmit() {
         //Add to contract
@@ -34,7 +34,7 @@ export function DialogSubmitProject() {
                         Select a project or create new one. Click submit when you're done.
                     </DialogDescription>
                 </DialogHeader>
-                <DialogAddProject />
+                <DialogAddProject projectId={props.projectId}/>
                 <ScrollArea className="h-80">
 
                     <ListOfProjects />
