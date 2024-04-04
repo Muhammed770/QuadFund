@@ -126,10 +126,8 @@ contract FundingContract is Initializable {
     function contribute(uint256 _projectId, uint256 _amount) public payable {
 
         require(eventStatus != EventStatus.Ended,"Voting time period ended");
-        require(users[msg.sender].userAddress != address(0),"User doesn't exist");
-        require(userExists[msg.sender],"User has not listed any project");
         require(projects[_projectId].projectId > 0,"Project doesn't exist");
-        require(msg.value >= _amount,"Not enough amount send");
+        // require(msg.value >= _amount,"Not enough amount send");
 
         Project storage contributingProject = projects[_projectId];
         require(contributingProject.projectOwner != msg.sender,"Can'vote to your own project");
@@ -142,7 +140,8 @@ contract FundingContract is Initializable {
         contributor.contributionsGave.push(contribution);
         
         users[msg.sender].contributionsGave.push(contribution);
-        
+        contributingProject.contributions.push(contribution);
+        contributingProject.contributionsReceived += _amount;
         uint256 counter;
         uint256  _totalVotingPower;
 
@@ -155,11 +154,11 @@ contract FundingContract is Initializable {
             project.votingPower = sumOfRoots * sumOfRoots;
             _totalVotingPower += sumOfRoots * sumOfRoots;
         }
-
+        
         for(counter = 1 ; counter <= _numberOfProjectsListed ; counter++){
             Project storage project = projects[counter];
-            project.amountWon = ((project.votingPower * prizePool)/_totalVotingPower) + project.contributionsReceived;
-            emit updateMatchingPool(project.projectId,((project.votingPower * prizePool)/_totalVotingPower));
+            project.matchedPrizePool = (project.votingPower * prizePool)/_totalVotingPower;
+            emit updateMatchingPool(counter,  project.matchedPrizePool);
         }
 
 
@@ -216,6 +215,9 @@ contract FundingContract is Initializable {
     function getProjectById(uint256 _projectId) public view returns (Project memory) {
         return projects[_projectId];
     }
+    function test(uint256 _projectId) public view returns (uint256) {
+        return projects[_projectId].contributions.length;
+    }
 
     function eventOwner() public view returns (address payable) {
         return _eventOwner;
@@ -225,7 +227,7 @@ contract FundingContract is Initializable {
         return users[_userAddress];
     }
 
-    function sqrt(uint x) internal pure returns (uint y) {
+    function sqrt(uint x) public pure returns (uint y) {
         uint z = (x + 1) / 2;
         y = x;
         while (z < y) {
