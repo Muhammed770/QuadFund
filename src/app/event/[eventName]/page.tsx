@@ -196,9 +196,9 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                                             <div className="text-left">
                                                 <h2 className="text-xl font-semibold ">{(data as { name: string, contributionsReceived: string, description: string, matchingPrizePool: string }).name}</h2>
                                                 <p className="text-sm text-gray-600">{(data as { description: string }).description}</p>
-                                                <div className="flex">
-                                                    <p className="text-sm ">{(data as { contributionsReceived: string }).contributionsReceived}</p>
-                                                    <p className="text-sm ">{(data as { matchingPrizePool: string }).matchingPrizePool}</p>
+                                                <div className="flex mt-1">
+                                                    <p className="text-sm ">${(data as { contributionsReceived: string }).contributionsReceived}</p>
+                                                    <p className="text-sm ml-3">${(data as { matchingPrizePool: string }).matchingPrizePool}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -208,17 +208,19 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                             </DrawerTrigger>
 
                             <DrawerContent className="">
-                                <DrawerHeader className="md:flex md:px-12 p-4">
-                                    <Image width={200} height={100} className="object-contain" src={(data as { src: string }).src} alt="title" />
-                                    <div className="p-5">
-                                        <DrawerTitle className="text-3xl font-extrabold">{(data as { name: string }).name}</DrawerTitle>
-                                        <DrawerDescription className="text-xl">{(data as { description: string }).description}</DrawerDescription>
-                                        <Link className="font-medium inline-flex items-center space-x-1.5 text-sm" href={(data as { website: string }).website}>
-                                            <ExternalLinkIcon className="h-4 w-4" />
-                                            <span>View</span>
-                                        </Link>
+                                <DrawerHeader className="md:flex md:px-12 p-4 justify-between">
+                                    <div className="flex">
+                                        <Image width={200} height={100} className="object-contain" src={(data as { src: string }).src} alt="title" />
+                                        <div className="p-5">
+                                            <DrawerTitle className="text-3xl font-extrabold">{(data as { name: string }).name}</DrawerTitle>
+                                            <DrawerDescription className="text-xl">{(data as { description: string }).description}</DrawerDescription>
+                                            <Link className="font-medium inline-flex items-center space-x-1.5 text-sm" href={(data as { website: string }).website}>
+                                                <ExternalLinkIcon className="h-4 w-4" />
+                                                <span>View</span>
+                                            </Link>
+                                        </div>
                                     </div>
-                                    <DialogAmount />
+                                    <DialogAmount projectId={(data as { projectId: string }).projectId} />
                                 </DrawerHeader>
                                 <Tabs defaultValue="about" className="md:px-12 px-4 pb-4">
                                     <TabsList>

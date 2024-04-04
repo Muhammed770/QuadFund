@@ -15,10 +15,15 @@ import { useState } from "react"
 import { toast } from "sonner";
 import { ethers } from "ethers";
 import contractABI from "@/lib/abis/Contract.json";
+import { useSearchParams } from "next/navigation";
 
-const DialogAmount = () => {
+const DialogAmount = (props:{projectId:string}) => {
 
     const [amount, setAmount] = useState(1)
+
+    const queries = useSearchParams();
+
+    const projectContractAddr = queries.get('id') as string;
 
     const contributeToProject = async () => {
         try {
@@ -28,14 +33,18 @@ const DialogAmount = () => {
             const signer = provider.getSigner();
 
             // Instantiate the contract
-            const contract = new ethers.Contract("0x2dc56b6b7a483298971a22463d042f9ae95fb969", contractABI, signer);
+            const contract = new ethers.Contract(projectContractAddr, contractABI, signer);
 
             // Call the contract function to contribute to the project
-            const tx = await contract.contribute("0x02452356c1bf14d42c50566b9acb19c33d3377e2206a83948657d32ec4264d74", 1,{value:5});
+            const amountinwei = amount * 10 ** 18;
+            console.log(amountinwei)
+            const tx = await contract.contribute(props.projectId, amountinwei,{ value: amountinwei+100000 });
             // Wait for transaction to complete
             await tx.wait();
+            toast.success("Contributed to project successfully")
             console.log('Transaction successful:', tx.hash);
         } catch (error) {
+            toast.error("Error occurred while contributing to project. Please try again.")
             console.error('Error occurred while contributing to project:', error);
         }
     }
@@ -44,10 +53,8 @@ const DialogAmount = () => {
         try {
             event.preventDefault();
             await contributeToProject();
-            toast.success("Contributed to project successfully")
         }
         catch (error) {
-            toast.error("Error occurred while contributing to project. Please try again.")
             console.error('Error while contributing:', error);
         }
     }
