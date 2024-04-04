@@ -20,7 +20,7 @@ import contractABI from "@/lib/abis/Factory.json"
 import { USDToWei } from "@/lib/functions"
 import { FACTORY_CONTRACT_ADDRESS } from "@/lib/const"
 import { useState } from "react"
-import { useRouter } from 'next/router'
+// import { useRouter } from 'next/router'
 
 export function DialogAddEvent() {
 
@@ -30,7 +30,7 @@ export function DialogAddEvent() {
     const [endDate, setEndDate] = useState<number | undefined>();
     const [isFormSubmitting, setIsFormSubmitting] = useState<boolean>(false);
 
-    const router = useRouter()
+    // const router = useRouter()
 
     // const handleTitleChange =(e :React.ChangeEvent<HTMLInputElement>)=> {
     //     setTitle(e.target.value);
@@ -67,7 +67,7 @@ export function DialogAddEvent() {
 
             console.log(tx.hash);
             toast.success("Event created successfully")
-            router.reload()
+            // router.reload()
 
         } catch (error) {
             console.log("Error occured while creating event", error);
