@@ -2,7 +2,6 @@ import { ethers } from "ethers";
 import { FACTORY_CONTRACT_ADDRESS, SUBGRAPH_QUERY_URL } from "./const";
 import FACTORY_ABI from "./abis/Factory.json";
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
-import { useStorageUpload } from "@thirdweb-dev/react"
 
 export const createNewEvent = async (
   eventName: string,
@@ -249,11 +248,13 @@ export const getContributionsByEventId = async (eventId: string) => {
 
   const query = `
     query {
-      contributions(where: {project_: {quadFundEvent_: {id: "${eventId}"}}},orderBy: amount, orderDirection: desc) {
-        user {
-          id
+      quadFundEvent(id:"${eventId}") {
+        contributions(orderBy:amount,orderDirection:desc){
+          user {
+            id
+          }
+          amount
         }
-        amount
       }
     }
   `;
@@ -268,7 +269,31 @@ export const getContributionsByEventId = async (eventId: string) => {
   }
 };
 
+export const getContributionsByUser = async (userAddress: string) => {
 
+  const query = `
+    query {
+      user(id:"${userAddress}"){
+        contributions{
+          amount
+          project{
+            name
+            id
+          }
+        }
+      }
+    }
+  `;
+  try {
+
+    const data = await mainnetClient.query({
+      query: gql(query),
+    });
+    return data.data.contributions;
+  } catch (err) {
+    console.log("Error fetching data: ", err);
+  }
+};
 
 export const weiToUSD = (wei: string) => {
   let eth = parseInt(wei) / 10 ** 18;

@@ -7,6 +7,8 @@ import { getProjectsByOwner,getEventByOwner } from "@/lib/functions";
 import WalletAddress from '@/components/WalletAddress';
 import { useEffect,useState } from "react";
 import { useAccount } from 'wagmi'
+import { set } from "date-fns";
+import { ProjectListType,QuadFundEventListType } from "@/types/types"
 
 export default function ProfilePage() {
   const projectData = [
@@ -60,7 +62,7 @@ export default function ProfilePage() {
     }
   ]
 
-  const events = [
+  const eventsData = [
     {
       title: "Next.js",
       description: "The React Framework – created and maintained by @vercel.",
@@ -70,6 +72,8 @@ export default function ProfilePage() {
       description: "A JavaScript library for building user interfaces.",
     }
   ]
+  const [projects, setProjects] = useState<ProjectListType>([])
+  const [events, setEvents] = useState<QuadFundEventListType>([])
   const account = useAccount()
   const address = account?.address ?? '';
   const lowercaseAddress = address.toLowerCase();
@@ -79,7 +83,9 @@ export default function ProfilePage() {
         console.log('address:', address);
 
         const projects = await getProjectsByOwner(lowercaseAddress);
+        setProjects(projects);
         const events = await getEventByOwner(lowercaseAddress);
+        setEvents(events);
         console.log('All projects:', projects);
         console.log('All events:', events);
       } catch (error) {
@@ -118,7 +124,7 @@ export default function ProfilePage() {
               </div>
               {/* <p className="text-sm text-gray-500 dark:text-gray-400">You haven’t created any projects yet.</p> */}
               <div className="grid gap-4 pt-3 text-sm">
-                {projectData.map((data, index) => (
+                {projects.map((data, index) => (
                   <Card key={index} className="w-full overflow-hidden">
 
                     <CardContent className="flex p-0 gap-4">
@@ -132,7 +138,7 @@ export default function ProfilePage() {
                       </div>
                       <div className="p-2 ml-20">
                         <div className="text-left">
-                          <h2 className="text-xl font-semibold ">{data.title}</h2>
+                          <h2 className="text-xl font-semibold ">{data.name}</h2>
                           <p className="text-sm text-gray-600">{data.description}</p>
                           {/* <p className="text-sm ">{data.contributors}</p> */}
                         </div>
@@ -156,7 +162,7 @@ export default function ProfilePage() {
                         <CardContent className="gap-4">
                           <div className="pt-3">
                             <div className="">
-                              <h4 className="text-lg font-semibold">{data.title}</h4>
+                              <h4 className="text-lg font-semibold">{data.name}</h4>
                               <p className="text-sm text-gray-600">{data.description}</p>
                             </div>
                           </div>
