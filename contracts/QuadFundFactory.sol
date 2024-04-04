@@ -1,4 +1,4 @@
-// SPDX-License-Identifier:MIT
+//SPDX-License-Identifier:MIT
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/proxy/Clones.sol";
@@ -6,11 +6,10 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./FundingContract.sol";
 
 contract FundingFactory is Ownable {
-
+    
     address immutable fundingImplementation;
     address[] public _deployedContracts;
 
-    // Events
     event newFundingCreated(
         address indexed owner,
         uint256 prizePool,
@@ -31,7 +30,11 @@ contract FundingFactory is Ownable {
         uint256 _duration
     ) external payable returns (address) {
         require(msg.value >= _prizePool, "deposit too small");
+
+        // Create a new contract
         address clone = Clones.clone(fundingImplementation);
+
+        // Initialize the contract
         (bool success, ) = clone.call(
             abi.encodeWithSignature(
                 "initialize(string,string,uint256,uint256)",
@@ -44,7 +47,10 @@ contract FundingFactory is Ownable {
         require(success, "creation failed");
 
         _deployedContracts.push(clone);
+
+        // Transfer the prize pool to the new contract
         payable(clone).transfer(_prizePool);
+
         emit newFundingCreated(
             msg.sender,
             _prizePool,

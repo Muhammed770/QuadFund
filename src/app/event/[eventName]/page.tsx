@@ -161,7 +161,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                     <Button variant="ghost">Dev Tool</Button>
                     <Button variant="ghost">DeFi</Button> */}
                 </div>
-                {cardData.map((data, index) => (
+                {projects && projects.map((data, index) => (
                     <div>
                         {/* <Card key={index} className="w-full overflow-hidden">
 
@@ -186,16 +186,20 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
 
                                         {/* <Image width={200} height={100} className="md:object-contain" src={data.src} alt={data.title} /> */}
                                         <div className="min-h-24 m-1">
-
-                                            <div className="absolute m-1 aspect-square bg-gray-100 rounded-lg overflow-hidden dark:bg-gray-800">
-                                                <Image alt="Avatar" className="aspect-[1/1] object-cover" height="80" src={data.src} width="80" />
-                                            </div>
+                                            {(data as { src: string })?.src && (
+                                                <div className="absolute m-1 aspect-square bg-gray-100 rounded-lg overflow-hidden dark:bg-gray-800">
+                                                    <Image alt="Avatar" className="aspect-[1/1] object-cover" height="80" src={(data as { src: string }).src} width="80" />
+                                                </div>
+                                            )}
                                         </div>
                                         <div className="p-2 ml-20">
                                             <div className="text-left">
-                                                <h2 className="text-xl font-semibold ">{data.title}</h2>
-                                                <p className="text-sm text-gray-600">{data.description}</p>
-                                                <p className="text-sm ">{data.contributors}</p>
+                                                <h2 className="text-xl font-semibold ">{(data as { name: string, contributionsReceived: string, description: string, matchingPrizePool: string }).name}</h2>
+                                                <p className="text-sm text-gray-600">{(data as { description: string }).description}</p>
+                                                <div className="flex">
+                                                    <p className="text-sm ">{(data as { contributionsReceived: string }).contributionsReceived}</p>
+                                                    <p className="text-sm ">{(data as { matchingPrizePool: string }).matchingPrizePool}</p>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -205,11 +209,11 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
 
                             <DrawerContent className="">
                                 <DrawerHeader className="md:flex md:px-12 p-4">
-                                    <Image width={200} height={100} className="object-contain" src={data.src} alt={data.title} />
+                                    <Image width={200} height={100} className="object-contain" src={(data as { src: string }).src} alt="title" />
                                     <div className="p-5">
-                                        <DrawerTitle className="text-3xl font-extrabold">{data.title}</DrawerTitle>
-                                        <DrawerDescription className="text-xl">{data.description}</DrawerDescription>
-                                        <Link className="font-medium inline-flex items-center space-x-1.5 text-sm" href={data.link}>
+                                        <DrawerTitle className="text-3xl font-extrabold">{(data as { name: string }).name}</DrawerTitle>
+                                        <DrawerDescription className="text-xl">{(data as { description: string }).description}</DrawerDescription>
+                                        <Link className="font-medium inline-flex items-center space-x-1.5 text-sm" href={(data as { website: string }).website}>
                                             <ExternalLinkIcon className="h-4 w-4" />
                                             <span>View</span>
                                         </Link>
@@ -232,19 +236,21 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                                         </div> */}
                                         <div className="mt-4 p-3">
                                             <h2 className="text-xl font-semibold">About</h2>
-                                            <p className="text-lg pt-2">{data.about}</p>
+                                            <p className="text-lg pt-2">{(data as { about: string }).about}</p>
                                         </div>
                                         <div className="mt-4 p-3">
                                             <h2 className="text-xl font-semibold">Contact</h2>
-                                            <Link href={""}>
-                                                <div className="pt-3"><Image src={"/twitter.svg"} alt="Twitter" width={30} height={30} /></div>
-                                            </Link>
+                                            {data && typeof data === 'object' && (
+                                                <Link href={(data as { twitter: string }).twitter}>
+                                                    <div className="pt-3"><Image src={"/twitter.svg"} alt="Twitter" width={30} height={30} /></div>
+                                                </Link>
+                                            )}
                                         </div>
                                     </TabsContent>
                                     <TabsContent value="contributers" className="h-[330px] overflow-scroll no-scrollbar">
                                         <div>
                                             <h2 className="text-xl font-semibold">Top Contributors</h2>
-                                            <div className="space-y-2 mt-2">
+                                            {/* <div className="space-y-2 mt-2">
                                                 {data.projectContributorsData.map((data, index) => (
                                                     <div key={index} className="flex items-center space-x-2">
                                                         <Avatar>
@@ -257,7 +263,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                                                 <Button className="w-full mt-2" variant="outline">
                                                     View Leaderboard
                                                 </Button>
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </TabsContent>
                                     <TabsContent value="owner" className="h-[330px] overflow-scroll no-scrollbar">
@@ -266,9 +272,9 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                                             <div className="space-y-2 mt-2">
                                                 <div className="flex items-center space-x-2">
                                                     <Avatar>
-                                                        <AvatarImage alt={data.owner} src="https://ui.shadcn.com/avatars/04.png/?height=24&width=24" />
+                                                        <AvatarImage alt="owner" src="https://ui.shadcn.com/avatars/04.png/?height=24&width=24" />
                                                     </Avatar>
-                                                    <span className="font-medium">{data.owner}</span>
+                                                    <span className="font-medium">{(data as { owner: { id: string } }).owner.id}</span>
                                                 </div>
                                             </div>
                                         </div>
