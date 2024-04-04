@@ -2,6 +2,7 @@ import { ethers } from "ethers";
 import { FACTORY_CONTRACT_ADDRESS, SUBGRAPH_QUERY_URL } from "./const";
 import FACTORY_ABI from "./abis/Factory.json";
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
+import { useStorageUpload } from "@thirdweb-dev/react"
 
 export const createNewEvent = async (
   eventName: string,
@@ -243,3 +244,7 @@ export const getContributionsByProjectId = async (projectId: string) => {
     console.log("Error fetching data: ", err);
   }
 };
+
+
+
+
