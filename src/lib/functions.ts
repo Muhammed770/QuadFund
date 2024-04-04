@@ -272,7 +272,8 @@ export const getContributionsByEventId = async (eventId: string) => {
 
 export const weiToUSD = (wei: string) => {
   let eth = parseInt(wei) / 10 ** 18;
-  let USD = eth * 3340 
+  let USD = eth * 3340;
+  USD = Math.round((USD + Number.EPSILON) * 1000) / 1000; // rounding to the nearest 1000th
   return USD;
 }
 

@@ -18,7 +18,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { HeartHandshake } from 'lucide-react';
 import { ExternalLinkIcon } from "@/components/externalLinkIcon"
 import DialogAmount from "@/components/DialogAmount"
-import { getEventById } from "@/lib/functions"
+import { getEventById, weiToUSD } from "@/lib/functions"
 import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { getProjectsByEventId } from "@/lib/functions"
@@ -218,9 +218,9 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                                                 <h2 className="text-xl font-semibold ">{data.name}</h2>
                                                 <p className="text-sm text-gray-600">{data.description}</p>
                                                 <div className="flex items-center justify-center">
-                                                    <p className="text-sm ">${data.contributionsReceived} Contributions</p>
+                                                    <p className="text-sm ">${weiToUSD(data.contributionsReceived)} Contributions</p>
                                                     <span className="ml-2">•</span>
-                                                    <p className="text-sm ml-2">${data.matchingPrizePool} Matched</p>
+                                                    <p className="text-sm ml-2">${weiToUSD(data.matchingPrizePool)} Matched</p>
                                                 </div>
                                             </div>
                                         </div>
