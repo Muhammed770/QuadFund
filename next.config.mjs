@@ -6,7 +6,12 @@ const nextConfig = {
       return config;
     },
   images: {
-    domains: ['images.unsplash.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      }
+    ]
   },
   env: {
     THIRDWEB_CLIENT_ID: process.env.THIRDWEB_CLIENT_ID,

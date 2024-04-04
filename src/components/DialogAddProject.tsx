@@ -21,8 +21,13 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { toast } from "sonner"
 import { useStorageUpload } from "@thirdweb-dev/react"
 import { convertIPFSUriToUrl } from "@/lib/utils"
+import { useSearchParams } from "next/navigation";
 
-export function DialogAddProject(props:{projectId:string}) {
+export function DialogAddProject(props: { projectId: string }) {
+
+    const queries = useSearchParams();
+
+    const projectContractAddr = queries.get('id') as string;
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [about, setAbout] = useState<string>("");
@@ -30,17 +35,17 @@ export function DialogAddProject(props:{projectId:string}) {
     const [contactLink, setContactLink] = useState<string>("");
     const [isInterestedInVC, setIsInterestedInVC] = useState(false);
     const [logo, setLogo] = useState<any>(null);
-    
+
     const { mutateAsync: upload } = useStorageUpload();
 
     const uploadDataToIPFS = async (): Promise<string> => {
         const uris = await upload({ data: Array.from(logo) });
         return uris[0]
     }
-
+    // console.log(projectContractAddr)
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         try {
-            let ipfsLink = ""
+            let ipfsLink = "https://ipfs.filebase.io/ipfs/QmPDfo2s43xX6mCPJg7WYRHuXvYNUypAXah43TzSy9mR4r"
             event.preventDefault();
             // Connect to Ethereum provider
 
@@ -49,21 +54,26 @@ export function DialogAddProject(props:{projectId:string}) {
             const signer = provider.getSigner();
 
             // Instantiate the contract
-            const contract = new ethers.Contract(props.projectId, contractABI, signer);
-            // if(typeof logo === null){
-            //     toast.error("Please upload a logo")
-            //     return
-            // } 
-            // else {
-            //     ipfsLink = await uploadDataToIPFS()
-            //     ipfsLink = convertIPFSUriToUrl(ipfsLink)
-            //     console.log("ipfsLink", ipfsLink);
-                
-            // }
-            // console.log("ipfsLink:", ipfsLink, "title:", title, "description:", description, "about:", about, 'projectLink:', projectLink, 'contactLink:',contactLink);
-            
+            const contract = new ethers.Contract(projectContractAddr, contractABI, signer);
+            if(typeof logo === null){
+                toast.error("Please upload a logo")
+                return
+            } 
+            else {
+                ipfsLink = await uploadDataToIPFS()
+                ipfsLink = convertIPFSUriToUrl(ipfsLink)
+                console.log("ipfsLink", ipfsLink);
+
+            }
+            console.log(ipfsLink)
+            console.log(title)
+            console.log(description)
+            console.log(about)
+            console.log(projectLink)
+            console.log(contactLink)
+
             // Call the contract function to create a new project
-            const tx = await contract.creatNewProject(title, description, "ipfsLink", about, projectLink, contactLink);
+            const tx = await contract.creatNewProject(title, description, ipfsLink, about, projectLink, contactLink);
 
             // Wait for transaction to complete
             await tx.wait();
@@ -83,7 +93,7 @@ export function DialogAddProject(props:{projectId:string}) {
     }
 
 
-    
+
 
     return (
         <Dialog>
@@ -132,13 +142,13 @@ export function DialogAddProject(props:{projectId:string}) {
                                             <Input id="contactLink" placeholder="Twitter Link" value={contactLink} onChange={(e) => setContactLink(e.target.value)} />
                                         </div>
                                         <div className="space-y-2">
-                                            <input type="checkbox" id="needsVc" onChange={(e)=>{setIsInterestedInVC(e.target.checked)}}/>
+                                            <input type="checkbox" id="needsVc" onChange={(e) => { setIsInterestedInVC(e.target.checked) }} />
                                             <label
-                                              htmlFor="needsVc"
-                                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ml-1"
+                                                htmlFor="needsVc"
+                                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ml-1"
                                             >
-                                              I'm interested in connecting with potential investors (VCs).
-                                              <span className="tooltiptext text-xs text-gray-500 font-light pl-2">We will send your projects to potential investors for secure funding and mentorship.Costs $10.</span>
+                                                I'm interested in connecting with potential investors (VCs).
+                                                <span className="tooltiptext text-xs text-gray-500 font-light pl-2">We will send your projects to potential investors for secure funding and mentorship.Costs $10.</span>
                                             </label>
                                         </div>
                                         {isInterestedInVC && <div className="space-y-2">
