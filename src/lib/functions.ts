@@ -247,4 +247,14 @@ export const getContributionsByProjectId = async (projectId: string) => {
 
 
 
+export const weiToUSD = async (wei: string) => {
+  let eth = parseInt(wei) / 10 ** 18;
+  let USD = eth * 3340
+  return USD;
+}
 
+export const USDToWei = async (USD: string) => {
+  let eth = parseInt(USD) / 3340;
+  let wei = eth * 10 ** 18
+  return wei;
+}

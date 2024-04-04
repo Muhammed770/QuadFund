@@ -39,13 +39,17 @@ export function DialogAddProject(props: { projectId: string }) {
     const { mutateAsync: upload } = useStorageUpload();
 
     const uploadDataToIPFS = async (): Promise<string> => {
-        const uris = await upload({ data: Array.from(logo) });
+        const file = logo ? logo[0] : null;
+        const extension = file.name.split('.').pop();
+        const newFile = new File([file], `image.${extension}`, { type: file.type });
+        const uris = await upload({ data: [newFile] });
+        console.log("uri",uris)
         return uris[0]
     }
     // console.log(projectContractAddr)
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         try {
-            let ipfsLink = "https://ipfs.filebase.io/ipfs/QmPDfo2s43xX6mCPJg7WYRHuXvYNUypAXah43TzSy9mR4r"
+            let ipfsLink = ""
             event.preventDefault();
             // Connect to Ethereum provider
 
@@ -61,6 +65,7 @@ export function DialogAddProject(props: { projectId: string }) {
             } 
             else {
                 ipfsLink = await uploadDataToIPFS()
+
                 ipfsLink = convertIPFSUriToUrl(ipfsLink)
                 console.log("ipfsLink", ipfsLink);
 
