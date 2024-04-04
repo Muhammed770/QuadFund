@@ -1,6 +1,7 @@
 //SPDX-License-Identifier:MIT
 pragma solidity ^0.8.20;
 
+//import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 
 enum EventStatus {
@@ -74,7 +75,7 @@ contract FundingContract is Initializable {
         uint256 _duration
     ) external initializer payable {
 
-        require(msg.value >= _prizePool,"Prize pool amount not send");
+        // require(msg.value >= _prizePool,"Prize pool amount not send");
         _eventOwner = payable(tx.origin);
         eventName = _eventName;
         eventDesc = _eventDesc;

@@ -4,40 +4,40 @@ import FACTORY_ABI from "./abis/Factory.json";
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 
 export const createNewEvent = async (
-    eventName: string,
-    eventDesc: string,
-    prizePool: string,
-    duration: string,
+  eventName: string,
+  eventDesc: string,
+  prizePool: string,
+  duration: string,
 ) => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum as ethers.providers.ExternalProvider)
+  const provider = new ethers.providers.Web3Provider(window.ethereum as ethers.providers.ExternalProvider)
 
-    const contract = new ethers.Contract(FACTORY_CONTRACT_ADDRESS, FACTORY_ABI, provider)
+  const contract = new ethers.Contract(FACTORY_CONTRACT_ADDRESS, FACTORY_ABI, provider)
 
-    await window.ethereum.request({ method: 'eth_requestAccounts' });
+  await window.ethereum.request({ method: 'eth_requestAccounts' });
 
-    const signer = provider.getSigner();
-    console.log({ signer })
+  const signer = provider.getSigner();
+  console.log({ signer })
 
-    const transaction = await contract.connect(signer).createFundingContract(
-        eventName,
-        eventDesc,
-        prizePool,
-        duration
-    );
-    console.log({ transaction })
+  const transaction = await contract.connect(signer).createFundingContract(
+    eventName,
+    eventDesc,
+    prizePool,
+    duration
+  );
+  console.log({ transaction })
 
-    const response = await transaction.wait();
-    return response
+  const response = await transaction.wait();
+  return response
 }
 
 const mainnetClient = new ApolloClient({
-    uri: SUBGRAPH_QUERY_URL,
-    cache: new InMemoryCache(),
+  uri: SUBGRAPH_QUERY_URL,
+  cache: new InMemoryCache(),
 });
 
 export const getAllEvents = async () => {
 
-    const query = `
+  const query = `
     query {
         quadFundEvents {
           id
@@ -53,20 +53,20 @@ export const getAllEvents = async () => {
         }
       }
   `;
-    try {
+  try {
 
-        const data = await mainnetClient.query({
-            query: gql(query),
-        });
-        return data.data.quadFundEvents;
-    } catch (err) {
-        console.log("Error fetching data: ", err);
-    }
+    const data = await mainnetClient.query({
+      query: gql(query),
+    });
+    return data.data.quadFundEvents;
+  } catch (err) {
+    console.log("Error fetching data: ", err);
+  }
 };
 
 export const getEventById = async (eventId: string) => {
 
-    const query = `
+  const query = `
     query {
         quadFundEvents(where: {id: "${eventId}"}) {
           id
@@ -82,20 +82,20 @@ export const getEventById = async (eventId: string) => {
         }
       }
   `;
-    try {
+  try {
 
-        const data = await mainnetClient.query({
-            query: gql(query),
-        });
-        return data.data.quadFundEvents;
-    } catch (err) {
-        console.log("Error fetching data: ", err);
-    }
+    const data = await mainnetClient.query({
+      query: gql(query),
+    });
+    return data.data.quadFundEvents;
+  } catch (err) {
+    console.log("Error fetching data: ", err);
+  }
 };
 
 export const getEventByOwner = async (ownerAddress: string) => {
 
-    const query = `
+  const query = `
     query {
         quadFundEvents(where: {owner_: {id: "${ownerAddress}"}}) {
           id
@@ -111,20 +111,20 @@ export const getEventByOwner = async (ownerAddress: string) => {
         }
       }
   `;
-    try {
+  try {
 
-        const data = await mainnetClient.query({
-            query: gql(query),
-        });
-        return data.data.quadFundEvents;
-    } catch (err) {
-        console.log("Error fetching data: ", err);
-    }
+    const data = await mainnetClient.query({
+      query: gql(query),
+    });
+    return data.data.quadFundEvents;
+  } catch (err) {
+    console.log("Error fetching data: ", err);
+  }
 };
 
 export const getProjectsByEventId = async (eventId: string) => {
 
-    const query = `
+  const query = `
     query {
         projects(where: {quadFundEvent_: {id: "${eventId}"}}) {
           about
@@ -144,20 +144,20 @@ export const getProjectsByEventId = async (eventId: string) => {
         }
       }
   `;
-    try {
+  try {
 
-        const data = await mainnetClient.query({
-            query: gql(query),
-        });
-        return data.data.projects;
-    } catch (err) {
-        console.log("Error fetching data: ", err);
-    }
+    const data = await mainnetClient.query({
+      query: gql(query),
+    });
+    return data.data.projects;
+  } catch (err) {
+    console.log("Error fetching data: ", err);
+  }
 };
 
 export const getProjectById = async (projectId: string) => {
 
-    const query = `
+  const query = `
     query {
         projects(where: {id: "${projectId}"}) {
           about
@@ -177,20 +177,20 @@ export const getProjectById = async (projectId: string) => {
         }
       }
   `;
-    try {
+  try {
 
-        const data = await mainnetClient.query({
-            query: gql(query),
-        });
-        return data.data.projects;
-    } catch (err) {
-        console.log("Error fetching data: ", err);
-    }
+    const data = await mainnetClient.query({
+      query: gql(query),
+    });
+    return data.data.projects;
+  } catch (err) {
+    console.log("Error fetching data: ", err);
+  }
 };
 
 export const getProjectsByOwner = async (ownerAddress: string) => {
 
-    const query = `
+  const query = `
     query {
         projects(where: {owner_: {id: "${ownerAddress}"}}) {
           about
@@ -210,13 +210,36 @@ export const getProjectsByOwner = async (ownerAddress: string) => {
         }
       }
   `;
-    try {
+  try {
 
-        const data = await mainnetClient.query({
-            query: gql(query),
-        });
-        return data.data.projects;
-    } catch (err) {
-        console.log("Error fetching data: ", err);
+    const data = await mainnetClient.query({
+      query: gql(query),
+    });
+    return data.data.projects;
+  } catch (err) {
+    console.log("Error fetching data: ", err);
+  }
+};
+
+export const getContributionsByProjectId = async (projectId: string) => {
+
+  const query = `
+    query {
+      contributions(where: {project_: {id: "${projectId}"}}) {
+        amount
+        user {
+          id
+        }
+      }
     }
+  `;
+  try {
+
+    const data = await mainnetClient.query({
+      query: gql(query),
+    });
+    return data.data.contributions;
+  } catch (err) {
+    console.log("Error fetching data: ", err);
+  }
 };
