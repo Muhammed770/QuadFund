@@ -11,33 +11,7 @@ import { set } from "date-fns";
 import { ProjectListType,QuadFundEventListType } from "@/types/types"
 
 export default function ProfilePage() {
-  const projectData = [
-    {
-      title: "Next.js",
-      description: "The React Framework – created and maintained by @vercel.",
-      src: "/placeholder.svg"
-    },
-    {
-      title: "React",
-      description: "A JavaScript library for building user interfaces.",
-      src: "/placeholder.svg"
-    },
-    {
-      title: "Vue.js",
-      description: "The Progressive JavaScript Framework.",
-      src: "/placeholder.svg"
-    },
-    {
-      title: "Angular",
-      description: "A platform and framework for building single-page client applications using HTML and TypeScript.",
-      src: "/placeholder.svg"
-    },
-    {
-      title: "Svelte",
-      description: "A radical new approach to building user interfaces.",
-      src: "/placeholder.svg"
-    }
-  ];
+
 
   const contributions = [
     {
@@ -62,16 +36,7 @@ export default function ProfilePage() {
     }
   ]
 
-  const eventsData = [
-    {
-      title: "Next.js",
-      description: "The React Framework – created and maintained by @vercel.",
-    },
-    {
-      title: "React",
-      description: "A JavaScript library for building user interfaces.",
-    }
-  ]
+ 
   const [projects, setProjects] = useState<ProjectListType>([])
   const [events, setEvents] = useState<QuadFundEventListType>([])
   const account = useAccount()
@@ -82,9 +47,21 @@ export default function ProfilePage() {
       try {
         console.log('address:', address);
 
-        const projects = await getProjectsByOwner(lowercaseAddress);
-        setProjects(projects);
+        const projects:ProjectListType = await getProjectsByOwner(lowercaseAddress);
+        const uniqueProjectNames = new Set();
+
+        const filteredProjects = projects.filter(project => {
+          if(!uniqueProjectNames.has(project.name)){
+            uniqueProjectNames.add(project.name)
+            return true
+          }else {
+            return false
+          }
+        })
+
+        setProjects(filteredProjects);
         const events = await getEventByOwner(lowercaseAddress);
+
         setEvents(events);
         console.log('All projects:', projects);
         console.log('All events:', events);
@@ -133,7 +110,7 @@ export default function ProfilePage() {
                       <div className="min-h-24 m-1">
 
                         <div className="absolute m-1 aspect-square bg-gray-100 rounded-lg overflow-hidden dark:bg-gray-800">
-                          <Image alt="Avatar" className="aspect-[1/1] object-cover" height="80" src={data.src} width="80" />
+                          <Image alt="Avatar" className="aspect-[1/1] object-cover" height="80" src={data.logo``} width="80" />
                         </div>
                       </div>
                       <div className="p-2 ml-20">

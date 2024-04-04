@@ -13,13 +13,50 @@ import { ListOfProjects } from "./list-of-projects"
 import { ScrollArea } from "./ui/scroll-area"
 import { DialogAddProject } from "./DialogAddProject"
 import { toast } from "sonner"
+import { ProjectType } from "@/types/types"
+import { useState } from "react"
+import { ethers } from "ethers"
+import { useSearchParams } from "next/navigation"
+import contractABI from "@/lib/abis/Contract.json";
 
-export function DialogSubmitProject(props:{projectId:string}) {
+export function DialogSubmitProject(props: { projectId: string }) {
 
-    function handleSubmit() {
+    const queries = useSearchParams();
+
+    const projectContractAddr = queries.get('id') as string;
+
+    const [projectSelected, setProjectSelected] = useState<ProjectType>();
+    const handleSubmit = async () => {
         //Add to contract
+        try {
+            if(projectSelected){
 
-        toast.success("Project added successfully")
+                await window.ethereum.request({ method: 'eth_requestAccounts' });
+                const provider = new ethers.providers.Web3Provider(window.ethereum);
+                const signer = provider.getSigner();
+                const contract = new ethers.Contract(projectContractAddr, contractABI, signer);
+    
+                // Call the contract function to create a new project
+                const tx = await contract.creatNewProject(projectSelected?.name,projectSelected.description,projectSelected.logo,projectSelected.about,projectSelected.website,projectSelected.twitter);
+    
+                // Wait for transaction to complete
+                await tx.wait();
+                console.log('Transaction successful:', tx.hash);
+    
+                console.log("Project selected:", projectSelected);
+                toast.success("Project added successfully")
+            } else {
+                toast.error("Please select a project")
+            }
+
+        } catch (error) {
+            console.error('Error submitting project:', error);
+            toast.error("Error submitting project")
+        }
+    }
+
+    const handleProjectSelect = (item: ProjectType) => {
+        setProjectSelected(item);
     }
 
     return (
@@ -34,13 +71,13 @@ export function DialogSubmitProject(props:{projectId:string}) {
                         Select a project or create new one. Click submit when you're done.
                     </DialogDescription>
                 </DialogHeader>
-                <DialogAddProject projectId={props.projectId}/>
+                <DialogAddProject projectId={props.projectId} />
                 <ScrollArea className="h-80">
 
-                    <ListOfProjects />
+                    <ListOfProjects onProjectSelect={handleProjectSelect} />
                 </ScrollArea>
                 <DialogFooter>
-                    <Button onClick={handleSubmit}>Submit</Button>
+                    <Button onClick={handleSubmit} disabled={!projectSelected}>Submit</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
