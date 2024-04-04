@@ -248,13 +248,37 @@ export const getContributionsByEventId = async (eventId: string) => {
 
   const query = `
     query {
-      quadFundEvents(where: {id: "${eventId}"}) {
-        projects {
-          contributions {
-            amount
-            user {
-              id
-            }
+      quadFundEvent(id:"${eventId}") {
+        contributions(orderBy:amount,orderDirection:desc){
+          user {
+            id
+          }
+          amount
+        }
+      }
+    }
+  `;
+  try {
+
+    const data = await mainnetClient.query({
+      query: gql(query),
+    });
+    return data.data.contributions;
+  } catch (err) {
+    console.log("Error fetching data: ", err);
+  }
+};
+
+export const getContributionsByUser = async (userAddress: string) => {
+
+  const query = `
+    query {
+      user(id:"${userAddress}"){
+        contributions{
+          amount
+          project{
+            name
+            id
           }
         }
       }
