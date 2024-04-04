@@ -24,7 +24,7 @@ import { useSearchParams } from "next/navigation"
 import { getProjectsByEventId } from "@/lib/functions"
 import { QuadFundEventListType } from "@/types/types"
 import { ProjectListType } from "@/types/types"
-import {getContributionsByProjectId} from "@/lib/functions"
+import {getContributionsByProjectId , getContributionsByEventId} from "@/lib/functions"
 import { set } from "date-fns"
 
 const EventPage = ({ params }: { params: { eventName: string } }) => {
@@ -34,6 +34,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
     const [eventId, setEventId] = useState<string>(""); // Store fetched id
     const [projects, setProjects] = useState<ProjectListType>([]); // Store fetched projects
     const [projectContributors, setProjectContributors] = useState<object>()
+    const [topContributors, setTopContributors] = useState<object>()
 
     const id = queries.get('id') as string;
 
@@ -42,8 +43,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
             console.log('Project ID:', id);
             const projectContributions: any = await getContributionsByProjectId(id);
             setProjectContributors(projectContributions);
-            console.log(projectContributions)
-            console.log('Contributors:', projectContributors);
+            console.log('Contributors:', projectContributions);
         } catch (error) {
             console.error('Error fetching contributors:', error);
         }
@@ -58,10 +58,12 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                     setEventId(id);
                     const event = await getEventById(id);
                     const projects = await getProjectsByEventId(id);
+                    const topContributors = await getContributionsByEventId(id);
                     setProjects(projects);
+                    setTopContributors(topContributors);
                     console.log('Projects:', projects);
                     console.log('Event:', event);
-                    
+                    console.log('Top Contributors:', topContributors);
                 }
                 console.log('Event ID:', id);
             } catch (error) {
