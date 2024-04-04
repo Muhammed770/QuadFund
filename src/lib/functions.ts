@@ -279,6 +279,6 @@ export const weiToUSD = (wei: string) => {
 
 export const USDToWei = (USD: string) => {
   let eth = parseInt(USD) / 3340;
-  let wei = eth * 10 ** 18
+  let wei = Math.round(eth * 10 ** 18);
   return wei;
 }
