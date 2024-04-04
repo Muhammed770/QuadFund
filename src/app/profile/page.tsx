@@ -27,9 +27,21 @@ export default function ProfilePage() {
       try {
         console.log('address:', address);
 
-        const projects = await getProjectsByOwner(lowercaseAddress);
-        setProjects(projects);
+        const projects:ProjectListType = await getProjectsByOwner(lowercaseAddress);
+        const uniqueProjectNames = new Set();
+
+        const filteredProjects = projects.filter(project => {
+          if(!uniqueProjectNames.has(project.name)){
+            uniqueProjectNames.add(project.name)
+            return true
+          }else {
+            return false
+          }
+        })
+
+        setProjects(filteredProjects);
         const events = await getEventByOwner(lowercaseAddress);
+
         setEvents(events);
         const contributions = await getContributionsByUser(lowercaseAddress);
         setContributions(contributions);
@@ -154,7 +166,7 @@ const handleSubmit = async (projectId:string) => {
 
               <div className="space-y-2">
                 <h2 className="text-xl font-bold mt-8">Your Contributions</h2>
-                {contributions.length>0 ? <div className="grid gap-4 pt-2 text-sm">
+                {contributions?.length>0 ? <div className="grid gap-4 pt-2 text-sm">
                 {contributions.map((data: any, index: number) => (
                   <Card key={index} className="w-full overflow-hidden">
                     <CardContent className="gap-4">
