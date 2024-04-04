@@ -24,6 +24,7 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/sonner"
+import { ThirdwebProvider } from "@thirdweb-dev/react";
 
 //  const metadata: Metadata = {
 //   title: "QuadFund",
@@ -50,16 +51,20 @@ export default function RootLayout({
     <html lang="en">
       <head><title>QuadFund</title></head>
       <body className={inter.className}>
-      <WagmiProvider config={config}>
-        <QueryClientProvider client={queryClient}>
-          <RainbowKitProvider>
-            <MainNavbar/>
-              {children}
-            <Toaster />
-          </RainbowKitProvider>
-        </QueryClientProvider>
-      </WagmiProvider>
-        </body>
+        <WagmiProvider config={config}>
+          <QueryClientProvider client={queryClient}>
+            <RainbowKitProvider>
+              <ThirdwebProvider
+                clientId={process.env.THIRDWEB_CLIENT_ID} // You can get a client id from dashboard settings
+              >
+                <MainNavbar />
+                {children}
+                <Toaster />
+              </ThirdwebProvider>
+            </RainbowKitProvider>
+          </QueryClientProvider>
+        </WagmiProvider>
+      </body>
     </html>
   );
 }

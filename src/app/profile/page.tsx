@@ -1,10 +1,12 @@
-
+"use client"
 import { DialogAddProject } from "@/components/DialogAddProject";
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar"
 import { Card, CardContent } from "@/components/ui/card"
 import Image from "next/image";
-// import { useAccount } from 'wagmi'
+import { getProjectsByOwner,getEventByOwner } from "@/lib/functions";
 import WalletAddress from '@/components/WalletAddress';
+import { useEffect,useState } from "react";
+import { useAccount } from 'wagmi'
 
 export default function ProfilePage() {
   const projectData = [
@@ -68,7 +70,24 @@ export default function ProfilePage() {
       description: "A JavaScript library for building user interfaces.",
     }
   ]
-  
+  const account = useAccount()
+  const address = account?.address ?? '';
+  const lowercaseAddress = address.toLowerCase();
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        console.log('address:', address);
+
+        const projects = await getProjectsByOwner(lowercaseAddress);
+        const events = await getEventByOwner(lowercaseAddress);
+        console.log('All projects:', projects);
+        console.log('All events:', events);
+      } catch (error) {
+        console.error('Error fetching all projects:', error);
+      }
+    };
+    fetchProjects();
+  }, [address]);
 
   // const account = useAccount()
 

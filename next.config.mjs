@@ -7,6 +7,9 @@ const nextConfig = {
     },
   images: {
     domains: ['images.unsplash.com'],
+  },
+  env: {
+    THIRDWEB_CLIENT_ID: process.env.THIRDWEB_CLIENT_ID,
   }
   };
 

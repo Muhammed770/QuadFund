@@ -51,7 +51,7 @@ export function DialogAddEvent() {
             console.log("prizePool", prizePool)
             // console.log("prizePool in ETH", ethers.utils.parseEther(prizePool.toString()))
             const amountinwei = parseFloat(prizePool) * 10 ** 18;
-            const tx = await contract.createFundingContract(title, description, amountinwei, endDate, { value: amountinwei+100000 });
+            const tx = await contract.createFundingContract(title, description, amountinwei, endDate, { value: amountinwei+1000000 });
             //waiting for transaction to completew
             await tx.wait();
             console.log('Transaction successfull', tx.hash);

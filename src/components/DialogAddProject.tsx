@@ -17,10 +17,10 @@ import { CardContent, CardFooter, Card } from "@/components/ui/card";
 import { useState } from "react";
 import { ethers } from "ethers";
 import contractABI from "@/lib/abis/Contract.json";
-// import { FACTORY_CONTRACT_ADDRESS } from "@/lib/const";
-
 import { Checkbox } from "@/components/ui/checkbox"
 import { toast } from "sonner"
+import { useStorageUpload } from "@thirdweb-dev/react"
+import { convertIPFSUriToUrl } from "@/lib/utils"
 
 export function DialogAddProject(props:{projectId:string}) {
     const [title, setTitle] = useState<string>("");
@@ -29,10 +29,18 @@ export function DialogAddProject(props:{projectId:string}) {
     const [projectLink, setProjectLink] = useState<string>("");
     const [contactLink, setContactLink] = useState<string>("");
     const [isInterestedInVC, setIsInterestedInVC] = useState(false);
+    const [logo, setLogo] = useState<any>(null);
+    
+    const { mutateAsync: upload } = useStorageUpload();
+
+    const uploadDataToIPFS = async (): Promise<string> => {
+        const uris = await upload({ data: Array.from(logo) });
+        return uris[0]
+    }
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         try {
-            
+            let ipfsLink = ""
             event.preventDefault();
             // Connect to Ethereum provider
 
@@ -42,9 +50,20 @@ export function DialogAddProject(props:{projectId:string}) {
 
             // Instantiate the contract
             const contract = new ethers.Contract(props.projectId, contractABI, signer);
-
+            // if(typeof logo === null){
+            //     toast.error("Please upload a logo")
+            //     return
+            // } 
+            // else {
+            //     ipfsLink = await uploadDataToIPFS()
+            //     ipfsLink = convertIPFSUriToUrl(ipfsLink)
+            //     console.log("ipfsLink", ipfsLink);
+                
+            // }
+            // console.log("ipfsLink:", ipfsLink, "title:", title, "description:", description, "about:", about, 'projectLink:', projectLink, 'contactLink:',contactLink);
+            
             // Call the contract function to create a new project
-            const tx = await contract.creatNewProject(title, description, "logoioe link", about, projectLink, contactLink);
+            const tx = await contract.creatNewProject(title, description, "ipfsLink", about, projectLink, contactLink);
 
             // Wait for transaction to complete
             await tx.wait();
@@ -98,7 +117,7 @@ export function DialogAddProject(props:{projectId:string}) {
                                         </div>
                                         <div className="space-y-2">
                                             <Label>Logo</Label>
-                                            <Input accept="image/*" id="logo" type="file" />
+                                            <Input accept="image/*" id="logo" type="file" onChange={(e) => setLogo(e.target.files)} />
                                         </div>
                                         {/* <div className="space-y-2">
                                             <Label>Pictures</Label>
