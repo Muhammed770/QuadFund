@@ -249,7 +249,7 @@ export const getContributionsByEventId = async (eventId: string) => {
 
   const query = `
     query {
-      contributions(where: {project_: {quadFundEvent_: {id: "${eventId}"}}}) {
+      contributions(where: {project_: {quadFundEvent_: {id: "${eventId}"}}},orderBy: amount, orderDirection: desc) {
         user {
           id
         }
