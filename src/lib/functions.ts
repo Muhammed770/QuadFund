@@ -263,7 +263,7 @@ export const getContributionsByEventId = async (eventId: string) => {
     const data = await mainnetClient.query({
       query: gql(query),
     });
-    return data.data.contributions;
+    return data.data.quadFundEvent.contributions;
   } catch (err) {
     console.log("Error fetching data: ", err);
   }
