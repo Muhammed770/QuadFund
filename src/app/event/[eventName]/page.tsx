@@ -21,14 +21,17 @@ import DialogAmount from "@/components/DialogAmount"
 import { getEventById } from "@/lib/functions"
 import { useEffect,useState } from "react"
 import { useSearchParams } from "next/navigation"
+import { getProjectsByEventId } from "@/lib/functions"
+import { QuadFundEventListType } from "@/types/types"
 
 const EventPage = ({ params }: { params: { eventName: string } }) => {
 
     const queries = useSearchParams();
     const [isLoading, setIsLoading] = useState(true); // Loading state
-    const [eventId, setEventId] = useState(""); // Store fetched id
-   
-    const id = queries.get('id');
+    const [eventId, setEventId] = useState<string>(""); // Store fetched id
+    const [projects, setProjects] = useState([]); // Store fetched projects
+
+    const id = queries.get('id') as string;
     useEffect(() => {
         const fetchEvent = async () => {
             try {
@@ -37,6 +40,9 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                 if (typeof id === 'string') {
                     setEventId(id);
                     const event = await getEventById(id);
+                    const projects = await getProjectsByEventId(id);
+                    setProjects(projects);
+                    console.log('Projects:', projects);
                     console.log('Event:', event);
                 }
                 console.log('Event ID:', id);
@@ -46,6 +52,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
         };
         fetchEvent();
     }, []);
+
 
     const cardData = [
         {
@@ -134,7 +141,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                         <Badge className="flex-none bg-red-200 p-2" variant="secondary">Voting ends in:05:04:00</Badge>
                         <div className="lg:hidden">
 
-                            <DialogSubmitProject />
+                            <DialogSubmitProject projectId={eventId} />
                         </div>
                     </div>
 
@@ -286,7 +293,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                     <p className="text-3xl font-bold">$68,143</p>
                     <h2 className="text-xl font-semibold mt-4">Available Matching Pool</h2>
                     <p className="text-3xl font-bold">$50,000</p>
-                    <DialogSubmitProject />
+                    <DialogSubmitProject projectId={""}/>
 
                 </div>
                 <div>
