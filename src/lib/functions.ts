@@ -245,6 +245,39 @@ export const getContributionsByProjectId = async (projectId: string) => {
   }
 };
 
+export const getContributionsByEventId = async (eventId: string) => {
+
+  const query = `
+    query {
+      contributions(where: {project_: {quadFundEvent_: {id: "${eventId}"}}},orderBy: amount, orderDirection: desc) {
+        user {
+          id
+        }
+        amount
+      }
+    }
+  `;
+  try {
+
+    const data = await mainnetClient.query({
+      query: gql(query),
+    });
+    return data.data.contributions;
+  } catch (err) {
+    console.log("Error fetching data: ", err);
+  }
+};
 
 
 
+export const weiToUSD = async (wei: string) => {
+  let eth = parseInt(wei) / 10 ** 18;
+  let USD = eth * 3340
+  return USD;
+}
+
+export const USDToWei = async (USD: string) => {
+  let eth = parseInt(USD) / 3340;
+  let wei = eth * 10 ** 18
+  return wei;
+}

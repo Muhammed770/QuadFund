@@ -15,9 +15,9 @@ import { Award } from 'lucide-react';
 import { Calendar } from 'lucide-react';
 import { getAllEvents } from "@/lib/functions"
 import { useState, useEffect } from 'react';
-
+import { QuadFundEventListType } from "@/types/types";
 export default function Home() {
-  const [events, setEvents] = useState<any[]>([]);
+  const [events, setEvents] = useState<QuadFundEventListType>([]);
 
   useEffect(() => {
     const fetchAllEvents = async () => {
@@ -40,8 +40,8 @@ export default function Home() {
     if (num < 1000) {
       return number
     }
-    const formattedNumber = (num / 1000);
-    return formattedNumber + 'k';
+    const formattedNumber = (num / 10**15);
+    return formattedNumber + 'Fennies';
   }
 
   const account = useAccount()
