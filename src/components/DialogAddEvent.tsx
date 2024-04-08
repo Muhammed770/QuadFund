@@ -129,7 +129,7 @@ export function DialogAddEvent() {
                                             <Input id="prize" type="text" placeholder="Prize pool" value={prizePool} onChange={(e) => { setPrizePool(e.target.value) }} />
                                         </div>
                                         <div className="space-y-2">
-                                            <Label htmlFor="date">End Date </Label>
+                                            <Label htmlFor="date">Event duration</Label>
                                             {/* <DatePickerDemo onDateSelect={handleDateSelect} /> */}
                                             <DurationPicker oneDurationSelect={handleDurationSelect}/>
                                            

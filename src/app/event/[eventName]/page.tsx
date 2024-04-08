@@ -64,6 +64,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
 
                     const projects = await getProjectsByEventId(id);
                     const topContributors = await getContributionsByEventId(id);
+                    
                     setProjects(projects);
                     setTopContributors(topContributors);
                 }
@@ -306,7 +307,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                     <h2 className="text-xl font-semibold">Total Donations</h2>
                     <p className="text-3xl font-bold">$68,143</p>
                     <h2 className="text-xl font-semibold mt-4">Available Matching Pool</h2>
-                    <p className="text-3xl font-bold">$50,000</p>
+                    {eventData && <p className="text-3xl font-bold">${weiToUSD(eventData[0].prizePool)}</p>}
                     {eventData && Number(eventData[0].endTime) > Date.now() && <DialogSubmitProject projectId={""} />}
 
                 </div>
