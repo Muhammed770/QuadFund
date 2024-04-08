@@ -63,7 +63,7 @@ export default function Home() {
                 <Card className="flex justify-between h-[200px]">
                   <CardHeader>
                     <CardTitle>{event.name}</CardTitle>
-                    <CardDescription>{event.description}</CardDescription>
+                    <CardDescription >{event.description}</CardDescription>
                     <div className="md:py-6 md:flex ">
                       {parseInt(event.endTime) > Date.now() ?
                         <div className="text-sm bg-green-100 p-2 rounded-lg w-fit mr-2 flex items-center">
