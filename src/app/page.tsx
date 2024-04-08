@@ -53,7 +53,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="pt-7 grid lg:grid-cols-3 md:grid-col-2 gap-4">
+        <div className="pt-7 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {events && events.map((event) => (
             <div key={event.id} className="flex-col justify-center items-center my-3">
               <Link href={{
@@ -82,12 +82,11 @@ export default function Home() {
                         </div>
                       
                       }
-                          <div className="text-sm bg-gray-100 p-2 rounded-lg w-fit flex items-center">
+                          <div className="text-xs text-slate-500  p-2 rounded-lg w-fit flex items-center">
                             <span className="mr-1"><Calendar size={18} /></span>
-                            {/* Convert timestamp to human-readable date */}
-                            {new Date(parseInt(event.startTime)).toLocaleDateString()} -
-                            {/* <span className="mr-1"><Calendar size={18} /></span> */}
-                            {/* Convert timestamp to human-readable date */}
+                            {/* {new Date(parseInt(event.startTime)).toLocaleDateString()} */} 
+                            
+                           
                             {new Date(parseInt(event.endTime)).toLocaleDateString()}
                           </div>
                         </div>
