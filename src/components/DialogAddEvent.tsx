@@ -91,7 +91,7 @@ export function DialogAddEvent() {
     const handleDurationSelect = (days:number , hours:number , minutes:number) => {
         const durationInSeconds = (days * 24 * 60 * 60) + (hours * 60 * 60) + (minutes * 60);
         setDuration(durationInSeconds); // Update the duration state
-        console.log("durationInSeconds", durationInSeconds);
+        // console.log("durationInSeconds", durationInSeconds);
         
     }
 
