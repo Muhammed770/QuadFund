@@ -13,7 +13,7 @@ import { useAccount } from 'wagmi'
 import { Button } from "@/components/ui/button"
 import { Award } from 'lucide-react';
 import { Calendar } from 'lucide-react';
-import { getAllEvents,weiToUSD } from "@/lib/functions"
+import { getAllEvents, weiToUSD } from "@/lib/functions"
 import { useState, useEffect } from 'react';
 import { QuadFundEventListType } from "@/types/types";
 export default function Home() {
@@ -23,6 +23,7 @@ export default function Home() {
     const fetchAllEvents = async () => {
       try {
         const events = await getAllEvents();
+        
         console.log('All events:', events);
         setEvents(events);
       } catch (error) {
@@ -57,26 +58,39 @@ export default function Home() {
             <div key={event.id} className="flex-col justify-center items-center my-3">
               <Link href={{
                 pathname: `/event/${event.name}`,
-                query: { id: event.id, name: event.name}
+                query: { id: event.id, name: event.name }
               }}>
                 <Card className="flex justify-between h-[200px]">
                   <CardHeader>
                     <CardTitle>{event.name}</CardTitle>
                     <CardDescription>{event.description}</CardDescription>
                     <div className="md:py-6 md:flex ">
-                      <div className="text-sm bg-green-100 p-2 rounded-lg w-fit mr-2 flex items-center">
-                        <div className="mx-1.5 relative flex h-3 w-3">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                          <span className="inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                      {parseInt(event.endTime) > Date.now() ?
+                        <div className="text-sm bg-green-100 p-2 rounded-lg w-fit mr-2 flex items-center">
+                          <div className="mx-1.5 relative flex h-3 w-3">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span className="inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                          </div>
+                          Open
                         </div>
-                        Open
-                      </div>
-                      <div className="text-sm bg-gray-100 p-2 rounded-lg w-fit flex items-center">
-                        <span className="mr-1"><Calendar size={18} /></span>
-                        {/* Convert timestamp to human-readable date */}
-                        {new Date(parseInt(event.startTime)).toLocaleDateString()}
-                      </div>
-                    </div>
+                        :
+                        <div className="text-sm bg-red-100 p-2 rounded-lg w-fit mr-2 flex items-center">
+                          <div className="mx-1.5 relative flex h-3 w-3">
+                            <span className="inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                          </div>
+                          Closed
+                        </div>
+                      
+                      }
+                          <div className="text-sm bg-gray-100 p-2 rounded-lg w-fit flex items-center">
+                            <span className="mr-1"><Calendar size={18} /></span>
+                            {/* Convert timestamp to human-readable date */}
+                            {new Date(parseInt(event.startTime)).toLocaleDateString()} -
+                            {/* <span className="mr-1"><Calendar size={18} /></span> */}
+                            {/* Convert timestamp to human-readable date */}
+                            {new Date(parseInt(event.endTime)).toLocaleDateString()}
+                          </div>
+                        </div>
                   </CardHeader>
                   <CardContent className="flex justify-center items-center">
                     <p className="font-bold text-lg">${weiToUSD(event.prizePool)}</p>

@@ -60,6 +60,8 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                     setEventId(id);
                     const event = await getEventById(id);
                     setEventData(event);
+                    console.log('event data:', event);
+
                     const projects = await getProjectsByEventId(id);
                     const topContributors = await getContributionsByEventId(id);
                     setProjects(projects);
@@ -138,12 +140,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
         }
     }, 1000);
 
-    const contributorsData = [
-        { username: "@zain", amount: "$5k", src: "https://ui.shadcn.com/avatars/04.png/?height=24&width=24" },
-        { username: "@neda", amount: "$3.77k", src: "https://ui.shadcn.com/avatars/01.png/?height=24&width=24" },
-        { username: "@shiyas", amount: "$2.87k", src: "https://ui.shadcn.com/avatars/02.png/?height=24&width=24" },
-        { username: "@muhammed770", amount: "$1.57k", src: "https://ui.shadcn.com/avatars/04.png/?height=24&width=24" }
-    ];
+
     // if (!id || !name) {
     //     return <div>Loading...</div>;
     // }
@@ -155,11 +152,13 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                     <h1 className="text-3xl font-bold inline-flex">{name}</h1>
                     <div className="w-44">
 
-                        <Badge className="flex-none bg-red-200 p-2" variant="secondary">Voting ends in {days}D {hours}H {minutes}M {seconds}S </Badge>
-                        <div className="lg:hidden">
+                        {eventData && Number(eventData[0].endTime) > Date.now() && <div><Badge className="flex-none bg-red-200 p-2" variant="secondary">Voting ends in {days}D {hours}H {minutes}M {seconds}S </Badge>
+                            <div className="lg:hidden">
 
-                            <DialogSubmitProject projectId={id} />
+                                <DialogSubmitProject projectId={id} />
+                            </div>
                         </div>
+                        }
                     </div>
 
                 </div>
@@ -168,9 +167,27 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                 <div className="flex gap-2 overflow-x-auto no-scrollbar ">
 
 
-                    <Badge className="flex-none bg-green-100 text-stone-800 p-2" variant="secondary">
-                        <div className="mx-1.5 relative flex h-3 w-3"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span className="inline-flex rounded-full h-3 w-3 bg-green-500"></span></div>Ongoing round
-                    </Badge>
+
+
+                    {eventData && Number(eventData[0].endTime) > Date.now() ?
+
+                        <Badge className="flex-none bg-green-100 text-stone-800 p-2" variant="secondary">
+                            <div className="mx-1.5 relative flex h-3 w-3">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span className="inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                            </div>
+                            Ongoing round
+                        </Badge>
+                        :
+                        <Badge className="flex-none bg-red-100 text-stone-800 p-2" variant="secondary">
+                            <div className="mx-1.5 relative flex h-3 w-3">
+                                <span className="inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                            </div>
+                            Rounds closed
+                        </Badge>
+                    }
+
+
 
                 </div>
                 {projects && projects.map((data, index) => (
@@ -290,7 +307,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                     <p className="text-3xl font-bold">$68,143</p>
                     <h2 className="text-xl font-semibold mt-4">Available Matching Pool</h2>
                     <p className="text-3xl font-bold">$50,000</p>
-                    <DialogSubmitProject projectId={""} />
+                    {eventData && Number(eventData[0].endTime) > Date.now() && <DialogSubmitProject projectId={""} />}
 
                 </div>
                 <div>
