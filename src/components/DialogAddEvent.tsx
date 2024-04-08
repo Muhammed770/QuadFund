@@ -20,6 +20,8 @@ import contractABI from "@/lib/abis/Factory.json"
 import { USDToWei } from "@/lib/functions"
 import { FACTORY_CONTRACT_ADDRESS } from "@/lib/const"
 import { useState } from "react"
+import { DurationPicker } from "@/components/duration-picker"
+import EmblaCarousel from "./EmblaCarousel"
 // import { useRouter } from 'next/router'
 
 export function DialogAddEvent() {
@@ -29,19 +31,26 @@ export function DialogAddEvent() {
     const [prizePool, setPrizePool] = useState<string>("0")
     const [endDate, setEndDate] = useState<number | undefined>();
     const [isFormSubmitting, setIsFormSubmitting] = useState<boolean>(false);
+    const [duration, setDuration] = useState<number | undefined>();
 
     // const router = useRouter()
 
     // const handleTitleChange =(e :React.ChangeEvent<HTMLInputElement>)=> {
     //     setTitle(e.target.value);
     // }
-
+    const LOOP = true
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         try {
             event.preventDefault();
             setIsFormSubmitting(true);
+
+            if (!title || !description || !prizePool || !duration) {
+                toast.error("All fields are required");
+                setIsFormSubmitting(false);
+                return;
+            }
             // Connect to the Ethereum network using MetaMask or other injected providers
-            console.log("endDate", endDate);
+            
 
             await window.ethereum.request({ method: 'eth_requestAccounts' });
             const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -57,7 +66,7 @@ export function DialogAddEvent() {
             const amountinwei = USDToWei(prizePool);
             console.log("amountinwei", amountinwei);
 
-            const tx = await contract.createFundingContract(title, description, amountinwei, endDate, { value: amountinwei + 1000000 });
+            const tx = await contract.createFundingContract(title, description, amountinwei, duration, { value: amountinwei + 1000000 });
             //waiting for transaction to completew
             await tx.wait();
             console.log('Transaction successfull', tx.hash);
@@ -78,6 +87,13 @@ export function DialogAddEvent() {
     const handleDateSelect = (date: number) => {
         setEndDate(date); // Update the endDate state
     };
+
+    const handleDurationSelect = (days:number , hours:number , minutes:number) => {
+        const durationInSeconds = (days * 24 * 60 * 60) + (hours * 60 * 60) + (minutes * 60);
+        setDuration(durationInSeconds); // Update the duration state
+        console.log("durationInSeconds", durationInSeconds);
+        
+    }
 
     return (
         <Dialog>
@@ -114,7 +130,9 @@ export function DialogAddEvent() {
                                         </div>
                                         <div className="space-y-2">
                                             <Label htmlFor="date">End Date </Label>
-                                            <DatePickerDemo onDateSelect={handleDateSelect} />
+                                            {/* <DatePickerDemo onDateSelect={handleDateSelect} /> */}
+                                            <DurationPicker oneDurationSelect={handleDurationSelect}/>
+                                           
                                         </div>
                                     </div>
                                 </div>

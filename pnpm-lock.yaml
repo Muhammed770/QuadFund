@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -50,6 +50,12 @@ dependencies:
   date-fns:
     specifier: ^3.6.0
     version: 3.6.0
+  embla-carousel:
+    specifier: ^8.0.1
+    version: 8.0.1
+  embla-carousel-react:
+    specifier: ^8.0.1
+    version: 8.0.1(react@18.2.0)
   ethers:
     specifier: 5.7.2
     version: 5.7.2
@@ -7184,6 +7190,28 @@ packages:
       inherits: 2.0.4
       minimalistic-assert: 1.0.1
       minimalistic-crypto-utils: 1.0.1
+    dev: false
+
+  /embla-carousel-react@8.0.1(react@18.2.0):
+    resolution: {integrity: sha512-cpFQ/HwCsjBjzpu9Z9IHmZ9DaCSf/wo4q+qUTcRW3SsNv+1Q8IY7Y8J2QIyTmz0vOWY7tliu3uE2gqRH7ZDwOQ==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.1 || ^18.0.0
+    dependencies:
+      embla-carousel: 8.0.1
+      embla-carousel-reactive-utils: 8.0.1(embla-carousel@8.0.1)
+      react: 18.2.0
+    dev: false
+
+  /embla-carousel-reactive-utils@8.0.1(embla-carousel@8.0.1):
+    resolution: {integrity: sha512-KBSkz2h9LwVFkOrwzIJKgXbmEDlIShkreeOHnV8Cph09AdBMzb412nRkcctbeDcuG9x3CVsqLzJrSXnZeYhFPQ==}
+    peerDependencies:
+      embla-carousel: 8.0.1
+    dependencies:
+      embla-carousel: 8.0.1
+    dev: false
+
+  /embla-carousel@8.0.1:
+    resolution: {integrity: sha512-RsaMRyBCd144N95gb3XoI+H9zj3RI4y0qcfvKYEh2tIAIEenL9CW9vwzltCeoYkWYipGdkvup+HGT9ewG1YTEw==}
     dev: false
 
   /emoji-regex@8.0.0:
