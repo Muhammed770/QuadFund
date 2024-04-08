@@ -8,7 +8,7 @@ export function DurationPicker({ oneDurationSelect }: { oneDurationSelect : (day
   const [minutes, setMinutes] = useState(0);
 
   useEffect(() => {
-    oneDurationSelect(days, hours, minutes)
+    oneDurationSelect(days || 0, hours || 0, minutes || 0)
   }, [days, hours, minutes])
 
   return (
@@ -24,7 +24,7 @@ export function DurationPicker({ oneDurationSelect }: { oneDurationSelect : (day
               value={days}
               onChange={(e) => {
                 if (Number(e.target.value) >= 0)
-                  setDays(Number(e.target.value))
+                  setDays(parseInt(e.target.value))
               }
               }
               className="h-12 w-12 rounded-full border border-gray-200 dark:border-gray-800 flex items-center justify-center text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none focus:border-black"
@@ -38,7 +38,7 @@ export function DurationPicker({ oneDurationSelect }: { oneDurationSelect : (day
               value={hours}
               onChange={(e) => {
                 if (Number(e.target.value) >= 0 && Number(e.target.value) < 24)
-                  setHours(Number(e.target.value))
+                  setHours(parseInt(e.target.value))
               }
               }
               className="h-12 w-12 rounded-full border border-gray-200 dark:border-gray-800 flex items-center justify-center text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none focus:border-black"
@@ -52,8 +52,9 @@ export function DurationPicker({ oneDurationSelect }: { oneDurationSelect : (day
                 type="number"
                 value={minutes}
                 onChange={(e) => {
-                  if (Number(e.target.value) >= 0 && Number(e.target.value) < 60)
-                    setMinutes(Number(e.target.value))
+                  if (Number(e.target.value) >= 0  && Number(e.target.value) < 60)
+                    setMinutes(parseInt(e.target.value))
+                  
                 }
                 }
                 className="h-12 w-12 rounded-full border  border-gray-200 dark:border-gray-800 flex items-center justify-center text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none focus:border-black "
