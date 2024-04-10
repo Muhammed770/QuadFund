@@ -22,8 +22,7 @@ import { getEventById, weiToUSD } from "@/lib/functions"
 import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { getProjectsByEventId } from "@/lib/functions"
-import { QuadFundEventListType, QuadFundEventType } from "@/types/types"
-import { ProjectListType } from "@/types/types"
+import { ProjectType, QuadFundEventType, ContributionsType } from "@/types/types"
 import { getContributionsByProjectId, getContributionsByEventId } from "@/lib/functions"
 import { set } from "date-fns"
 
@@ -32,10 +31,11 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
     const queries = useSearchParams();
     const [isLoading, setIsLoading] = useState(true); // Loading state
     const [eventId, setEventId] = useState<string>(""); // Store fetched id
-    const [projects, setProjects] = useState<ProjectListType>([]); // Store fetched projects
+    const [projects, setProjects] = useState<ProjectType[]>([]); // Store fetched projects
     const [projectContributors, setProjectContributors] = useState([])
-    const [topContributors, setTopContributors] = useState<object>()
+    const [topContributors, setTopContributors] = useState<ContributionsType[]>()
     const [eventData, setEventData] = useState<QuadFundEventType[]>();
+    const [sumOfContributions, setSumOfContributions] = useState<number>(0); 
     // const [topContributors, setTopContributors] = useState([])
 
     const id = queries.get('id') as string;
@@ -45,7 +45,6 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
             console.log('Project ID:', id);
             const projectContributions: any = await getContributionsByProjectId(id);
             setProjectContributors(projectContributions);
-            console.log('Contributors:', projectContributions);
         } catch (error) {
             console.error('Error fetching contributors:', error);
         }
@@ -54,7 +53,6 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
     useEffect(() => {
         const fetchEvent = async () => {
             try {
-
                 setIsLoading(false); // Set loading to false after fetching
                 if (typeof id === 'string') {
                     setEventId(id);
@@ -64,9 +62,14 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
 
                     const projects = await getProjectsByEventId(id);
                     const topContributors = await getContributionsByEventId(id);
-                    
+                    const sumOfContributions = projects.reduce((acc:number,curr:ProjectType)=> acc + Number(curr.contributionsReceived),0)
+                    console.log('sum of contributions:', sumOfContributions);
+                    setSumOfContributions(sumOfContributions)
                     setProjects(projects);
+                    
                     setTopContributors(topContributors);
+                    
+                    
                 }
                 console.log('Event ID:', id);
             } catch (error) {
@@ -305,7 +308,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
             <div className="w-full lg:w-96 space-y-6 ">
                 <div className="bg-gray-100 p-4 rounded-md max-lg:hidden">
                     <h2 className="text-xl font-semibold">Total Donations</h2>
-                    <p className="text-3xl font-bold">$68,143</p>
+                    <p className="text-3xl font-bold">${weiToUSD((sumOfContributions).toString())}</p>
                     <h2 className="text-xl font-semibold mt-4">Available Matching Pool</h2>
                     {eventData && <p className="text-3xl font-bold">${weiToUSD(eventData[0].prizePool)}</p>}
                     {eventData && Number(eventData[0].endTime) > Date.now() && <DialogSubmitProject projectId={""} />}
@@ -314,7 +317,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                 <div>
                     <h2 className="text-xl font-semibold">Top Contributors</h2>
                     <div className="space-y-2 mt-2">
-                        {topContributors && (topContributors as { user: { id: string }, amount: number }[]).map((data, index) => (
+                        {topContributors && topContributors.map((data, index) => (
                             <div key={index} className="flex items-center space-x-2">
                                 <Avatar>
                                     <AvatarImage alt="Avatar" src="https://ui.shadcn.com/avatars/04.png/?height=24&width=24" />

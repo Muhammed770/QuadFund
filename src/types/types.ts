@@ -36,4 +36,11 @@ export type ProjectListType = ProjectType[];
 
 export type QuadFundEventListType = QuadFundEventType[];
 
-
+export type ContributionsType = {
+    __typename:string;
+    amount: string;
+    user: {
+        id: string;
+        __typename: string;
+    }
+};
