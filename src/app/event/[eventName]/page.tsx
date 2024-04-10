@@ -156,7 +156,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                     <h1 className="text-3xl font-bold inline-flex">{name}</h1>
                     <div className="w-44">
 
-                        {eventData && Number(eventData[0].endTime) > Date.now() && <div><Badge className="flex-none bg-red-200 p-2" variant="secondary">Voting ends in {days}D {hours}H {minutes}M {seconds}S </Badge>
+                        {eventData && Number(eventData[0].endTime) > Date.now() && <div> <p className="text-xs text-gray-600 ml-2">Voting ends in:</p><Badge className="flex-none bg-red-200 p-2" variant="secondary"> {days}D {hours}H {minutes}M {seconds}S </Badge>
                             <div className="lg:hidden">
 
                                 <DialogSubmitProject projectId={id} />
