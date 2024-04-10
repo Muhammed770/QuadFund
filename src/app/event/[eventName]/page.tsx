@@ -243,7 +243,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                                             </Link>
                                         </div>
                                     </div>
-                                    <DialogAmount projectId={data.id} />
+                                    {eventData && Number(eventData[0].endTime) > Date.now()  && <DialogAmount projectId={data.id} />}
                                 </DrawerHeader>
                                 <Tabs defaultValue="about" className="md:px-12 px-4 pb-4">
                                     <TabsList>
