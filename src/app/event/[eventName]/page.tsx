@@ -215,10 +215,10 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                                             )} */}
                                         </div>
                                         <div className="p-2 ml-20">
-                                            <div className="text-left">
+                                            <div className=" flex flex-col items-start">
                                                 <h2 className="text-xl font-semibold ">{data.name}</h2>
                                                 <p className="text-sm text-gray-600">{data.description}</p>
-                                                <div className="flex items-center justify-center">
+                                                <div className="flex ">
                                                     <p className="text-sm ">${weiToUSD(data.contributionsReceived)} Contributions</p>
                                                     <span className="ml-2">•</span>
                                                     <p className="text-sm ml-2">${weiToUSD(data.matchingPrizePool)} Matched</p>
