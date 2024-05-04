@@ -23,7 +23,7 @@ export default function Home() {
     const fetchAllEvents = async () => {
       try {
         const events = await getAllEvents();
-        
+
         console.log('All events:', events);
         setEvents(events);
       } catch (error) {
@@ -60,10 +60,13 @@ export default function Home() {
                 pathname: `/event/${event.name}`,
                 query: { id: event.id, name: event.name }
               }}>
-                <Card className="flex justify-between h-[200px]">
-                  <CardHeader>
+                <Card className="flex justify-between h-[200px] ">
+                  <CardHeader >
                     <CardTitle>{event.name}</CardTitle>
-                    <CardDescription >{event.description}</CardDescription>
+                    <div>
+
+                      <CardDescription className="max-h-[45px] overflow-scroll">{event.description}</CardDescription>
+                    </div>
                     <div className="md:py-6 md:flex ">
                       {parseInt(event.endTime) > Date.now() ?
                         <div className="text-sm bg-green-100 p-2 rounded-lg w-fit mr-2 flex items-center">
@@ -80,16 +83,16 @@ export default function Home() {
                           </div>
                           Closed
                         </div>
-                      
+
                       }
-                          <div className="text-xs text-slate-500  p-2 rounded-lg w-fit flex items-center">
-                            <span className="mr-1"><Calendar size={18} /></span>
-                            {/* {new Date(parseInt(event.startTime)).toLocaleDateString()} */} 
-                            
-                           
-                            {new Date(parseInt(event.endTime)).toLocaleDateString()}
-                          </div>
-                        </div>
+                      <div className="text-xs text-slate-500  p-2 rounded-lg w-fit flex items-center">
+                        <span className="mr-1"><Calendar size={18} /></span>
+                        {/* {new Date(parseInt(event.startTime)).toLocaleDateString()} */}
+
+
+                        {new Date(parseInt(event.endTime)).toLocaleDateString()}
+                      </div>
+                    </div>
                   </CardHeader>
                   <CardContent className="flex justify-center items-center">
                     <p className="font-bold text-lg">${weiToUSD(event.prizePool)}</p>

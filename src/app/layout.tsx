@@ -25,7 +25,21 @@ import {
 } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/sonner"
 import { ThirdwebProvider } from "@thirdweb-dev/react";
+import { metaMaskWallet } from '@rainbow-me/rainbowkit/wallets';
+import { connectorsForWallets } from '@rainbow-me/rainbowkit';
 
+const connectors = connectorsForWallets(
+  [
+    {
+      groupName: 'Recommended',
+      wallets: [metaMaskWallet],
+    },
+  ],
+  {
+    appName: 'My RainbowKit App',
+    projectId: 'YOUR_PROJECT_ID',
+  }
+);
 //  const metadata: Metadata = {
 //   title: "QuadFund",
 //   description: "Empowering Social Good Through Proper Funding",
@@ -35,6 +49,12 @@ const config = getDefaultConfig({
   appName: 'My RainbowKit App',
   projectId: '6ac8e2179e976b262d34f3b452091a7a',
   chains: [mainnet, sepolia, polygon, optimism, arbitrum, base],
+  wallets: [
+    {
+      groupName: 'Other',
+      wallets: [metaMaskWallet],
+    },
+  ]
 });
 // import { http, createConfig } from 'wagmi'
 // import { base, mainnet, optimism } from 'wagmi/chains'

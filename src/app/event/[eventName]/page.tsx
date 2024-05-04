@@ -26,7 +26,9 @@ import { ProjectType, QuadFundEventType, ContributionsType } from "@/types/types
 import { getContributionsByProjectId, getContributionsByEventId } from "@/lib/functions"
 import { set } from "date-fns"
 import { useAccount } from 'wagmi'
-
+import { ethers } from "ethers"
+import { toast } from "sonner";
+import contractABI from "@/lib/abis/Contract.json";
 const EventPage = ({ params }: { params: { eventName: string } }) => {
 
     const queries = useSearchParams();
@@ -41,7 +43,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
     const account = useAccount()
     const address = account?.address ?? '';
     console.log('address:', address);
-    
+
     const id = queries.get('id') as string;
     const name = queries.get('name') as string;
     const fetchContributors = async (id: string) => {
@@ -148,7 +150,34 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
         }
     }, 1000);
 
+    console.log("event owner address", eventData && eventData[0].owner.id.toLowerCase());
+    console.log("account address", address.toLowerCase() == (eventData && eventData[0].owner.id.toLowerCase()));
 
+    const handlePublishResults = async () => {
+        try {
+            console.log('Publishing results');
+            //LOADING HANDLE
+
+
+
+            // Connect to Ethereum provider
+            await window.ethereum.request({ method: 'eth_requestAccounts' });
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
+
+            // Instantiate the contract
+            const contract = new ethers.Contract(id, contractABI, signer);
+            const tx = await contract.publishResult();
+            // Wait for transaction to complete
+            await tx.wait();
+            toast.success("Results published successfully")
+            console.log('Transaction successful:', tx.hash);
+        } catch (error) {
+            toast.error("Error occurred while publishing results. Please try again.")
+            console.error('Error publishing results:', error);
+
+        }
+    }
     // if (!id || !name) {
     //     return <div>Loading...</div>;
     // }
@@ -172,7 +201,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                 </div>
 
 
-                <div className="flex gap-2 overflow-x-auto no-scrollbar ">
+                <div className="flex gap-2 overflow-x-auto no-scrollbar justify-between">
 
 
 
@@ -194,10 +223,19 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                             Rounds closed
                         </Badge>
                     }
-                   
+
+
                     {
-                        eventData && !eventData[0].resultPublished && Number(eventData[0].endTime) > Date.now() && eventData[0].owner.id === address ? <Button className="w-44" variant="outline">Publish Results</Button> : null
+
+                        eventData &&
+                            !eventData[0].resultPublished &&
+                            (Number(eventData[0].endTime) < Date.now()) &&
+                            eventData[0].owner.id.toLowerCase() === address.toLowerCase() ?
+                            <Button className="w-44" variant="default" onClick={() => handlePublishResults()}>Publish Results</Button>
+                            : null
                     }
+                    
+              
 
 
 
