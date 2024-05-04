@@ -15,9 +15,9 @@ import { Textarea } from "@/components/ui/textarea"
 import { CardContent, Card } from "@/components/ui/card"
 import { DatePickerDemo } from "./DatePicker"
 import { toast } from "sonner"
-import { ethers } from "ethers"
+import { BigNumber, ethers, utils } from "ethers"
 import contractABI from "@/lib/abis/Factory.json"
-import { USDToWei } from "@/lib/functions"
+import { ethToWei } from "@/lib/functions"
 import { FACTORY_CONTRACT_ADDRESS } from "@/lib/const"
 import { useState } from "react"
 import { DurationPicker } from "@/components/duration-picker"
@@ -50,7 +50,7 @@ export function DialogAddEvent() {
                 return;
             }
             // Connect to the Ethereum network using MetaMask or other injected providers
-            
+
 
             await window.ethereum.request({ method: 'eth_requestAccounts' });
             const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -61,12 +61,13 @@ export function DialogAddEvent() {
             //Instantiate the contract
             const contract = new ethers.Contract(FACTORY_CONTRACT_ADDRESS, contractABI, signer);
             // Call the contract function to add a new event
-            console.log("prizePool USD", prizePool)
+            console.log("prizePool ETH", prizePool)
             // console.log("prizePool in ETH", ethers.utils.parseEther(prizePool.toString()))
-            const amountinwei = USDToWei(prizePool);
+            // const amountinwei = ethToWei(prizePool);
+            const amountinwei = parseFloat(prizePool) * 1e18;
             console.log("amountinwei", amountinwei);
 
-            const tx = await contract.createFundingContract(title, description, amountinwei, duration, { value: amountinwei + 1000000 });
+            const tx = await contract.createFundingContract(title, description, BigNumber.from(amountinwei.toString()), duration, { value: BigNumber.from((amountinwei+10000000).toString()) });
             //waiting for transaction to completew
             await tx.wait();
             console.log('Transaction successfull', tx.hash);
@@ -88,11 +89,11 @@ export function DialogAddEvent() {
         setEndDate(date); // Update the endDate state
     };
 
-    const handleDurationSelect = (days:number , hours:number , minutes:number) => {
+    const handleDurationSelect = (days: number, hours: number, minutes: number) => {
         const durationInSeconds = (days * 24 * 60 * 60) + (hours * 60 * 60) + (minutes * 60);
         setDuration(durationInSeconds); // Update the duration state
         // console.log("durationInSeconds", durationInSeconds);
-        
+
     }
 
     return (
@@ -125,14 +126,14 @@ export function DialogAddEvent() {
                                             <Textarea className="min-h-[100px]" id="description" placeholder="Description" value={description} onChange={(e) => { setDescription(e.target.value) }} />
                                         </div>
                                         <div className="space-y-2">
-                                            <Label htmlFor="prize">Prize Pool (USD)</Label>
+                                            <Label htmlFor="prize">Prize Pool (ETH)</Label>
                                             <Input id="prize" type="text" placeholder="Prize pool" value={prizePool} onChange={(e) => { setPrizePool(e.target.value) }} />
                                         </div>
                                         <div className="space-y-2">
                                             <Label htmlFor="date">Event duration</Label>
                                             {/* <DatePickerDemo onDateSelect={handleDateSelect} /> */}
-                                            <DurationPicker oneDurationSelect={handleDurationSelect}/>
-                                           
+                                            <DurationPicker oneDurationSelect={handleDurationSelect} />
+
                                         </div>
                                     </div>
                                 </div>

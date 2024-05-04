@@ -13,10 +13,10 @@ import {
 import { HeartHandshake } from 'lucide-react';
 import { useState } from "react"
 import { toast } from "sonner";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import contractABI from "@/lib/abis/Contract.json";
 import { useSearchParams } from "next/navigation";
-import { USDToWei } from "@/lib/functions";
+import { USDToWei, ethToWei } from "@/lib/functions";
 
 const DialogAmount = (props:{projectId:string}) => {
 
@@ -35,16 +35,16 @@ const DialogAmount = (props:{projectId:string}) => {
 
             // Instantiate the contract
             const contract = new ethers.Contract(projectContractAddr, contractABI, signer);
-            console.log("amount in USD", amount);
+            console.log("amount in ETH", amount);
             
             // Call the contract function to contribute to the project
-            const amountinwei = USDToWei(amount.toString());
+            const amountinwei = ethToWei(amount.toString());
             console.log("amountinwei", amountinwei);
             
             const parts = props.projectId.split('-');
             const id = parseInt(parts[1], 16)
             console.log(id)
-            const tx = await contract.contribute(id, amountinwei,{ value: amountinwei+100000 });
+            const tx = await contract.contribute(id, BigNumber.from(amountinwei.toString()),{ value: BigNumber.from((amountinwei+100000).toString()) });
             // Wait for transaction to complete
             await tx.wait();
             toast.success("Contributed to project successfully")
@@ -67,7 +67,7 @@ const DialogAmount = (props:{projectId:string}) => {
 
 
     function onClick(adjustment: number) {
-        setAmount(Math.max(1, Math.min(10000, amount + adjustment)))
+        setAmount(Math.max(0.1, Math.min(10, amount + adjustment)))
     }
     return (
         <Dialog>
@@ -84,33 +84,33 @@ const DialogAmount = (props:{projectId:string}) => {
                     </DialogDescription>
                 </DialogHeader>
                 <div className="flex justify-between items-center">
-                    <Button
+                    {/* <Button
                         variant="outline"
                         size="icon"
                         className="h-8 w-8 shrink-0 rounded-full"
-                        onClick={() => onClick(-1)}
-                        disabled={amount <= 1}
+                        onClick={() => onClick(-0.1)}
+                        disabled={amount <= 0.1}
                     >
                         <Minus className="h-4 w-4" />
-                    </Button>
-                    <div className="flex-1 text-center">
+                    </Button> */}
+                    <div className="flex-1 text-center ">
                         <div className="text-[0.70rem] uppercase text-muted-foreground">
-                            $USD
+                            ETH
                         </div>
                         <div className="text-7xl font-bold tracking-tighter">
-                            <input type="number" value={amount} onChange={(e) => setAmount(parseInt(e.target.value))} className="w-[200px] text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
+                            <input type="number" value={amount} onChange={(e) => setAmount(parseFloat(e.target.value))} className="border  border-gray-800 rounded-md w-[200px] text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
                         </div>
                     </div>
-                    <Button
+                    {/* <Button
                         variant="outline"
                         size="icon"
                         className="h-8 w-8 shrink-0 rounded-full flex items-center"
-                        onClick={() => onClick(1)}
-                        disabled={amount >= 10000}
+                        onClick={() => onClick(0.1)}
+                        disabled={amount >= 10}
                     >
                         <Plus className="h-4 w-4" />
                         <span className="sr-only">Increase</span>
-                    </Button>
+                    </Button> */}
                 </div>
                 <DialogFooter>
                     <Button onClick={(event) => { event.preventDefault(); handleSubmit(event as any); }}>Contribute</Button>
