@@ -25,6 +25,7 @@ import { getProjectsByEventId } from "@/lib/functions"
 import { ProjectType, QuadFundEventType, ContributionsType } from "@/types/types"
 import { getContributionsByProjectId, getContributionsByEventId } from "@/lib/functions"
 import { set } from "date-fns"
+import { useAccount } from 'wagmi'
 
 const EventPage = ({ params }: { params: { eventName: string } }) => {
 
@@ -35,9 +36,12 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
     const [projectContributors, setProjectContributors] = useState([])
     const [topContributors, setTopContributors] = useState<ContributionsType[]>()
     const [eventData, setEventData] = useState<QuadFundEventType[]>();
-    const [sumOfContributions, setSumOfContributions] = useState<number>(0); 
+    const [sumOfContributions, setSumOfContributions] = useState<number>(0);
     // const [topContributors, setTopContributors] = useState([])
-
+    const account = useAccount()
+    const address = account?.address ?? '';
+    console.log('address:', address);
+    
     const id = queries.get('id') as string;
     const name = queries.get('name') as string;
     const fetchContributors = async (id: string) => {
@@ -62,14 +66,14 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
 
                     const projects = await getProjectsByEventId(id);
                     const topContributors = await getContributionsByEventId(id);
-                    const sumOfContributions = projects.reduce((acc:number,curr:ProjectType)=> acc + Number(curr.contributionsReceived),0)
+                    const sumOfContributions = projects.reduce((acc: number, curr: ProjectType) => acc + Number(curr.contributionsReceived), 0)
                     console.log('sum of contributions:', sumOfContributions);
                     setSumOfContributions(sumOfContributions)
                     setProjects(projects);
-                    
+
                     setTopContributors(topContributors);
-                    
-                    
+
+
                 }
                 console.log('Event ID:', id);
             } catch (error) {
@@ -190,6 +194,12 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                             Rounds closed
                         </Badge>
                     }
+                   
+                    {
+                        eventData && !eventData[0].resultPublished && Number(eventData[0].endTime) > Date.now() && eventData[0].owner.id === address ? <Button className="w-44" variant="outline">Publish Results</Button> : null
+                    }
+
+
 
 
 
@@ -243,7 +253,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
                                             </Link>
                                         </div>
                                     </div>
-                                    {eventData && Number(eventData[0].endTime) > Date.now()  && <DialogAmount projectId={data.id} />}
+                                    {eventData && Number(eventData[0].endTime) > Date.now() && <DialogAmount projectId={data.id} />}
                                 </DrawerHeader>
                                 <Tabs defaultValue="about" className="md:px-12 px-4 pb-4">
                                     <TabsList>
