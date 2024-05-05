@@ -363,7 +363,7 @@ const EventPage = ({ params }: { params: { eventName: string } }) => {
 
                 </div>
                 <div>
-                    <h2 className="text-xl font-semibold">Top Contributors</h2>
+                    <h2 className="text-xl font-semibold">Top Contributions</h2>
                     <div className="space-y-2 mt-2">
                         {topContributors && topContributors.map((data, index) => (
                             <div key={index} className="flex items-center space-x-2">
