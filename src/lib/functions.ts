@@ -204,6 +204,9 @@ export const getProjectsByOwner = async (ownerAddress: string) => {
           twitter
           website
           id
+          quadFundEvent{
+            resultPublished
+          }
           owner {
             id
           }

@@ -133,6 +133,12 @@ contract FundingContract is Initializable {
         Project storage contributingProject = projects[_projectId];
         require(contributingProject.projectOwner != msg.sender,"Can'vote to your own project");
 
+        uint256 counter;
+        Project memory currProject = projects[_projectId];
+        for(counter = 0;counter < currProject.contributions.length;counter++){
+            require(currProject.contributions[counter].userAddress != msg.sender);
+        }
+
         User storage contributor = users[msg.sender];
         Contribution memory contribution;
         contribution.userAddress = msg.sender;
@@ -143,7 +149,6 @@ contract FundingContract is Initializable {
         users[msg.sender].contributionsGave.push(contribution);
         contributingProject.contributions.push(contribution);
         contributingProject.contributionsReceived += _amount;
-        uint256 counter;
         uint256  _totalVotingPower;
 
         for(counter = 1 ; counter <= _numberOfProjectsListed ; counter++){
@@ -194,10 +199,11 @@ contract FundingContract is Initializable {
 
     function withdrawFunds(uint256 _projectId) public {
 
-        require(eventStatus == EventStatus.Ended);
+        require(eventStatus == EventStatus.Ended,"Event not ended");
 
         uint256 balance = address(this).balance;
         require(balance > 0, "nothing to withdraw");
+        require(projects[_projectId].isWithdrawnFund == false,"Fund already withdrawn");
 
         require(projects[_projectId].projectOwner == msg.sender,"You are not onwer of this project");
 
