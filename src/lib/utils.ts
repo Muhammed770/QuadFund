@@ -14,3 +14,13 @@ export function convertIPFSUriToUrl(ipfsUri: string): string {
   }
   return ipfsUri
 }
+
+
+// return string maximum 15 words 
+export function truncateString(str: string, num: number) {
+  const words = str.split(" ")
+  if (words.length <= num) {
+    return str
+  }
+  return words.slice(0, num).join(" ") + '...'
+}

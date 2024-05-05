@@ -16,6 +16,7 @@ import { Calendar } from 'lucide-react';
 import { getAllEvents, weiToUSD } from "@/lib/functions"
 import { useState, useEffect } from 'react';
 import { QuadFundEventListType } from "@/types/types";
+import { truncateString } from "@/lib/utils";
 export default function Home() {
   const [events, setEvents] = useState<QuadFundEventListType>([]);
 
@@ -65,7 +66,7 @@ export default function Home() {
                     <CardTitle>{event.name}</CardTitle>
                     <div>
 
-                      <CardDescription className="max-h-[45px] overflow-scroll">{event.description}</CardDescription>
+                      <CardDescription className="max-h-[45px]">{truncateString(event.description,12)}</CardDescription>
                     </div>
                     <div className="md:py-6 md:flex ">
                       {parseInt(event.endTime) > Date.now() ?

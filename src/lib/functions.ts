@@ -321,3 +321,4 @@ export const weiToEth = (wei: string) => {
   let eth = parseInt(wei) / 10 ** 18;
   return eth;
 }
+
